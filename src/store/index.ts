@@ -7,10 +7,5 @@ Vue.use(Vuex);
 
 // Create store
 export default new Vuex.Store({
-  state: {
-    newsData: {},
-  },
-  mutations: {},
-  actions: {},
   modules: { news },
 });

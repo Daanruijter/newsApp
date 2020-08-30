@@ -1,11 +1,11 @@
-import axios from "axios";
+// import axios from "axios";
 
-const state = {
-  news: [
-    { id: 1, title: "news 1" },
-    { id: 2, title: "news 2" },
-  ],
-};
+// const state = {
+//   news: [
+//     { id: 1, title: "news 1" },
+//     { id: 2, title: "news 2" },
+//   ],
+// };
 
 // interface newsType {
 //   { id: 1, title: "news 1" },
@@ -17,10 +17,12 @@ const state = {
 //   { "id": 2, "name": "Started" }
 // ];
 
-const getters = { allNews: (state: any) => state.news };
+const state = { newsData: [] };
+
+const getters = { allNews: (state: any) => state.newsData };
 
 const actions = {
-  async fetchNews({ commit }) {
+  async fetchNews({ commit }: { commit: Function }) {
     const url: string =
       "http://newsapi.org/v2/top-headlines?" +
       "country=au&" +
@@ -31,11 +33,14 @@ const actions = {
         return response.json();
       })
       .then((data) => {
+        commit("setNews", data.articles);
         console.log(data.articles);
       });
   },
 };
-const mutations = { set };
+const mutations = {
+  setNews: (state: any, newsData: any) => (state.newsData = newsData),
+};
 
 export default {
   state,

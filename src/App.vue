@@ -7,6 +7,7 @@
     </div>
 
     <router-view />
+    <DetailsPage />
     <NewsFooter />
   </div>
 </template>
@@ -14,25 +15,28 @@
 <script lang="ts">
 import NewsMenu from "@/components/NewsMenu.vue";
 import NewsFooter from "@/components/NewsFooter.vue";
+import DetailsPage from "@/views/DetailsPage.vue";
+
 export default {
   components: {
     NewsMenu,
     NewsFooter,
+    DetailsPage,
   },
 
-  created: function(): void {
-    console.log("created");
-    const url: string =
-      "http://newsapi.org/v2/top-headlines?" +
-      "country=au&" +
-      "apiKey=771f495b60b94bfabf9a9800d4996456";
-    const req = new Request(url);
-    fetch(req).then(function(response) {
-      console.log(response.json());
-      // let data = response.json();
-      // this.$store.dispatch("sendData", data);
-    });
-  },
+  // created: function(): void {
+  //   console.log("created");
+  //   const url: string =
+  //     "http://newsapi.org/v2/top-headlines?" +
+  //     "country=au&" +
+  //     "apiKey=771f495b60b94bfabf9a9800d4996456";
+  //   const req = new Request(url);
+  //   fetch(req).then(function(response) {
+  //     console.log(response.json());
+  //     // let data = response.json();
+  //     // this.$store.dispatch("sendData", data);
+  //   });
+  // },
 };
 </script>
 
