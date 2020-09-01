@@ -2,8 +2,8 @@
   <div id="app">
     <div id="nav">
       <NewsMenu />
-      <router-link to="/">Home</router-link>|
-      <router-link to="/about">About</router-link>
+      <!-- <router-link to="/">Home</router-link>|
+      <router-link to="/about">About</router-link>-->
     </div>
 
     <router-view />
@@ -21,8 +21,8 @@ export default {
   components: {
     NewsMenu,
     NewsFooter,
-    DetailsPage,
-  },
+    DetailsPage
+  }
 
   // created: function(): void {
   //   console.log("created");

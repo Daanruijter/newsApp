@@ -1,25 +1,29 @@
-// import axios from "axios";
-
-// const state = {
-//   news: [
-//     { id: 1, title: "news 1" },
-//     { id: 2, title: "news 2" },
-//   ],
-// };
-
-// interface newsType {
-//   { id: 1, title: "news 1" },
-// ]
-
-// let userTestStatus: { id: number, name: string }[] = [
-//   { "id": 0, "name": "Available" },
-//   { "id": 1, "name": "Ready" },
-//   { "id": 2, "name": "Started" }
-// ];
-
 const state = { newsData: [] };
 
-const getters = { allNews: (state: any) => state.newsData };
+interface StateType {
+  newsData: [];
+}
+
+interface NewsItemType {
+  source: { id: string; name: string };
+  author: string;
+  title: string;
+  description: string;
+  url: string;
+  urlToImage: string;
+  publishedAt: string;
+  content: string;
+}
+
+interface NewsDataType {
+  newsData: Array<NewsItemType>;
+}
+
+const getters = {
+  allNews: (state: StateType) => state.newsData,
+  tenFirstNewsRecords: (state: StateType) =>
+    state.newsData.filter((news: NewsItemType, index: number) => index < 10),
+};
 
 const actions = {
   async fetchNews({ commit }: { commit: Function }) {
@@ -39,7 +43,8 @@ const actions = {
   },
 };
 const mutations = {
-  setNews: (state: any, newsData: any) => (state.newsData = newsData),
+  setNews: (state: NewsDataType, newsData: NewsDataType) =>
+    (state.newsData = newsData),
 };
 
 export default {
