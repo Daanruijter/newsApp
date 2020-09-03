@@ -33,20 +33,18 @@ class NewsModule extends VuexModule {
 
   //getters
   get newsData(): any {
+    console.log("akdklhafklhsfklh");
     return this.news || null;
   }
 
   @Mutation
   addNewsDataToState(data: NewsItemType[]) {
     this.news = data;
+    console.log(data);
   }
   @Action
   async fetchNews() {
-    console.log("EFJAFLAJD");
-    const url: string =
-      "http://newsapi.org/v2/top-headlines?" +
-      "country=au&" +
-      "apiKey=771f495b60b94bfabf9a9800d4996456";
+    const url = `http://newsapi.org/v2/top-headlines?country=au&apiKey=771f495b60b94bfabf9a9800d4996456`;
     const req = new Request(url);
     await fetch(req)
       .then((response) => {
@@ -54,7 +52,7 @@ class NewsModule extends VuexModule {
       })
       .then((data) => {
         this.context.commit("addNewsDataToState", data.articles);
-        console.log(data.articles);
+        // console.log(data.articles);
       });
   }
 }

@@ -1,7 +1,8 @@
 <template>
   <div class="home">
-    <!-- <div v-for="tenFirstNewRecords in this.newsData" :key="tenFirstNewRecords.title">
-      <div>{{ newsItem.title }}</div>
+    <div>{{ records }}</div>
+    <!-- <div v-for="tenFirstNewRecords in this.records" :key="tenFirstNewRecords.title">
+      <div>{{ newsItem.title }}ss</div>
     </div>-->
   </div>
 </template>
@@ -12,9 +13,13 @@ console.log("hi");
 // import store from "../store";
 import { Vue, Component } from "vue-property-decorator";
 // import { getModule } from "vuex-module-decorators";
+// import MyModule from "@/store/modules/news";
+
+// import store from "../store/index";
+// import { getModule } from "vuex-module-decorators";
 
 // console.log("hi");
-
+// import store from "../store/index";
 import news from "../store/modules/news";
 
 // const postsModule = getModule(news);
@@ -26,11 +31,17 @@ import news from "../store/modules/news";
 
 // ({ computed: {mapGetters(['foo']})})
 export default class Home extends Vue {
-  get newsData() {
-    return "ss";
-  }
-  mounted() {
-    news.fetchNews();
+  records = [];
+
+  // get newsData() {
+  //   return "sss";
+  // }
+  async mounted() {
+    console.log("mounted");
+    await news.fetchNews();
+    this.records = news.newsData;
+    // console.log(news.newsData, "newssdatsaAA");
+    // store.dispatch("fetchNews");
   }
 
   // test() {
