@@ -3,10 +3,8 @@
 </template>
 
 <script lang="ts">
-// @ is an alias to /src
-import RandomPage from "@/components/RandomPage.vue";
+import { Vue, Component } from "vue-property-decorator";
 
-export default {
-  name: "RandomPage"
-};
+@Component
+export default class RandomPage extends Vue {}
 </script>

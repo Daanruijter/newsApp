@@ -1,11 +1,5 @@
-const state = { newsData: [] };
-
-interface StateType {
-  newsData: [];
-}
-
-interface NewsItemType {
-  source: { id: string; name: string };
+export interface NewsItemType {
+  source: Source;
   author: string;
   title: string;
   description: string;
@@ -14,19 +8,41 @@ interface NewsItemType {
   publishedAt: string;
   content: string;
 }
-
-interface NewsDataType {
-  newsData: Array<NewsItemType>;
+export interface Source {
+  id?: null;
+  name: string;
 }
 
-const getters = {
-  allNews: (state: StateType) => state.newsData,
-  tenFirstNewsRecords: (state: StateType) =>
-    state.newsData.filter((news: NewsItemType, index: number) => index < 10),
-};
+import {
+  VuexModule,
+  Module,
+  getModule,
+  Mutation,
+  Action,
+} from "vuex-module-decorators";
+import store from "@/store";
 
-const actions = {
-  async fetchNews({ commit }: { commit: Function }) {
+// import { User, Profile, UserSubmit } from "../models";
+// import { loginUser } from "../api";
+
+// @Module({ dynamic: true, store: store, namespaced: true, name: "news" })
+
+@Module({ namespaced: true, name: "newsDataModule", store, dynamic: true })
+class NewsModule extends VuexModule {
+  news: NewsItemType[] = [];
+
+  //getters
+  get newsData(): any {
+    return this.news || null;
+  }
+
+  @Mutation
+  addNewsDataToState(data: NewsItemType[]) {
+    this.news = data;
+  }
+  @Action
+  async fetchNews() {
+    console.log("EFJAFLAJD");
     const url: string =
       "http://newsapi.org/v2/top-headlines?" +
       "country=au&" +
@@ -37,19 +53,100 @@ const actions = {
         return response.json();
       })
       .then((data) => {
-        commit("setNews", data.articles);
+        this.context.commit("addNewsDataToState", data.articles);
         console.log(data.articles);
       });
-  },
-};
-const mutations = {
-  setNews: (state: NewsDataType, newsData: NewsDataType) =>
-    (state.newsData = newsData),
-};
+  }
+}
+export default getModule(NewsModule, store);
+// export const newsModule = new NewsModule({ store, name: "newsDataModule" });
 
-export default {
-  state,
-  getters,
-  actions,
-  mutations,
-};
+// export default NewsModule;
+
+// export default getModule(NewsModule, store);
+// class NewsModule extends VuexModule {
+
+// user: User | null = null;
+// profile: Profile | null = null;
+
+// @Mutation
+// setNews(newsData: any) {
+//   this.news = newsData;
+// }
+//     (state.newsData = newsData),
+// };
+// setUser(user: User) {
+//   this.user = user;
+// }
+
+// get username() {
+//   return (this.user && this.user.username) || null;
+// }
+
+// get allNews() {
+//   return this.news || null;
+// }
+
+// @Action({ commit: "setNews" })
+// async fetchNews() {
+//   const url: string =
+//     "http://newsapi.org/v2/top-headlines?" +
+//     "country=au&" +
+//     "apiKey=771f495b60b94bfabf9a9800d4996456";
+//   const req = new Request(url);
+//   await fetch(req)
+//     .then((response) => {
+//       return response.json();
+//     })
+//     .then((data) => {
+//       this.news = data;
+//       this.context.commit("setNews", data.articles);
+//       // console.log(data.articles);
+//     });
+// }
+// async login(userSubmit: UserSubmit) {
+//   const user = await loginUser(userSubmit);
+//   return user;
+// }
+// }
+
+// export default getModule(NewsModule);
+
+// const state = { newsData: [] };
+
+// export type State = { newsData: NewsDataType };
+
+// const getters = {
+//   allNews: (state: StateType) => state.newsData,
+//   tenFirstNewsRecords: (state: StateType) =>
+//     state.newsData.filter((news: NewsItemType, index: number) => index < 10),
+// };
+
+// const actions = {
+//   async fetchNews({ commit }: { commit: Function }) {
+//     const url: string =
+//       "http://newsapi.org/v2/top-headlines?" +
+//       "country=au&" +
+//       "apiKey=771f495b60b94bfabf9a9800d4996456";
+//     const req = new Request(url);
+//     await fetch(req)
+//       .then((response) => {
+//         return response.json();
+//       })
+//       .then((data) => {
+//         commit("setNews", data.articles);
+//         console.log(data.articles);
+//       });
+//   },
+// };
+// const mutations = {
+//   setNews: (state: NewsDataType, newsData: NewsDataType) =>
+//     (state.newsData = newsData),
+// };
+
+// export default {
+//   state,
+//   getters,
+//   actions,
+//   mutations,
+// };

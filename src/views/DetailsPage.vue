@@ -5,13 +5,8 @@
 </template>
 
 <script lang="ts">
-// @ is an alias to /src
-// import DetailsPage from "@/components/DetailsPage.vue";
+import { Vue, Component } from "vue-property-decorator";
 
-export default {
-  name: "Home",
-  // components: {
-  //   DetailsPage,
-  // },
-};
+@Component
+export default class DetailsPage extends Vue {}
 </script>
