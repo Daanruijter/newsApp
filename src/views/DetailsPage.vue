@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    {{ newsData }}
     <!-- <DetailsPage /> -->
   </div>
 </template>
@@ -16,21 +17,19 @@ export default class DetailsPage extends Vue {
     this.getAllNewsData;
   }
 
-  newsData = this.$store.getters["vuexModuleDecorators/newsDataModule"]
-    .newsDataGetter;
-  tenFirstNewsItems = this.$store.getters["vuexModuleDecorators/newsDataModule"]
-    .tenFirstNewsItems;
+  newsData = [];
+  tenFirstNewsItems = [];
 
   get getAllNewsData() {
-    console.log(
-      this.$store.getters["vuexModuleDecorators/newsDataModule"].newsDataGetter,
-      this.$store.getters["vuexModuleDecorators/newsDataModule"]
-        .tenFirstNewsItems
-    );
-    return news;
-  }
-  get getTenFirstNewsItems() {
-    return "ss";
+    this.newsData = this.$store.getters[
+      "vuexModuleDecorators/newsDataModule"
+    ].newsDataGetter;
+
+    this.tenFirstNewsItems = this.$store.getters[
+      "vuexModuleDecorators/newsDataModule"
+    ].tenFirstNewsItems;
+
+    return null;
   }
 }
 </script>

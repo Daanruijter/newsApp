@@ -7,7 +7,7 @@
     </div>
 
     <router-view />
-    <DetailsPage />
+    <!-- <DetailsPage /> -->
     <NewsFooter />
   </div>
 </template>
