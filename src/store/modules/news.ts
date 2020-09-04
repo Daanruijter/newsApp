@@ -34,12 +34,17 @@ class NewsModule extends VuexModule {
   //getters
   get newsDataGetter(): NewsItemType[] {
     const newsDataViaGetter = this.news;
-    console.log("akdklhafklhsfklh");
-    console.log(this.news.length === 0);
-    console.log(this.news);
     console.log(newsDataViaGetter);
-    console.log("akdkslhssafklhsfklh222s2");
+
     return newsDataViaGetter;
+  }
+
+  get tenFirstNewsItems(): NewsItemType[] {
+    const tenFirstNewsItems = this.news.filter(
+      (news: NewsItemType, index: number) => index < 10
+    );
+    console.log(tenFirstNewsItems);
+    return tenFirstNewsItems;
   }
 
   @Mutation

@@ -16,11 +16,21 @@ export default class DetailsPage extends Vue {
     this.getAllNewsData;
   }
 
-  data = this.$store.getters["vuexModuleDecorators/newsDataModule"]
+  newsData = this.$store.getters["vuexModuleDecorators/newsDataModule"]
     .newsDataGetter;
+  tenFirstNewsItems = this.$store.getters["vuexModuleDecorators/newsDataModule"]
+    .tenFirstNewsItems;
 
   get getAllNewsData() {
+    console.log(
+      this.$store.getters["vuexModuleDecorators/newsDataModule"].newsDataGetter,
+      this.$store.getters["vuexModuleDecorators/newsDataModule"]
+        .tenFirstNewsItems
+    );
     return news;
+  }
+  get getTenFirstNewsItems() {
+    return "ss";
   }
 }
 </script>
