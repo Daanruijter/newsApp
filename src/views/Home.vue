@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div>{{ records }}</div>
+    <!-- <div>{{ records }}</div> -->
     <!-- <div v-for="tenFirstNewRecords in this.records" :key="tenFirstNewRecords.title">
       <div>{{ newsItem.title }}ss</div>
     </div>-->
@@ -20,7 +20,7 @@ import { Vue, Component } from "vue-property-decorator";
 
 // console.log("hi");
 // import store from "../store/index";
-import news from "../store/modules/news";
+// import news from "../store/modules/news";
 
 // const postsModule = getModule(news);
 // const posts = postsModule.news;
@@ -36,13 +36,13 @@ export default class Home extends Vue {
   // get newsData() {
   //   return "sss";
   // }
-  async mounted() {
-    console.log("mounted");
-    await news.fetchNews();
-    this.records = news.newsData;
-    // console.log(news.newsData, "newssdatsaAA");
-    // store.dispatch("fetchNews");
-  }
+  // async mounted() {
+  //   console.log("mounted");
+  //   await news.fetchNews();
+
+  // console.log(news.newsData, "newssdatsaAA");
+  // store.dispatch("fetchNews");
+  // }
 
   // test() {
   //   // console.log(news.actions);

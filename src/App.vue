@@ -18,11 +18,17 @@ import { Vue, Component } from "vue-property-decorator";
 import NewsMenu from "@/components/NewsMenu.vue";
 import NewsFooter from "@/components/NewsFooter.vue";
 import DetailsPage from "@/views/DetailsPage.vue";
+import news from "./store/modules/news";
 
 @Component({
   components: { NewsMenu, NewsFooter, DetailsPage },
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+  async mounted() {
+    console.log("mounted");
+    await news.fetchNews();
+  }
+}
 </script>
 
 <style lang="scss">
