@@ -80,10 +80,10 @@ class NewsModule extends VuexModule {
         return (
           index < 10 &&
           news.urlToImage !== null &&
-          `${news.urlToImage !== this.pictureNotLoadedArray[0] &&
-            news.urlToImage !== this.pictureNotLoadedArray[1] &&
-            news.urlToImage !== this.pictureNotLoadedArray[2] &&
-            news.urlToImage !== this.pictureNotLoadedArray[3]}`
+          news.urlToImage !== this.pictureNotLoadedArray[0] &&
+          news.urlToImage !== this.pictureNotLoadedArray[1] &&
+          news.urlToImage !== this.pictureNotLoadedArray[2] &&
+          news.urlToImage !== this.pictureNotLoadedArray[3]
         );
       }
     );
@@ -96,15 +96,15 @@ class NewsModule extends VuexModule {
   }
 
   get tenFirstNewsItemsIfNoPicture(): NewsItemType[] {
-    // console.log(this.news);
     const tenFirstNewsItemsIfNoPicture = this.news.filter(
       (news: NewsItemType) => {
         return (
           news.urlToImage === null ||
-          `${news.urlToImage !== this.pictureNotLoadedArray[0] &&
-            news.urlToImage == this.pictureNotLoadedArray[1] &&
-            news.urlToImage == this.pictureNotLoadedArray[2] &&
-            news.urlToImage == this.pictureNotLoadedArray[3]}`
+          news.urlToImage === this.pictureNotLoadedArray[0] ||
+          news.urlToImage === this.pictureNotLoadedArray[1] ||
+          news.urlToImage === this.pictureNotLoadedArray[2] ||
+          news.urlToImage === this.pictureNotLoadedArray[3]
+          // );
         );
       }
     );
