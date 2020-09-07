@@ -32,4 +32,6 @@ export default class DetailsPage extends Vue {
     return null;
   }
 }
+
+// <a v-bind:href="newsItem.url">{{ newsItem.title }}</a>
 </script>

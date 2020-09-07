@@ -1,7 +1,12 @@
 <template>
   <div id="app">
     <div id="nav">
+      <hr />
+      <div class="description">World news</div>
+      <div class="description">Your everyday headlines</div>
+      <hr />
       <NewsMenu />
+
       <!-- <router-link to="/">Home</router-link>|
       <router-link to="/about">About</router-link>-->
     </div>
@@ -50,6 +55,15 @@ export default class App extends Vue {
     &.router-link-exact-active {
       color: #42b983;
     }
+  }
+  @font-face {
+    font-family: "steelfish";
+    src: local("steelfish"),
+      url(./steelfishfont/steelfishrg.ttf) format("truetype");
+  }
+  .description {
+    font-family: "steelfish";
+    font-size: 20px;
   }
 }
 </style>
