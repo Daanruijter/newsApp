@@ -1,11 +1,23 @@
 <template>
-  <div class="home">
-    {{ newsData }}
-    <!-- <DetailsPage /> -->
-  </div>
+  <div class="home">{{ this.valuesForDetailComponent }}}</div>
 </template>
 
 <script lang="ts">
+export interface NewsItemType {
+  source: Source;
+  author: string;
+  title: string;
+  description: string;
+  url: string;
+  urlToImage: string;
+  publishedAt: string;
+  content: string;
+}
+export interface Source {
+  id?: null;
+  name: string;
+}
+
 import { Vue, Component } from "vue-property-decorator";
 import news from "../store/modules/news";
 
@@ -15,10 +27,13 @@ export default class DetailsPage extends Vue {
     console.log("mounted");
     await news.fetchNews();
     this.getAllNewsData;
+    this.getValuesForDetailComponent;
   }
 
   newsData = [];
   tenFirstNewsItems = [];
+  newsItemTitle = this.$route.params.title;
+  valuesForDetailComponent: NewsItemType[] = [];
 
   get getAllNewsData() {
     this.newsData = this.$store.getters[
@@ -31,7 +46,16 @@ export default class DetailsPage extends Vue {
 
     return null;
   }
-}
 
-// <a v-bind:href="newsItem.url">{{ newsItem.title }}</a>
+  get getValuesForDetailComponent() {
+    const valuesForDetailComponent = this.newsData.filter(
+      (item: NewsItemType) => {
+        return item.title === this.newsItemTitle;
+      }
+    );
+    console.log(valuesForDetailComponent);
+    this.valuesForDetailComponent = valuesForDetailComponent;
+    return valuesForDetailComponent;
+  }
+}
 </script>
