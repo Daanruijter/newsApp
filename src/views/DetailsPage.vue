@@ -7,48 +7,41 @@
       :key="newsItem.title"
       class="detailspage-data"
     >
-      <div class="detailspage-title">
-        {{ newsItem.title }}
+      <div
+        class="detailspage-title"
+        @mouseover="isHovering = true"
+        @mouseout="isHovering = false"
+        :class="{ hovering: isHovering }"
+      >
+        <a :href="newsItem.url"> {{ newsItem.title }}</a>
       </div>
+
+      <div>By:{{ " " }}{{ newsItem.author }}</div>
+      <br />
+      <div class="detailspage-description">
+        Description<br />{{ newsItem.description }}
+      </div>
+      <div class="detailspage-contents">
+        Contents<br />{{ newsItem.content }}
+      </div>
+      <div
+        class="detailspage-read-more"
+        @mouseover="hoveringReadMore = true"
+        @mouseout="hoveringReadMore = false"
+        :class="{ hovering: hoveringReadMore }"
+      >
+        <a :href="newsItem.url">READ MORE </a>
+      </div>
+
       <div class="detailspage-picture">
         <img v-bind:src="newsItem.urlToImage" />
       </div>
-      <hr />
-      <div>{{ newsItem.author }} {{ newsItem.publishedAt }}</div>
-      <hr />
-
-      <div>{{ newsItem.description }}</div>
-
-      <hr />
-      <div>{{ newsItem.url }}</div>
-      <hr />
-
-      <hr />
-      <div>{{ newsItem.publishedAt }}</div>
-      <hr />
-      <div>{{ newsItem.content }}</div>
-      <hr />
-      <div>{{ newsItem.source.name }}</div>
-      -->
     </div>
   </div>
 </template>
 
 <script lang="ts">
-export interface NewsItemType {
-  source: Source;
-  author: string;
-  title: string;
-  description: string;
-  url: string;
-  urlToImage: string;
-  publishedAt: string;
-  content: string;
-}
-export interface Source {
-  id?: null;
-  name?: string;
-}
+import NewsItemType from "../interfacesforapp";
 
 import { Vue, Component } from "vue-property-decorator";
 import news from "../store/modules/news";
@@ -72,7 +65,8 @@ export default class DetailsPage extends Vue {
       this.convertNewsItemPublishedTime();
     }
   }
-
+  isHovering = false;
+  hoveringReadMore = false;
   newsData = [];
 
   //get the newsitem where a user clicked on to go to its detail page from params
@@ -216,6 +210,11 @@ export default class DetailsPage extends Vue {
 
 a {
   text-decoration: none;
+  color: black;
+}
+
+.hovering a {
+  color: blue;
 }
 .detailspage-picture {
   display: grid;
@@ -226,5 +225,10 @@ a {
   grid-column-start: 1;
   grid-column-end: 2;
   width: 100%;
+}
+.detailspage-description,
+.detailspage-read-more,
+.detailspage-contents {
+  margin-bottom: 5%;
 }
 </style>

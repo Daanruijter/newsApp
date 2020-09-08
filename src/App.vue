@@ -6,13 +6,10 @@
       <div class="description">Your everyday headlines</div>
       <hr />
       <NewsMenu />
-
-      <!-- <router-link to="/">Home</router-link>|
-      <router-link to="/about">About</router-link>-->
     </div>
 
     <router-view />
-    <!-- <DetailsPage /> -->
+
     <NewsFooter />
   </div>
 </template>
@@ -46,7 +43,7 @@ export default class App extends Vue {
 }
 
 #nav {
-  padding: 30px;
+  // padding: 30px;
 
   a {
     font-weight: bold;
