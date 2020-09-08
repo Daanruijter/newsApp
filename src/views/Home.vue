@@ -10,7 +10,12 @@
       <router-link
         :to="{ name: 'DetailsPage', params: { title: newsItem.title } }"
       >
-        <div class="home-newsitem-title ">
+        <div
+          class="home-newsitem-title"
+          @mouseover="isHovering = true"
+          @mouseout="isHovering = false"
+          :class="{ hovering: isHovering }"
+        >
           {{ newsItem.title }}
         </div></router-link
       >
@@ -30,7 +35,12 @@
       v-for="newsItem in this.tenFirstNewsItemsIfNoPicture"
       :key="newsItem.title"
     >
-      <div class="home-newsitem-title">
+      <div
+        class="home-newsitem-title"
+        @mouseover="isHovering = true"
+        @mouseout="isHovering = false"
+        :class="{ hovering: isHovering }"
+      >
         {{ newsItem.title }}
       </div>
 
@@ -64,6 +74,7 @@ import VueRouter from "vue-router";
 
 @Component({ components: { DetailsPage } })
 export default class Home extends Vue {
+  isHovering = false;
   newsData = [];
   tenFirstNewsItemsIfPicture = [];
   tenFirstNewsItemsIfNoPicture = [];
@@ -74,14 +85,6 @@ export default class Home extends Vue {
     ],
   });
 
-  // @Prop({
-  //   type: Array,
-  //   required: true,
-  //   default: () => {
-  //     return [];
-  //   },
-  // })
-  // Array) tenFirstNewsItemsArray: NewsItemType[];
   pictureNotLoaded(index: number) {
     let i: number;
     const tenFirstNewsItemsIfPicture: NewsItemType[] = this
@@ -126,6 +129,9 @@ export default class Home extends Vue {
   color: black;
   margin-bottom: 5%;
   margin-top: 8%;
+}
+.hovering {
+  color: blue;
 }
 
 a {
