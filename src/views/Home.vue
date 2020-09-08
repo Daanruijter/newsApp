@@ -1,5 +1,7 @@
 <template>
-  <div class="home">
+  <div class="home-container">
+    Get to know what's currently happening in the world. Tap on the title to
+    know more.
     <div
       class="home-newsitems-with-picture"
       v-for="(newsItem, index) in this.tenFirstNewsItemsIfPicture"
@@ -22,12 +24,12 @@
 
       <hr />
     </div>
+    <h1>Other news</h1>
     <div
       class="home-newsitems-no-picture"
       v-for="newsItem in this.tenFirstNewsItemsIfNoPicture"
       :key="newsItem.title"
     >
-      <h1>Other news</h1>
       <div class="home-newsitem-title">
         {{ newsItem.title }}
       </div>
@@ -124,6 +126,10 @@ export default class Home extends Vue {
   color: black;
   margin-bottom: 5%;
   margin-top: 8%;
+}
+
+a {
+  text-decoration: none;
 }
 
 .home-newsitem-picture {

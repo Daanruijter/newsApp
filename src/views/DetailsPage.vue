@@ -1,5 +1,29 @@
 <template>
-  <div class="home">{{ this.valuesForDetailComponent }}}</div>
+  <div class="details-page-container">
+    <div class="details-page-data">
+      <div class="details-page-title">
+        {{ this.valuesForDetailComponent.title }}
+      </div>
+
+      <hr />
+      <div>{{ this.valuesForDetailComponent.author }}</div>
+      <hr />
+
+      <div>{{ this.valuesForDetailComponent.description }}</div>
+
+      <hr />
+      <div>{{ this.valuesForDetailComponent.url }}</div>
+      <hr />
+      <div>{{ this.valuesForDetailComponent.urlToImage }}</div>
+      <hr />
+      <div>{{ this.valuesForDetailComponent.publishedAt }}</div>
+      <hr />
+      <div>{{ this.valuesForDetailComponent.content }}</div>
+      <hr />
+      <div>{{ this.valuesForDetailComponent.source.name }}</div>
+      -->
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -15,8 +39,9 @@ export interface NewsItemType {
 }
 export interface Source {
   id?: null;
-  name: string;
+  name?: string;
 }
+type Tuple = [NewsItemType];
 
 import { Vue, Component } from "vue-property-decorator";
 import news from "../store/modules/news";
@@ -34,6 +59,7 @@ export default class DetailsPage extends Vue {
   tenFirstNewsItems = [];
   newsItemTitle = this.$route.params.title;
   valuesForDetailComponent: NewsItemType[] = [];
+  newsPapername: string | undefined;
 
   get getAllNewsData() {
     this.newsData = this.$store.getters[
@@ -48,14 +74,26 @@ export default class DetailsPage extends Vue {
   }
 
   get getValuesForDetailComponent() {
-    const valuesForDetailComponent = this.newsData.filter(
+    const valuesForDetailComponentFiltered: Tuple[] = this.newsData.filter(
       (item: NewsItemType) => {
         return item.title === this.newsItemTitle;
       }
     );
-    console.log(valuesForDetailComponent);
-    this.valuesForDetailComponent = valuesForDetailComponent;
-    return valuesForDetailComponent;
+    console.log(valuesForDetailComponentFiltered[0]);
+    console.log(this.valuesForDetailComponent);
+    this.valuesForDetailComponent = valuesForDetailComponentFiltered[0];
+    // this.newsPapername = valuesForDetailComponent2[0].source.name;
+
+    return valuesForDetailComponentFiltered;
   }
 }
 </script>
+
+<style scoped>
+.details-page-container {
+  color: black;
+}
+.details-page-title {
+  color: black;
+}
+</style>
