@@ -3,16 +3,15 @@ export function convertNewsItemPublishedTime(publishString: string): string {
   const newsItemPublishedTime = publishString;
   const dateString = new Date(newsItemPublishedTime);
 
-  let minutes = dateString.getMinutes();
+  let minutes: number | string;
+  minutes = dateString.getMinutes();
 
   //convert for example 7h7 to 7h07
-  function convertMinutes() {
-    const minutesConverted = "0" + minutes;
-    console.log(minutesConverted);
-    return minutesConverted;
+  function convertMinutes(minutes: number | string) {
+    return (minutes < 10 ? "0" : "") + minutes;
   }
   if (minutes < 10) {
-    minutes = parseInt(convertMinutes());
+    minutes = convertMinutes(minutes);
   }
 
   const hours = dateString.getHours();

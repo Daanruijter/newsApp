@@ -40,7 +40,7 @@
       </div>
       <div class="randompage-button">
         <button @click="changeRandomNewsItemOnButtonClick">
-          Another random news item
+          Show another random news item
         </button>
       </div>
       <div class="randompage-picture">
