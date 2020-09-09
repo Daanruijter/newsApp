@@ -28,6 +28,7 @@ export default class NewsMenu extends Vue {
   width: 100%;
   padding: 5% 0% 5% 0%;
   margin-bottom: 5%;
+  // position: fixed;
 }
 
 .news-menu-container a {

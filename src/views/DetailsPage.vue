@@ -16,13 +16,17 @@
         <a :href="newsItem.url"> {{ newsItem.title }}</a>
       </div>
 
-      <div>By:{{ " " }}{{ newsItem.author }}</div>
+      <div>Written by:{{ " " }}{{ newsItem.author }}</div>
       <br />
       <div class="detailspage-description">
-        Description<br />{{ newsItem.description }}
+        <span class="detailspage-small-header">Description</span><br />{{
+          newsItem.description
+        }}
       </div>
       <div class="detailspage-contents">
-        Contents<br />{{ newsItem.content }}
+        <span class="detailspage-small-header">Contents</span><br />{{
+          newsItem.content
+        }}
       </div>
       <div
         class="detailspage-read-more"
@@ -45,6 +49,7 @@ import NewsItemType from "../interfacesforapp";
 
 import { Vue, Component } from "vue-property-decorator";
 import news from "../store/modules/news";
+import { convertNewsItemPublishedTime } from "../methodsForGeneralUse";
 
 @Component
 export default class DetailsPage extends Vue {
@@ -62,7 +67,9 @@ export default class DetailsPage extends Vue {
 
     //convert the publishedAt timestring to be more concrete
     if (this.valuesForDetailComponent[0].publishedAt) {
-      this.convertNewsItemPublishedTime();
+      this.newsItemPublishedTime = convertNewsItemPublishedTime(
+        this.valuesForDetailComponent[0].publishedAt
+      );
     }
   }
   isHovering = false;
@@ -96,111 +103,13 @@ export default class DetailsPage extends Vue {
 
     return valuesForDetailComponentFiltered;
   }
-
-  //convert the publishedAt timestring to be more concrete
-  convertNewsItemPublishedTime() {
-    const newsItemPublishedTime = this.valuesForDetailComponent[0].publishedAt;
-    const dateString = new Date(newsItemPublishedTime);
-
-    const minutes = dateString.getMinutes();
-    const hours = dateString.getHours();
-
-    //get the current day in letters
-    const day = dateString.getDay();
-    let weekDay = "";
-
-    if (day === 0) {
-      weekDay = "Sunday";
-    }
-    if (day === 1) {
-      weekDay = "Monday";
-    }
-    if (day === 2) {
-      weekDay = "Tuesday";
-    }
-    if (day === 3) {
-      weekDay = "Wednesday";
-    }
-    if (day === 4) {
-      weekDay = "Thursday";
-    }
-    if (day === 5) {
-      weekDay = "Friday";
-    }
-    if (day === 6) {
-      weekDay = "Saturday";
-    }
-
-    //get the day number in month in letters//
-    const dateNumber = dateString.getDate();
-
-    //get the month in letters//
-    const month = dateString.getMonth();
-
-    let monthName = "";
-
-    if (month === 0) {
-      monthName = "January";
-    }
-    if (month === 1) {
-      monthName = "February";
-    }
-    if (month === 2) {
-      monthName = "March";
-    }
-    if (month === 3) {
-      monthName = "April";
-    }
-    if (month === 4) {
-      monthName = "May";
-    }
-    if (month === 5) {
-      monthName = "June";
-    }
-    if (month === 6) {
-      monthName = "July";
-    }
-    if (month === 7) {
-      monthName = "August";
-    }
-    if (month === 8) {
-      monthName = "September";
-    }
-    if (month === 9) {
-      monthName = "Oktober";
-    }
-    if (month === 10) {
-      monthName = "November";
-    }
-    if (month === 11) {
-      monthName = "December";
-    }
-
-    //get the year//
-    const year = dateString.getFullYear();
-
-    const convertedDateString =
-      weekDay +
-      " " +
-      dateNumber +
-      " " +
-      monthName +
-      " " +
-      year +
-      " " +
-      hours +
-      ":" +
-      minutes;
-    console.log(convertedDateString);
-    this.newsItemPublishedTime = convertedDateString;
-    return convertedDateString;
-  }
 }
 </script>
 
 <style scoped>
 .detailspage-container {
   color: black;
+  margin-top: 161px;
 }
 .detailspage-title {
   font-weight: bold;
@@ -230,5 +139,13 @@ a {
 .detailspage-read-more,
 .detailspage-contents {
   margin-bottom: 5%;
+}
+
+.detailspage-read-more {
+  font-weight: bold;
+}
+
+.detailspage-small-header {
+  font-weight: bold;
 }
 </style>

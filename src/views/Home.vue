@@ -35,15 +35,18 @@
       v-for="newsItem in this.tenFirstNewsItemsIfNoPicture"
       :key="newsItem.title"
     >
-      <div
-        class="home-newsitem-title"
-        @mouseover="isHovering = true"
-        @mouseout="isHovering = false"
-        :class="{ hovering: isHovering }"
+      <router-link
+        :to="{ name: 'DetailsPage', params: { title: newsItem.title } }"
       >
-        {{ newsItem.title }}
-      </div>
-
+        <div
+          class="home-newsitem-title"
+          @mouseover="isHovering = true"
+          @mouseout="isHovering = false"
+          :class="{ hovering: isHovering }"
+        >
+          {{ newsItem.title }}
+        </div>
+      </router-link>
       <hr />
     </div>
   </div>
@@ -111,6 +114,10 @@ export default class Home extends Vue {
 </script>
 
 <style scoped>
+.home-container {
+  margin-top: 161px;
+}
+
 .home-newsitem-title {
   font-weight: bold;
   color: black;

@@ -7,8 +7,9 @@
       <hr />
       <NewsMenu />
     </div>
-
-    <router-view />
+    <main>
+      <router-view />
+    </main>
 
     <NewsFooter />
   </div>
@@ -43,8 +44,12 @@ export default class App extends Vue {
 }
 
 #nav {
-  // padding: 30px;
-
+  background-color: white;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  z-index: 200;
   a {
     font-weight: bold;
     color: #2c3e50;
@@ -53,6 +58,7 @@ export default class App extends Vue {
       color: #42b983;
     }
   }
+
   @font-face {
     font-family: "steelfish";
     src: local("steelfish"),
