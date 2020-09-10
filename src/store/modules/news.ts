@@ -53,20 +53,22 @@ class NewsModule extends VuexModule {
         );
       }
     );
-    console.log("sdkahdlafhfhlf");
-    let newsBool: NewsItemType[] = [];
-    console.log(newsBool);
-
-    if (this.newsCountryQueried.length !== 0) {
-      newsBool = this.newsCountryQueried;
-      console.log(newsBool);
-    }
-    if (this.newsCountryQueried.length === 0) {
-      newsBool = tenFirstNewsItemsIfPicture;
-    }
+    // console.log("sdkahdlafhfhlf");
+    // let newsBool: NewsItemType[] = [];
     // console.log(newsBool);
+
+    // if (this.newsCountryQueried.length !== 0) {
+    //   newsBool = this.newsCountryQueried;
+    //   console.log(newsBool);
+    // }
+    // if (this.newsCountryQueried.length === 0) {
+    //   newsBool = tenFirstNewsItemsIfPicture;
+    // }
+    // // console.log(newsBool);
+    // // return newsBool;
     // return newsBool;
-    return newsBool;
+
+    return tenFirstNewsItemsIfPicture;
   }
 
   get tenFirstNewsItemsIfNoPicture(): NewsItemType[] {
@@ -86,23 +88,24 @@ class NewsModule extends VuexModule {
     return tenFirstNewsItemsIfNoPicture;
   }
 
-  // get newsCountryQueriedIfPicture(): NewsItemType[] {
-  //   console.log("countriesqueried");
+  get newsCountryQueriedIfPicture(): NewsItemType[] {
+    console.log("countriesqueried");
 
-  //   const newsCountryQueriedIfPicture = this.newsCountryQueried.filter(
-  //     (news: NewsItemType) => {
-  //       return (
-  //         news.urlToImage === null ||
-  //         news.urlToImage === this.pictureNotLoadedArray[0] ||
-  //         news.urlToImage === this.pictureNotLoadedArray[1] ||
-  //         news.urlToImage === this.pictureNotLoadedArray[2] ||
-  //         news.urlToImage === this.pictureNotLoadedArray[3]
-  //         // );
-  //       );
-  //     }
-  //   );
-  //   return newsCountryQueriedIfPicture;
-  // }
+    const newsCountryQueriedIfPicture = this.newsCountryQueried.filter(
+      (news: NewsItemType) => {
+        return (
+          news.urlToImage !== null ||
+          (news.urlToImage !== this.pictureNotLoadedArray[0] &&
+            news.urlToImage !== this.pictureNotLoadedArray[1] &&
+            news.urlToImage !== this.pictureNotLoadedArray[2] &&
+            news.urlToImage !== this.pictureNotLoadedArray[3])
+          // );
+        );
+      }
+    );
+    console.log(newsCountryQueriedIfPicture);
+    return newsCountryQueriedIfPicture;
+  }
 
   // get tenFirstNewsItemsIfNoPicture(): NewsItemType[] {
   //   const tenFirstNewsItemsIfNoPicture = this.news.filter(
@@ -123,7 +126,7 @@ class NewsModule extends VuexModule {
 
   get categoriesPageBoolean(): boolean {
     const categoriesPageBooleanFromGetter = this.categoriesClickEventBoolean;
-    console.log(this.categoriesClickEventBoolean);
+    // console.log(this.categoriesClickEventBoolean);
 
     return categoriesPageBooleanFromGetter;
   }
@@ -135,7 +138,7 @@ class NewsModule extends VuexModule {
 
   @Mutation
   addQueriedCountryNewsDataToState(data: NewsItemType[]) {
-    console.log(data);
+    console.log("addQueriedCountryACTION works");
     this.newsCountryQueried = data;
   }
 
@@ -164,7 +167,7 @@ class NewsModule extends VuexModule {
 
   @Action
   sendPictureNotLoadedArray(pictureNotLoadedArray: string[]) {
-    console.log(pictureNotLoadedArray);
+    // console.log(pictureNotLoadedArray);
     this.context.commit("addPictureNotLoadedArray", pictureNotLoadedArray);
   }
 
@@ -338,16 +341,18 @@ class NewsModule extends VuexModule {
     }
 
     const countryToFetch = country;
-    const url = `http://newsapi.org/v2/top-headlines?country=${countryToFetch}&apiKey=771f495b60b94bfabf9a9800d4996456`;
+    const url = `http://newsapi.org/v2/top-headlines?language=en&country=${countryToFetch}&apiKey=771f495b60b94bfabf9a9800d4996456`;
     const req = new Request(url);
     await fetch(req)
       .then((response) => {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         this.context.commit("addQueriedCountryNewsDataToState", data.articles);
       });
   }
+
+  // https://newsapi.org/v2/everything?q=bitcoin&apiKey=771f495b60b94bfabf9a9800d4996456
 }
 export default getModule(NewsModule, store);

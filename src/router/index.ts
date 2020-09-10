@@ -15,7 +15,7 @@ const routes: Array<RouteConfig> = [
     name: "CategoriesPage",
 
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/Home.vue"),
+      import(/* webpackChunkName: "about" */ "../views/CategoriesPage.vue"),
   },
   {
     path: "/Random",

@@ -98,10 +98,10 @@ export default class NewsMenu extends Vue {
   setCategoriesBoolean() {
     this.categoriesPageBoolean = !this.categoriesPageBoolean;
   }
-  catchSelectedCountry(event: Event) {
+  async catchSelectedCountry(event: Event) {
     const selectedCountry = (event.target as HTMLTextAreaElement).value;
     console.log(selectedCountry);
-    news.fetchNewsQueryCountry(selectedCountry);
+    await news.fetchNewsQueryCountry(selectedCountry);
     bus.$emit("userSelectedCountry", selectedCountry);
   }
   catchSelectedSubject(event: Event) {

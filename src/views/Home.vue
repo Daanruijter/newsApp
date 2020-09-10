@@ -82,13 +82,63 @@ export default class Home extends Vue {
 
   async mounted() {
     console.log("mounted");
-    await news.fetchNews();
-    this.getAllNewsData;
+    this.newsCountryQueriedIfPicture;
+    // this.getAllNewsData;
     bus.$on("userSelectedCountry", (data: string) => {
-      console.log(data, "dataaaaa");
+      console.log("I GOT THE CLICKEVENT");
+      console.log(data);
+      console.log(
+        (this.tenFirstNewsItemsIfPicture = this.$store.getters[
+          "vuexModuleDecorators/newsDataModule"
+        ].newsCountryQueriedIfPicture)
+      );
+
+      // console.log(this.newsCountryQueriedIfPicture);
+      // console.log(this.getAllNewsData);
+
+      // this.$store.getters[
+      //   "vuexModuleDecorators/newsDataModule"
+      // ].fetchNewsQueryCountry(data);
+      // console.log(
+      //   this.$store.getters["vuexModuleDecorators/newsDataModule"]
+      //     .newsCountryQueriedIfPicture
+      // );
+      // this.newsData = this.$store.getters[
+      //   "vuexModuleDecorators/newsDataModule"
+      // ].newsCountryQueriedIfPicture;
+      // this.getQueriedNewsData;
     });
+
+    // if (this.newsData.length !== 0) {
+    //   await news.fetchNews();
+    // }
   }
+
+  get newsCountryQueriedIfPicture() {
+    console.log("newscountryqueried");
+    console.log(
+      this.$store.getters["vuexModuleDecorators/newsDataModule"]
+        .newsCountryQueriedIfPicture
+    );
+
+    this.newsData = this.$store.getters[
+      "vuexModuleDecorators/newsDataModule"
+    ].newsCountryQueriedIfPicture;
+    return null;
+  }
+
   get getAllNewsData() {
+    console.log("newscountryqueried");
+    console.log(
+      this.$store.getters["vuexModuleDecorators/newsDataModule"]
+        .newsCountryQueriedIfPicture
+    );
+
+    this.newsData = this.$store.getters[
+      "vuexModuleDecorators/newsDataModule"
+    ].newsCountryQueriedIfPicture;
+    console.log("getallnewsdata");
+
     this.newsData = this.$store.getters[
       "vuexModuleDecorators/newsDataModule"
     ].newsDataGetter;
