@@ -7,23 +7,16 @@
       v-for="(newsItem, index) in this.tenFirstNewsItemsIfPicture"
       :key="newsItem.title"
     >
-      <router-link
-        :to="{ name: 'DetailsPage', params: { title: newsItem.title } }"
-      >
+      <router-link :to="{ name: 'DetailsPage', params: { title: newsItem.title } }">
         <div
           class="home-newsitem-title"
           @mouseover="isHovering = true"
           @mouseout="isHovering = false"
           :class="{ hovering: isHovering }"
-        >
-          {{ newsItem.title }}
-        </div></router-link
-      >
+        >{{ newsItem.title }}</div>
+      </router-link>
       <div class="home-newsitem-picture">
-        <img
-          @error="pictureNotLoaded(index)"
-          v-bind:src="newsItem.urlToImage"
-        />
+        <img @error="pictureNotLoaded(index)" v-bind:src="newsItem.urlToImage" />
         <!-- <DetailsPage :test="newsItem.title"></DetailsPage> -->
       </div>
 
@@ -35,17 +28,13 @@
       v-for="newsItem in this.tenFirstNewsItemsIfNoPicture"
       :key="newsItem.title"
     >
-      <router-link
-        :to="{ name: 'DetailsPage', params: { title: newsItem.title } }"
-      >
+      <router-link :to="{ name: 'DetailsPage', params: { title: newsItem.title } }">
         <div
           class="home-newsitem-title"
           @mouseover="isHovering = true"
           @mouseout="isHovering = false"
           :class="{ hovering: isHovering }"
-        >
-          {{ newsItem.title }}
-        </div>
+        >{{ newsItem.title }}</div>
       </router-link>
       <hr />
     </div>
@@ -61,6 +50,7 @@ import { Vue, Component } from "vue-property-decorator";
 import news from "../store/modules/news";
 import DetailsPage from "./DetailsPage.vue";
 import VueRouter from "vue-router";
+import { bus } from "../main";
 
 @Component({ components: { DetailsPage } })
 export default class Home extends Vue {
@@ -71,8 +61,8 @@ export default class Home extends Vue {
   router = new VueRouter({
     routes: [
       // dynamic segments start with a colon
-      { path: "/details /:id", component: DetailsPage },
-    ],
+      { path: "/details /:id", component: DetailsPage }
+    ]
   });
 
   pictureNotLoaded(index: number) {
@@ -94,6 +84,9 @@ export default class Home extends Vue {
     console.log("mounted");
     await news.fetchNews();
     this.getAllNewsData;
+    bus.$on("userSelectedCountry", (data: string) => {
+      console.log(data, "dataaaaa");
+    });
   }
   get getAllNewsData() {
     this.newsData = this.$store.getters[
@@ -108,6 +101,9 @@ export default class Home extends Vue {
       "vuexModuleDecorators/newsDataModule"
     ].tenFirstNewsItemsIfNoPicture;
 
+    // if(this.$store.getters[
+    //       "vuexModuleDecorators/newsDataModule"
+    //     ].tenFirstNewsItemsIfNoPicture;)
     return null;
   }
 }
