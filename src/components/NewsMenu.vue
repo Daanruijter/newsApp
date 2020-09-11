@@ -117,7 +117,8 @@ export default class NewsMenu extends Vue {
 
   async catchInputValue(event: Event) {
     const inputValue = (event.target as HTMLTextAreaElement).value;
-    await news.fetchNewsQuery(inputValue);
+    // const input = "input";
+    await news.fetchNewsQuery(inputValue, "test");
     bus.$emit("useInputValueToFetchData", inputValue);
   }
 

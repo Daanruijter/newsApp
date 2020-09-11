@@ -103,10 +103,12 @@ class NewsModule extends VuexModule {
   }
   //fetch the country newsData if a user selects a certain country
   @Action
-  async fetchNewsQuery(selectedCountryOrCategory: string) {
+  async fetchNewsQuery(selectedCountryOrCategory: string, input?: string) {
+    console.log(input);
     let country = "";
 
     //country conditions to fetch a country's news dynamically
+    //the url needs to contain the country abbreviations
 
     if (selectedCountryOrCategory === "Argentina") {
       country = "ar";
@@ -255,7 +257,6 @@ class NewsModule extends VuexModule {
     if (selectedCountryOrCategory === "United Arabic Emirates") {
       country = "ae";
     }
-
     if (selectedCountryOrCategory === "Ukraine") {
       country = "ua";
     }
@@ -272,23 +273,24 @@ class NewsModule extends VuexModule {
       country = "Default Country";
     }
 
+    //inititialize the url to fetch the news item data
+    let url = "";
+
     //category to fetch
 
     let countryToFetch: string | null = country;
 
-    //save country in LocalStorage to get it from there if country is empty
+    //save country string in LocalStorage to get it from there if the country variable is empty
+    //fetchNewsQuery function parameter is a country string or a news category string, based on what the user selects in the NewsMenu component
+    //fetchNewsQuery gets called in the NewsMenu component and passes the country string or a news category string to the fetchNewsQuery function
+
     if (countryToFetch !== "") {
       localStorage.setItem("countryToFetch", countryToFetch);
-    }
-    countryToFetch = localStorage.getItem("countryToFetch");
 
-    let url = "";
-    url = `http://newsapi.org/v2/top-headlines?language=en&country=${countryToFetch}&apiKey=771f495b60b94bfabf9a9800d4996456`;
+      //get the just set country string
+      countryToFetch = localStorage.getItem("countryToFetch");
 
-    if (country === "Default Country") {
-      url =
-        "https://newsapi.org/v2/top-headlines?country=us&apiKey=771f495b60b94bfabf9a9800d4996456";
-      // "https://newsapi.org/v2/top-headlines?country=jp&q=Apple&apiKey=771f495b60b94bfabf9a9800d4996456";
+      url = `https://newsapi.org/v2/everything?q=${countryToFetch}&apiKey=771f495b60b94bfabf9a9800d4996456`;
     }
 
     let newsCategoryToFetch: string | null = "";
@@ -312,9 +314,24 @@ class NewsModule extends VuexModule {
       console.log(newsCategoryToFetch);
       url = `https://newsapi.org/v2/everything?q=${newsCategoryToFetch}&apiKey=771f495b60b94bfabf9a9800d4996456`;
     }
+    //set the default url
+    if (
+      country === "Default Country" &&
+      newsCategoryToFetch === "Default News Category"
+    ) {
+      url =
+        "https://newsapi.org/v2/top-headlines?country=us&apiKey=771f495b60b94bfabf9a9800d4996456";
+      // "https://newsapi.org/v2/top-headlines?country=jp&q=Apple&apiKey=771f495b60b94bfabf9a9800d4996456";
+    }
 
     console.log(selectedCountryOrCategory);
-    url = `https://newsapi.org/v2/everything?q=${selectedCountryOrCategory}&apiKey=771f495b60b94bfabf9a9800d4996456`;
+    console.log(input + "INPUTTT");
+    // if (input) {
+    //   url = `https://newsapi.org/v2/everything?q=${selectedCountryOrCategory}&apiKey=771f495b60b94bfabf9a9800d4996456`;
+    // }
+    // if (!input || newsCategoryToFetch == "Default News Category") {
+    //   url = `http://newsapi.org/v2/top-headlines?country=${countryToFetch}&apiKey=771f495b60b94bfabf9a9800d4996456`;
+    // }
     console.log("299");
     console.log(newsCategoryToFetch);
     console.log(countryToFetch);

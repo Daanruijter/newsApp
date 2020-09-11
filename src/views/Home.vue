@@ -22,7 +22,6 @@
           v-if="newsItem.urlToImage"
           v-bind:src="newsItem.urlToImage"
         />
-        <!-- <DetailsPage :test="newsItem.title"></DetailsPage> -->
       </div>
       <hr v-if="newsItem.urlToImage" />
     </div>
@@ -92,27 +91,17 @@ export default class Home extends Vue {
     this.newsDataToDisplay = this.$store.getters[
       "vuexModuleDecorators/newsDataModule"
     ].newsCountryQueriedGetter;
-    bus.$on("selectedCountryOrCategory", (data: string) => {
+    bus.$on("selectedCountryOrCategory", () => {
       console.log("I GOT THE CLICKEVENT");
-      console.log(data);
-      console.log("test");
+
       this.newsDataToDisplay = this.$store.getters[
         "vuexModuleDecorators/newsDataModule"
       ].newsCountryQueriedGetter;
-
-      //    async catchInputValue(event: Event) {
-      // const inputValue = (event.target as HTMLTextAreaElement).value;
-      // await news.fetchNewsQuery(inputValue);
-      // bus.$emit("useInputValueToFetchData", inputValue);
-
-      // this.tenFirstNewsItemsIfPicture = this.$store.getters[
-      //   "vuexModuleDecorators/newsDataModule"
-      // ].newsCountryQueriedIfPicture;
     });
     bus.$on("useInputValueToFetchData", (data: string) => {
       console.log("I GOT THE INPUTEVENT");
       console.log(data);
-      console.log("test");
+
       this.newsDataToDisplay = this.$store.getters[
         "vuexModuleDecorators/newsDataModule"
       ].newsCountryQueriedGetter;
@@ -120,13 +109,9 @@ export default class Home extends Vue {
   }
 
   get getAllNewsData() {
-    console.log("newscountryqueried");
-
     this.newsDataToDisplay = this.$store.getters[
       "vuexModuleDecorators/newsDataModule"
     ].newsCountryQueriedIfPicture;
-    console.log("getallnewsdata");
-
     return null;
   }
 }
