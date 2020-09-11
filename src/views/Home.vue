@@ -4,11 +4,12 @@
     know more.
     <div
       class="home-newsitems-with-picture"
-      v-for="(newsItem, index) in this.tenFirstNewsItemsIfPicture"
+      v-for="(newsItem, index) in this.newsDataToDisplay"
       :key="newsItem.title"
     >
       <router-link :to="{ name: 'DetailsPage', params: { title: newsItem.title } }">
         <div
+          v-if="newsItem.urlToImage"
           class="home-newsitem-title"
           @mouseover="isHovering = true"
           @mouseout="isHovering = false"
@@ -16,27 +17,31 @@
         >{{ newsItem.title }}</div>
       </router-link>
       <div class="home-newsitem-picture">
-        <img @error="pictureNotLoaded(index)" v-bind:src="newsItem.urlToImage" />
+        <img
+          @error="pictureNotLoaded(index)"
+          v-if="newsItem.urlToImage"
+          v-bind:src="newsItem.urlToImage"
+        />
         <!-- <DetailsPage :test="newsItem.title"></DetailsPage> -->
       </div>
-
-      <hr />
+      <hr v-if="newsItem.urlToImage" />
     </div>
     <h1>Other news</h1>
     <div
       class="home-newsitems-no-picture"
-      v-for="newsItem in this.tenFirstNewsItemsIfNoPicture"
-      :key="newsItem.title"
+      v-for="newsItem in this.newsDataToDisplay"
+      :key="newsItem.contents"
     >
       <router-link :to="{ name: 'DetailsPage', params: { title: newsItem.title } }">
         <div
+          v-if="!newsItem.urlToImage"
           class="home-newsitem-title"
           @mouseover="isHovering = true"
           @mouseout="isHovering = false"
           :class="{ hovering: isHovering }"
         >{{ newsItem.title }}</div>
       </router-link>
-      <hr />
+      <hr v-if="!newsItem.urlToImage" />
     </div>
   </div>
 </template>
@@ -56,8 +61,8 @@ import { bus } from "../main";
 export default class Home extends Vue {
   isHovering = false;
   newsData = [];
-  tenFirstNewsItemsIfPicture = [];
-  tenFirstNewsItemsIfNoPicture = [];
+  newsDataToDisplay = [];
+
   router = new VueRouter({
     routes: [
       // dynamic segments start with a colon
@@ -67,8 +72,7 @@ export default class Home extends Vue {
 
   pictureNotLoaded(index: number) {
     let i: number;
-    const tenFirstNewsItemsIfPicture: NewsItemType[] = this
-      .tenFirstNewsItemsIfPicture;
+    const tenFirstNewsItemsIfPicture: NewsItemType[] = this.newsDataToDisplay;
     const pictureNotLoadedArray: string[] = [];
 
     for (i = 0; i < tenFirstNewsItemsIfPicture.length; i++) {
@@ -81,79 +85,34 @@ export default class Home extends Vue {
   }
 
   async mounted() {
+    await news.fetchNewsQuery("Default Country");
     console.log("mounted");
-    this.newsCountryQueriedIfPicture;
+    // this.newsCountryQueriedIfPicture;
     // this.getAllNewsData;
-    bus.$on("userSelectedCountry", (data: string) => {
+    this.newsDataToDisplay = this.$store.getters[
+      "vuexModuleDecorators/newsDataModule"
+    ].newsCountryQueriedGetter;
+    bus.$on("selectedCountryOrCategory", (data: string) => {
       console.log("I GOT THE CLICKEVENT");
       console.log(data);
-      console.log(
-        (this.tenFirstNewsItemsIfPicture = this.$store.getters[
-          "vuexModuleDecorators/newsDataModule"
-        ].newsCountryQueriedIfPicture)
-      );
-
-      // console.log(this.newsCountryQueriedIfPicture);
-      // console.log(this.getAllNewsData);
-
-      // this.$store.getters[
-      //   "vuexModuleDecorators/newsDataModule"
-      // ].fetchNewsQueryCountry(data);
-      // console.log(
-      //   this.$store.getters["vuexModuleDecorators/newsDataModule"]
-      //     .newsCountryQueriedIfPicture
-      // );
-      // this.newsData = this.$store.getters[
+      console.log("test");
+      this.newsDataToDisplay = this.$store.getters[
+        "vuexModuleDecorators/newsDataModule"
+      ].newsCountryQueriedGetter;
+      // this.tenFirstNewsItemsIfPicture = this.$store.getters[
       //   "vuexModuleDecorators/newsDataModule"
       // ].newsCountryQueriedIfPicture;
-      // this.getQueriedNewsData;
     });
-
-    // if (this.newsData.length !== 0) {
-    //   await news.fetchNews();
-    // }
-  }
-
-  get newsCountryQueriedIfPicture() {
-    console.log("newscountryqueried");
-    console.log(
-      this.$store.getters["vuexModuleDecorators/newsDataModule"]
-        .newsCountryQueriedIfPicture
-    );
-
-    this.newsData = this.$store.getters[
-      "vuexModuleDecorators/newsDataModule"
-    ].newsCountryQueriedIfPicture;
-    return null;
   }
 
   get getAllNewsData() {
     console.log("newscountryqueried");
-    console.log(
-      this.$store.getters["vuexModuleDecorators/newsDataModule"]
-        .newsCountryQueriedIfPicture
-    );
 
-    this.newsData = this.$store.getters[
+    this.newsDataToDisplay = this.$store.getters[
       "vuexModuleDecorators/newsDataModule"
     ].newsCountryQueriedIfPicture;
     console.log("getallnewsdata");
 
-    this.newsData = this.$store.getters[
-      "vuexModuleDecorators/newsDataModule"
-    ].newsDataGetter;
-
-    this.tenFirstNewsItemsIfPicture = this.$store.getters[
-      "vuexModuleDecorators/newsDataModule"
-    ].tenFirstNewsItemsIfPicture;
-
-    this.tenFirstNewsItemsIfNoPicture = this.$store.getters[
-      "vuexModuleDecorators/newsDataModule"
-    ].tenFirstNewsItemsIfNoPicture;
-
-    // if(this.$store.getters[
-    //       "vuexModuleDecorators/newsDataModule"
-    //     ].tenFirstNewsItemsIfNoPicture;)
     return null;
   }
 }

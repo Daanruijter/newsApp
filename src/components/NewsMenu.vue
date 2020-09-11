@@ -14,7 +14,7 @@
     <div class="news-menu-categories" v-if="categoriesPageBoolean">
       <label for="country">Choose a country:</label>
       <select @change="catchSelectedCountry($event)" name="country" id="country">
-        <option value="All">All</option>
+        <option value="Default Country">Default</option>
         <option value="Argentina">Argentina</option>
         <option value="Australia">Australia</option>
         <option value="Austria">Austria</option>
@@ -72,14 +72,16 @@
         <option value="Venezuela">Venezuela</option>
       </select>
       <label for="subject">Choose a subject:</label>
-      <select @change="catchSelectedSubject($event)" name="subject" id="subject">
-        <option value="All">All</option>
+      <select @change="catchSelectedCountry($event)" name="subject" id="subject">
+        <option value="Default Subject">Default</option>
         <option value="Economics">Economics</option>
         <option value="Politics">Politics</option>
+        <option value="Science">Science</option>
         <option value="Health">Health</option>
         <option value="Sports">Sports</option>
         <option value="Leisure">Leisure</option>
-        <option value="Sports">Sports</option>
+        <option value="Entertainment">Entertainment</option>
+        <option value="Travel">Travel</option>
       </select>
     </div>
   </div>
@@ -99,15 +101,17 @@ export default class NewsMenu extends Vue {
     this.categoriesPageBoolean = !this.categoriesPageBoolean;
   }
   async catchSelectedCountry(event: Event) {
-    const selectedCountry = (event.target as HTMLTextAreaElement).value;
-    console.log(selectedCountry);
-    await news.fetchNewsQueryCountry(selectedCountry);
-    bus.$emit("userSelectedCountry", selectedCountry);
+    const selectedCountryOrCategory = (event.target as HTMLTextAreaElement)
+      .value;
+
+    await news.fetchNewsQuery(selectedCountryOrCategory);
+    bus.$emit("selectedCountryOrCategory", selectedCountryOrCategory);
   }
-  catchSelectedSubject(event: Event) {
-    const selectedSubject = (event.target as HTMLTextAreaElement).value;
-    console.log(selectedSubject);
-  }
+
+  // catchSelectedSubject(event: Event) {
+  //   const selectedSubject = (event.target as HTMLTextAreaElement).value;
+  //   console.log(selectedSubject);
+  // }
 }
 </script>
 

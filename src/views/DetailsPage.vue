@@ -13,19 +13,23 @@
         @mouseout="isHovering = false"
         :class="{ hovering: isHovering }"
       >
-        <a :href="newsItem.url"> {{ newsItem.title }}</a>
+        <a :href="newsItem.url">{{ newsItem.title }}</a>
       </div>
 
       <div>Written by:{{ " " }}{{ newsItem.author }}</div>
       <br />
       <div class="detailspage-description">
-        <span class="detailspage-small-header">Description</span><br />{{
-          newsItem.description
+        <span class="detailspage-small-header">Description</span>
+        <br />
+        {{
+        newsItem.description
         }}
       </div>
       <div class="detailspage-contents">
-        <span class="detailspage-small-header">Contents</span><br />{{
-          newsItem.content
+        <span class="detailspage-small-header">Contents</span>
+        <br />
+        {{
+        newsItem.content
         }}
       </div>
       <div
@@ -34,7 +38,7 @@
         @mouseout="hoveringReadMore = false"
         :class="{ hovering: hoveringReadMore }"
       >
-        <a :href="newsItem.url">READ MORE </a>
+        <a :href="newsItem.url">READ MORE</a>
       </div>
 
       <div class="detailspage-picture">
@@ -85,7 +89,7 @@ export default class DetailsPage extends Vue {
   get getAllNewsData() {
     this.newsData = this.$store.getters[
       "vuexModuleDecorators/newsDataModule"
-    ].newsDataGetter;
+    ].newsCountryQueriedGetter;
 
     return null;
   }

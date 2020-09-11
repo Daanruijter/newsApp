@@ -38,67 +38,16 @@ class NewsModule extends VuexModule {
     return newsDataViaGetter;
   }
 
-  get tenFirstNewsItemsIfPicture(): NewsItemType[] {
-    console.log("tenfirstNewsItems");
-
-    const tenFirstNewsItemsIfPicture = this.news.filter(
-      (news: NewsItemType, index: number) => {
-        return (
-          index < 10 &&
-          news.urlToImage !== null &&
-          news.urlToImage !== this.pictureNotLoadedArray[0] &&
-          news.urlToImage !== this.pictureNotLoadedArray[1] &&
-          news.urlToImage !== this.pictureNotLoadedArray[2] &&
-          news.urlToImage !== this.pictureNotLoadedArray[3]
-        );
-      }
-    );
-    // console.log("sdkahdlafhfhlf");
-    // let newsBool: NewsItemType[] = [];
-    // console.log(newsBool);
-
-    // if (this.newsCountryQueried.length !== 0) {
-    //   newsBool = this.newsCountryQueried;
-    //   console.log(newsBool);
-    // }
-    // if (this.newsCountryQueried.length === 0) {
-    //   newsBool = tenFirstNewsItemsIfPicture;
-    // }
-    // // console.log(newsBool);
-    // // return newsBool;
-    // return newsBool;
-
-    return tenFirstNewsItemsIfPicture;
-  }
-
-  get tenFirstNewsItemsIfNoPicture(): NewsItemType[] {
-    const tenFirstNewsItemsIfNoPicture = this.news.filter(
-      (news: NewsItemType) => {
-        return (
-          news.urlToImage === null ||
-          news.urlToImage === this.pictureNotLoadedArray[0] ||
-          news.urlToImage === this.pictureNotLoadedArray[1] ||
-          news.urlToImage === this.pictureNotLoadedArray[2] ||
-          news.urlToImage === this.pictureNotLoadedArray[3]
-          // );
-        );
-      }
-    );
-    console.log(tenFirstNewsItemsIfNoPicture);
-    return tenFirstNewsItemsIfNoPicture;
-  }
-
-  get newsCountryQueriedIfPicture(): NewsItemType[] {
+  get newsCountryQueriedGetter(): NewsItemType[] {
     console.log("countriesqueried");
 
     const newsCountryQueriedIfPicture = this.newsCountryQueried.filter(
       (news: NewsItemType) => {
         return (
-          news.urlToImage !== null ||
-          (news.urlToImage !== this.pictureNotLoadedArray[0] &&
-            news.urlToImage !== this.pictureNotLoadedArray[1] &&
-            news.urlToImage !== this.pictureNotLoadedArray[2] &&
-            news.urlToImage !== this.pictureNotLoadedArray[3])
+          news.urlToImage !== this.pictureNotLoadedArray[0] &&
+          news.urlToImage !== this.pictureNotLoadedArray[1] &&
+          news.urlToImage !== this.pictureNotLoadedArray[2] &&
+          news.urlToImage !== this.pictureNotLoadedArray[3]
           // );
         );
       }
@@ -107,37 +56,13 @@ class NewsModule extends VuexModule {
     return newsCountryQueriedIfPicture;
   }
 
-  // get tenFirstNewsItemsIfNoPicture(): NewsItemType[] {
-  //   const tenFirstNewsItemsIfNoPicture = this.news.filter(
-  //     (news: NewsItemType) => {
-  //       return (
-  //         news.urlToImage === null ||
-  //         news.urlToImage === this.pictureNotLoadedArray[0] ||
-  //         news.urlToImage === this.pictureNotLoadedArray[1] ||
-  //         news.urlToImage === this.pictureNotLoadedArray[2] ||
-  //         news.urlToImage === this.pictureNotLoadedArray[3]
-  //         // );
-  //       );
-  //     }
-  //   );
-  //   console.log(tenFirstNewsItemsIfNoPicture);
-  //   return tenFirstNewsItemsIfNoPicture;
-  // }
-
-  get categoriesPageBoolean(): boolean {
-    const categoriesPageBooleanFromGetter = this.categoriesClickEventBoolean;
-    // console.log(this.categoriesClickEventBoolean);
-
-    return categoriesPageBooleanFromGetter;
-  }
-
   @Mutation
   addNewsDataToState(data: NewsItemType[]) {
     this.news = data;
   }
 
   @Mutation
-  addQueriedCountryNewsDataToState(data: NewsItemType[]) {
+  addQueriedNewsDataToState(data: NewsItemType[]) {
     console.log("addQueriedCountryACTION works");
     this.newsCountryQueried = data;
   }
@@ -178,170 +103,204 @@ class NewsModule extends VuexModule {
   }
   //fetch the country newsData if a user selects a certain country
   @Action
-  async fetchNewsQueryCountry(country: string) {
-    if (country === "Argentina") {
-      country = "ar";
-    }
-    if (country === "Australia") {
-      country = "au";
-    }
-    if (country === "Austria") {
-      country = "at";
-    }
-    if (country === "Belgium") {
-      country = "be";
-    }
-    if (country === "Brazil") {
-      country = "br";
-    }
-    if (country === "Bulgaria") {
-      country = "bg";
-    }
-    if (country === "Canada") {
-      country = "ca";
-    }
-    if (country === "China") {
-      country = "cn";
-    }
-    if (country === "Colombia") {
-      country = "co";
-    }
-    if (country === "Cuba") {
-      country = "cu";
-    }
-    if (country === "Czech Republic") {
-      country = "cz";
-    }
-    if (country === "Egypt") {
-      country = "eg";
-    }
-    if (country === "France") {
-      country = "fr";
-    }
-    if (country === "Germany") {
-      country = "de";
-    }
-    if (country === "Greece") {
-      country = "gr";
-    }
-    if (country === "Hong Kong") {
-      country = "hk";
-    }
-    if (country === "Hungary") {
-      country = "hu";
-    }
-    if (country === "India") {
-      country = "in";
-    }
-    if (country === "Indonesia") {
-      country = "id";
-    }
-    if (country === "Ireland") {
-      country = "ie";
-    }
-    if (country === "Israel") {
-      country = "il";
-    }
-    if (country === "Italy") {
-      country = "it";
-    }
-    if (country === "Japan") {
-      country = "jp";
-    }
-    if (country === "Latvia") {
-      country = "lv";
-    }
-    if (country === "Lithuania") {
-      country = "lt";
-    }
-    if (country === "Malaysia") {
-      country = "my";
-    }
-    if (country === "Mexico") {
-      country = "mx";
-    }
-    if (country === "Netherlands") {
-      country = "nl";
-    }
-    if (country === "New Zealand") {
-      country = "nz";
-    }
-    if (country === "Nigeria") {
-      country = "ng";
-    }
-    if (country === "Norway") {
-      country = "no";
-    }
-    if (country === "Philippines") {
-      country = "ph";
-    }
-    if (country === "Poland") {
-      country = "pl";
-    }
-    if (country === "Portugal") {
-      country = "pt";
-    }
-    if (country === "Romania") {
-      country = "ro";
-    }
-    if (country === "Russia") {
-      country = "ru";
-    }
-    if (country === "Saudi Arabia") {
-      country = "sa";
-    }
-    if (country === "Serbia") {
-      country = "rs";
-    }
-    if (country === "Singapore") {
-      country = "sg";
-    }
-    if (country === "Slovakia") {
-      country = "sk";
-    }
-    if (country === "Slovenia") {
-      country = "si";
-    }
-    if (country === "South Africa") {
-      country = "za";
-    }
-    if (country === "South Korea") {
-      country = "kr";
-    }
-    if (country === "Sweden") {
-      country = "se";
-    }
-    if (country === "Switzerland") {
-      country = "ch";
-    }
-    if (country === "Taiwan") {
-      country = "tw";
-    }
-    if (country === "Thailand") {
-      country = "th";
-    }
-    if (country === "Turkey") {
-      country = "tr";
-    }
-    if (country === "United Arabic Emirates") {
-      country = "ae";
-    }
+  async fetchNewsQuery(selectedCountryOrCategory: string) {
+    let country = "";
 
-    if (country === "Ukraine") {
-      country = "ua";
+    //country conditions to fetch a country's news dynamically
+
+    if (selectedCountryOrCategory !== null) {
+      if (selectedCountryOrCategory === "Argentina") {
+        country = "ar";
+      }
+      if (selectedCountryOrCategory === "Australia") {
+        country = "au";
+      }
+      if (selectedCountryOrCategory === "Austria") {
+        country = "at";
+      }
+      if (selectedCountryOrCategory === "Belgium") {
+        country = "be";
+      }
+      if (selectedCountryOrCategory === "Brazil") {
+        country = "br";
+      }
+      if (selectedCountryOrCategory === "Bulgaria") {
+        country = "bg";
+      }
+      if (selectedCountryOrCategory === "Canada") {
+        country = "ca";
+      }
+      if (selectedCountryOrCategory === "China") {
+        country = "cn";
+      }
+      if (selectedCountryOrCategory === "Colombia") {
+        country = "co";
+      }
+      if (selectedCountryOrCategory === "Cuba") {
+        country = "cu";
+      }
+      if (selectedCountryOrCategory === "Czech Republic") {
+        country = "cz";
+      }
+      if (selectedCountryOrCategory === "Egypt") {
+        country = "eg";
+      }
+      if (selectedCountryOrCategory === "France") {
+        country = "fr";
+      }
+      if (selectedCountryOrCategory === "Germany") {
+        country = "de";
+      }
+      if (selectedCountryOrCategory === "Greece") {
+        country = "gr";
+      }
+      if (selectedCountryOrCategory === "Hong Kong") {
+        country = "hk";
+      }
+      if (selectedCountryOrCategory === "Hungary") {
+        country = "hu";
+      }
+      if (selectedCountryOrCategory === "India") {
+        country = "in";
+      }
+      if (selectedCountryOrCategory === "Indonesia") {
+        country = "id";
+      }
+      if (selectedCountryOrCategory === "Ireland") {
+        country = "ie";
+      }
+      if (selectedCountryOrCategory === "Israel") {
+        country = "il";
+      }
+      if (selectedCountryOrCategory === "Italy") {
+        country = "it";
+      }
+      if (selectedCountryOrCategory === "Japan") {
+        country = "jp";
+      }
+      if (selectedCountryOrCategory === "Latvia") {
+        country = "lv";
+      }
+      if (selectedCountryOrCategory === "Lithuania") {
+        country = "lt";
+      }
+      if (selectedCountryOrCategory === "Malaysia") {
+        country = "my";
+      }
+      if (selectedCountryOrCategory === "Mexico") {
+        country = "mx";
+      }
+      if (selectedCountryOrCategory === "Netherlands") {
+        country = "nl";
+      }
+      if (selectedCountryOrCategory === "New Zealand") {
+        country = "nz";
+      }
+      if (selectedCountryOrCategory === "Nigeria") {
+        country = "ng";
+      }
+      if (selectedCountryOrCategory === "Norway") {
+        country = "no";
+      }
+      if (selectedCountryOrCategory === "Philippines") {
+        country = "ph";
+      }
+      if (selectedCountryOrCategory === "Poland") {
+        country = "pl";
+      }
+      if (selectedCountryOrCategory === "Portugal") {
+        country = "pt";
+      }
+      if (selectedCountryOrCategory === "Romania") {
+        country = "ro";
+      }
+      if (selectedCountryOrCategory === "Russia") {
+        country = "ru";
+      }
+      if (selectedCountryOrCategory === "Saudi Arabia") {
+        country = "sa";
+      }
+      if (selectedCountryOrCategory === "Serbia") {
+        country = "rs";
+      }
+      if (selectedCountryOrCategory === "Singapore") {
+        country = "sg";
+      }
+      if (selectedCountryOrCategory === "Slovakia") {
+        country = "sk";
+      }
+      if (selectedCountryOrCategory === "Slovenia") {
+        country = "si";
+      }
+      if (selectedCountryOrCategory === "South Africa") {
+        country = "za";
+      }
+      if (selectedCountryOrCategory === "South Korea") {
+        country = "kr";
+      }
+      if (selectedCountryOrCategory === "Sweden") {
+        country = "se";
+      }
+      if (selectedCountryOrCategory === "Switzerland") {
+        country = "ch";
+      }
+      if (selectedCountryOrCategory === "Taiwan") {
+        country = "tw";
+      }
+      if (selectedCountryOrCategory === "Thailand") {
+        country = "th";
+      }
+      if (selectedCountryOrCategory === "Turkey") {
+        country = "tr";
+      }
+      if (selectedCountryOrCategory === "United Arabic Emirates") {
+        country = "ae";
+      }
+
+      if (selectedCountryOrCategory === "Ukraine") {
+        country = "ua";
+      }
+      if (selectedCountryOrCategory === "United Kingdom") {
+        country = "gb";
+      }
+      if (selectedCountryOrCategory === "United States") {
+        country = "us";
+      }
+      if (selectedCountryOrCategory === "Venezuela") {
+        country = "ve";
+      }
     }
-    if (country === "United Kingdom") {
-      country = "gb";
-    }
-    if (country === "United States") {
-      country = "us";
-    }
-    if (country === "Venezuela") {
-      country = "ve";
-    }
+    //category to fetch
 
     const countryToFetch = country;
-    const url = `http://newsapi.org/v2/top-headlines?language=en&country=${countryToFetch}&apiKey=771f495b60b94bfabf9a9800d4996456`;
+    let url = "";
+    url = `http://newsapi.org/v2/top-headlines?language=en&country=${countryToFetch}&apiKey=771f495b60b94bfabf9a9800d4996456`;
+
+    if (selectedCountryOrCategory === "Default Country") {
+      url =
+        "https://newsapi.org/v2/top-headlines?country=jp&apiKey=771f495b60b94bfabf9a9800d4996456";
+      // "https://newsapi.org/v2/top-headlines?country=jp&q=Apple&apiKey=771f495b60b94bfabf9a9800d4996456";
+    }
+    let newsCategory = "";
+    if (
+      selectedCountryOrCategory === "Economics" ||
+      selectedCountryOrCategory === "Politics" ||
+      selectedCountryOrCategory === "Science" ||
+      selectedCountryOrCategory === "Health" ||
+      selectedCountryOrCategory === "Sports" ||
+      selectedCountryOrCategory === "Leisure" ||
+      selectedCountryOrCategory === "Entertainment" ||
+      selectedCountryOrCategory === "Travel"
+    ) {
+      newsCategory = selectedCountryOrCategory;
+      console.log(newsCategory);
+      url = `https://newsapi.org/v2/everything?q=${newsCategory}&apiKey=771f495b60b94bfabf9a9800d4996456`;
+    }
+    console.log("299");
+    console.log(newsCategory);
+    console.log(country);
+    console.log("302");
+
     const req = new Request(url);
     await fetch(req)
       .then((response) => {
@@ -349,7 +308,7 @@ class NewsModule extends VuexModule {
       })
       .then((data) => {
         // console.log(data);
-        this.context.commit("addQueriedCountryNewsDataToState", data.articles);
+        this.context.commit("addQueriedNewsDataToState", data.articles);
       });
   }
 
