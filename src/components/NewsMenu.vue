@@ -73,7 +73,7 @@
       </select>
       <label for="subject">Choose a subject:</label>
       <select @change="catchSelectedCountry($event)" name="subject" id="subject">
-        <option value="Default Subject">Default</option>
+        <option value="Default News Category">Default</option>
         <option value="Economics">Economics</option>
         <option value="Politics">Politics</option>
         <option value="Science">Science</option>
