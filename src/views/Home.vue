@@ -99,9 +99,23 @@ export default class Home extends Vue {
       this.newsDataToDisplay = this.$store.getters[
         "vuexModuleDecorators/newsDataModule"
       ].newsCountryQueriedGetter;
+
+      //    async catchInputValue(event: Event) {
+      // const inputValue = (event.target as HTMLTextAreaElement).value;
+      // await news.fetchNewsQuery(inputValue);
+      // bus.$emit("useInputValueToFetchData", inputValue);
+
       // this.tenFirstNewsItemsIfPicture = this.$store.getters[
       //   "vuexModuleDecorators/newsDataModule"
       // ].newsCountryQueriedIfPicture;
+    });
+    bus.$on("useInputValueToFetchData", (data: string) => {
+      console.log("I GOT THE INPUTEVENT");
+      console.log(data);
+      console.log("test");
+      this.newsDataToDisplay = this.$store.getters[
+        "vuexModuleDecorators/newsDataModule"
+      ].newsCountryQueriedGetter;
     });
   }
 

@@ -313,26 +313,13 @@ class NewsModule extends VuexModule {
       url = `https://newsapi.org/v2/everything?q=${newsCategoryToFetch}&apiKey=771f495b60b94bfabf9a9800d4996456`;
     }
 
+    console.log(selectedCountryOrCategory);
+    url = `https://newsapi.org/v2/everything?q=${selectedCountryOrCategory}&apiKey=771f495b60b94bfabf9a9800d4996456`;
     console.log("299");
     console.log(newsCategoryToFetch);
     console.log(countryToFetch);
     console.log("302");
 
-    const checkIfCountryIsSet = localStorage.getItem("countryToFetch");
-    const checkIfNewsCategoryIsSet = localStorage.getItem(
-      "newsCategoryToFetch"
-    );
-
-    if (
-      checkIfCountryIsSet &&
-      checkIfNewsCategoryIsSet &&
-      checkIfCountryIsSet !== "Default Country" &&
-      checkIfNewsCategoryIsSet !== "Default News Category"
-    ) {
-      console.log("BOTH ARE HIT");
-      url = `https://newsapi.org/v2/top-headlines?country=${countryToFetch}&q=${newsCategoryToFetch}&apiKey=771f495b60b94bfabf9a9800d4996456`;
-      // url = `https://newsapi.org/v2/everything?country=${countryToFetch}&q=${newsCategoryToFetch}&apiKey=771f495b60b94bfabf9a9800d4996456`;
-    }
     console.log(url);
     const req = new Request(url);
     await fetch(req)
@@ -340,7 +327,7 @@ class NewsModule extends VuexModule {
         return response.json();
       })
       .then((data) => {
-        // console.log(data);
+        console.log(data);
         this.context.commit("addQueriedNewsDataToState", data.articles);
       });
   }

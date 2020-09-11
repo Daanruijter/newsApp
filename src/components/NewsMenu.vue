@@ -13,7 +13,7 @@
     </div>
     <div class="news-menu-categories" v-if="categoriesPageBoolean">
       <label for="country">Choose a country:</label>
-      <select @change="catchSelectedCountry($event)" name="country" id="country">
+      <select @change="catchValue($event)" name="country" id="country">
         <option value="Default Country">Default</option>
         <option value="Argentina">Argentina</option>
         <option value="Australia">Australia</option>
@@ -72,7 +72,7 @@
         <option value="Venezuela">Venezuela</option>
       </select>
       <label for="subject">Choose a subject:</label>
-      <select @change="catchSelectedCountry($event)" name="subject" id="subject">
+      <select @change="catchValue($event)" name="subject" id="subject">
         <option value="Default News Category">Default</option>
         <option value="Economics">Economics</option>
         <option value="Politics">Politics</option>
@@ -83,6 +83,12 @@
         <option value="Entertainment">Entertainment</option>
         <option value="Travel">Travel</option>
       </select>
+      <input
+        type="text"
+        placeholder="search for a news item"
+        name="searchNewsItem"
+        @input="catchInputValue($event)"
+      />
     </div>
   </div>
 </template>
@@ -100,12 +106,19 @@ export default class NewsMenu extends Vue {
   setCategoriesBoolean() {
     this.categoriesPageBoolean = !this.categoriesPageBoolean;
   }
-  async catchSelectedCountry(event: Event) {
+  async catchValue(event: Event) {
+    console.log(event.target as HTMLTextAreaElement);
     const selectedCountryOrCategory = (event.target as HTMLTextAreaElement)
       .value;
 
     await news.fetchNewsQuery(selectedCountryOrCategory);
     bus.$emit("selectedCountryOrCategory", selectedCountryOrCategory);
+  }
+
+  async catchInputValue(event: Event) {
+    const inputValue = (event.target as HTMLTextAreaElement).value;
+    await news.fetchNewsQuery(inputValue);
+    bus.$emit("useInputValueToFetchData", inputValue);
   }
 
   // catchSelectedSubject(event: Event) {
