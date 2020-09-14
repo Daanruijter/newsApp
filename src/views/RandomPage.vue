@@ -48,11 +48,9 @@
 
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
-// //EVEN UITGEZET!!!
-// import news from "../store/modules/news";
-//EVEN UITGEZET!!!
+import news from "../store/modules/news";
 import NewsItemType from "../interfacesforapp";
-import { convertNewsItemPublishedTime } from "../methodsForGeneralUse";
+// import { convertNewsItemPublishedTime } from "../methodsForGeneralUse";
 
 @Component
 export default class RandomPage extends Vue {
@@ -61,25 +59,134 @@ export default class RandomPage extends Vue {
   newsItemPublishedTime = "";
   isHovering = false;
   hoveringReadMore = false;
+
+  randomNewsCategoriesArray = [
+    "Economics",
+    "Politics",
+    "Science",
+    "Health",
+    "Sports",
+    "Leisure",
+    "Entertainment",
+    "Travel",
+    "Default News Category"
+  ];
+  randomCountryCategoriesArray = [
+    "ar",
+    "au",
+    "at",
+    "be",
+    "br",
+    "bg",
+    "ca",
+    "cn",
+    "co",
+    "cu",
+    "cz",
+    "eg",
+    "fr",
+    "de",
+    "gr",
+    "hk",
+    "hu",
+    "in",
+    "id",
+    "ie",
+    "il",
+    "it",
+    "jp",
+    "lv",
+    "lt",
+    "my",
+    "mx",
+    "nl",
+    "nz",
+    "ng",
+    "no",
+    "ph",
+    "pl",
+    "pt",
+    "ro",
+    "ru",
+    "sa",
+    "rs",
+    "sg",
+    "sk",
+    "si",
+    "za",
+    "kr",
+    "se",
+    "ch",
+    "tw",
+    "th",
+    "tr",
+    "ae",
+    "ua",
+    "gb",
+    "us",
+    "ve",
+    "jp"
+  ];
+
+  randomNewsCategoryFetchBaseArray = [
+    this.randomCountryCategoriesArray,
+    this.randomNewsCategoriesArray
+  ];
+
   async mounted() {
     console.log("mounted");
 
+    const pickCountryOrNewsCategoriesArray = this
+      .randomNewsCategoryFetchBaseArray[this.randomIntFromInterval(0, 1)];
+    console.log(pickCountryOrNewsCategoriesArray.length);
+    const pickCountryOrNewsCategorieFromItsArrayLength =
+      pickCountryOrNewsCategoriesArray.length;
+
+    const pickFetchBase =
+      pickCountryOrNewsCategoriesArray[
+        this.randomIntFromInterval(
+          0,
+          pickCountryOrNewsCategorieFromItsArrayLength
+        )
+      ];
+
+    //hier zit het probleem: index  === 0 fetchcountry... index === 1, fetchNewsCategory
+    let pickType = "";
+    if (this.randomNewsCategoryFetchBaseArray[0]) {
+      pickType = "fetchCountry";
+    } else {
+      pickType = "fetchNewsCategory";
+    }
+
+    // = this.randomNewsCategoryFetchBaseArray[
+    // //   pickCountryOrNewsCategoriesArray
+    // ][randomIntFromInterval(0, this.pickCountryOrNewsCategoriesArray)];
+    // console.log(pickCountryOrNewsCategoriesArray);
+
     //fetch the newsData and put it in the vuex store
-    //EVEN UITGEZET!!!
-    // await news.fetchNews();
-    //EVEN UITGEZET!!!
-    this.getAllNewsData;
+
+    const fetchRandomNewsItemObject = {
+      fetchBase: pickFetchBase,
+      typeOfFetchBase: pickType
+    };
+    console.log(fetchRandomNewsItemObject);
+
+    await news.fetchNewsQuery(fetchRandomNewsItemObject);
+
     this.filterArrayByRandomIndex();
-    this.newsItemPublishedTime = convertNewsItemPublishedTime(
-      this.randomNewsItem[0].publishedAt
-    );
+    // this.newsItemPublishedTime = convertNewsItemPublishedTime(
+    //   this.randomNewsItem[0].publishedAt
+    // );
   }
 
   //populate the newsdata data array (necessary to filter based on the newsItemTitle variable)
   get getAllNewsData() {
+    console.log(this.newsData);
+
+    console.log(this.newsData + " from component random");
     this.newsData = this.$store.getters[
       "vuexModuleDecorators/newsDataModule"
-    ].newsDataGetter;
+    ].newsCountryQueriedGetter;
 
     return null;
   }
@@ -92,6 +199,7 @@ export default class RandomPage extends Vue {
   }
   //filter the array with one random index to display a random news item
   filterArrayByRandomIndex() {
+    console.log("test");
     const randomNewsItem = this.randomIntFromInterval(
       10,
       this.newsData.length - 1
