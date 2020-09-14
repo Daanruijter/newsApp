@@ -7,13 +7,13 @@
       <div @click="setCategoriesBoolean">
         <router-link to="/">CATEGORIES</router-link>
       </div>
-      <div class="news-menu-random">
+      <div @click="this.makeCategoriesDivClosed" class="news-menu-random">
         <router-link to="/random">RANDOM</router-link>
       </div>
     </div>
     <div class="news-menu-categories" v-if="categoriesPageBoolean">
       <label for="country">Choose a country:</label>
-      <select @change="catchValue($event)" name="country" id="country">
+      <select @change="catchCountryValue($event)" name="country" id="country">
         <option value="Default Country">Default</option>
         <option value="Argentina">Argentina</option>
         <option value="Australia">Australia</option>
@@ -72,7 +72,7 @@
         <option value="Venezuela">Venezuela</option>
       </select>
       <label for="subject">Choose a subject:</label>
-      <select @change="catchValue($event)" name="subject" id="subject">
+      <select @change="catchNewsCategoryValue($event)" name="subject" id="subject">
         <option value="Default News Category">Default</option>
         <option value="Economics">Economics</option>
         <option value="Politics">Politics</option>
@@ -103,23 +103,51 @@ export default class NewsMenu extends Vue {
   @Prop() private msg!: string;
   categoriesPageBoolean = false;
 
+  mounted() {
+    bus.$on("makeCategoriesDivClosedEventForDetailsPage", () => {
+      this.categoriesPageBoolean = false;
+    });
+    bus.$on("makeCategoriesDivClosedEventForRandomPage", () => {
+      this.categoriesPageBoolean = false;
+    });
+  }
+
   setCategoriesBoolean() {
     this.categoriesPageBoolean = !this.categoriesPageBoolean;
   }
-  async catchValue(event: Event) {
-    console.log(event.target as HTMLTextAreaElement);
-    const selectedCountryOrCategory = (event.target as HTMLTextAreaElement)
-      .value;
 
-    await news.fetchNewsQuery(selectedCountryOrCategory);
-    bus.$emit("selectedCountryOrCategory", selectedCountryOrCategory);
+  async catchCountryValue(event: Event) {
+    const selectedCountry = (event.target as HTMLTextAreaElement).value;
+    const countryFetchObject = {
+      fetchBase: selectedCountry,
+      typeOfFetchBase: "fetchCountry"
+    };
+    await news.fetchNewsQuery(countryFetchObject);
+    bus.$emit("selectedCountry", selectedCountry);
+  }
+
+  async catchNewsCategoryValue(event: Event) {
+    const selectedNewsCategory = (event.target as HTMLTextAreaElement).value;
+    const newsCategoryFetchObject = {
+      fetchBase: selectedNewsCategory,
+      typeOfFetchBase: "fetchNewsCategory"
+    };
+    await news.fetchNewsQuery(newsCategoryFetchObject);
+    bus.$emit("selectedNewsCategory", selectedNewsCategory);
   }
 
   async catchInputValue(event: Event) {
     const inputValue = (event.target as HTMLTextAreaElement).value;
-    // const input = "input";
-    await news.fetchNewsQuery(inputValue, "test");
-    bus.$emit("useInputValueToFetchData", inputValue);
+    const inputFetchObject = {
+      fetchBase: inputValue,
+      typeOfFetchBase: "fetchInput"
+    };
+    await news.fetchNewsQuery(inputFetchObject);
+    // bus.$emit("useInputValueToFetchData", inputValue);
+  }
+
+  makeCategoriesDivClosed() {
+    bus.$emit("makeCategoriesDivClosedEventForRandomPage");
   }
 
   // catchSelectedSubject(event: Event) {

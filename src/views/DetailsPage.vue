@@ -52,7 +52,9 @@
 import NewsItemType from "../interfacesforapp";
 
 import { Vue, Component } from "vue-property-decorator";
-import news from "../store/modules/news";
+//EVEN UITGEZET!!!
+// import news from "../store/modules/news";
+//EVEN UITGEZET!!!
 import { convertNewsItemPublishedTime } from "../methodsForGeneralUse";
 
 @Component
@@ -61,7 +63,10 @@ export default class DetailsPage extends Vue {
     console.log("mounted");
 
     //fetch the newsData and put it in the vuex store
-    await news.fetchNews();
+
+    //EVEN UITGEZET!!!
+    //     await news.fetchNews();
+    // //EVEN UITGEZET!!!
 
     //get the newsdata when the vuex store is populated with newsdata
     this.getAllNewsData;

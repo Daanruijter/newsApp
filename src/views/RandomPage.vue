@@ -2,32 +2,30 @@
   <div class="randompage-container">
     {{ this.newsItemPublishedTime }} GMT
     <hr />
-    <div
-      v-for="newsItem in this.randomNewsItem"
-      :key="newsItem.title"
-      class="randompage-data"
-    >
+    <div v-for="newsItem in this.randomNewsItem" :key="newsItem.title" class="randompage-data">
       <div
         class="randompage-title"
         @mouseover="isHovering = true"
         @mouseout="isHovering = false"
         :class="{ hovering: isHovering }"
       >
-        <a :href="newsItem.url"> {{ newsItem.title }}</a>
+        <a :href="newsItem.url">{{ newsItem.title }}</a>
       </div>
 
-      <div v-if="newsItem.author">
-        Written by:{{ " " }}{{ newsItem.author }}
-      </div>
+      <div v-if="newsItem.author">Written by:{{ " " }}{{ newsItem.author }}</div>
       <br />
       <div class="randompage-description">
-        <span class="randompage-small-header">Description</span><br />{{
-          newsItem.description
+        <span class="randompage-small-header">Description</span>
+        <br />
+        {{
+        newsItem.description
         }}
       </div>
       <div class="randompage-contents">
-        <span class="randompage-small-header">Contents</span><br />{{
-          newsItem.content
+        <span class="randompage-small-header">Contents</span>
+        <br />
+        {{
+        newsItem.content
         }}
       </div>
       <div
@@ -36,12 +34,10 @@
         @mouseout="hoveringReadMore = false"
         :class="{ hovering: hoveringReadMore }"
       >
-        <a :href="newsItem.url">READ MORE </a>
+        <a :href="newsItem.url">READ MORE</a>
       </div>
       <div class="randompage-button">
-        <button @click="changeRandomNewsItemOnButtonClick">
-          Show another random news item
-        </button>
+        <button @click="changeRandomNewsItemOnButtonClick">Show another random news item</button>
       </div>
       <div class="randompage-picture">
         <img v-bind:src="newsItem.urlToImage" />
@@ -52,7 +48,9 @@
 
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
-import news from "../store/modules/news";
+// //EVEN UITGEZET!!!
+// import news from "../store/modules/news";
+//EVEN UITGEZET!!!
 import NewsItemType from "../interfacesforapp";
 import { convertNewsItemPublishedTime } from "../methodsForGeneralUse";
 
@@ -67,7 +65,9 @@ export default class RandomPage extends Vue {
     console.log("mounted");
 
     //fetch the newsData and put it in the vuex store
-    await news.fetchNews();
+    //EVEN UITGEZET!!!
+    // await news.fetchNews();
+    //EVEN UITGEZET!!!
     this.getAllNewsData;
     this.filterArrayByRandomIndex();
     this.newsItemPublishedTime = convertNewsItemPublishedTime(

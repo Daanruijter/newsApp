@@ -13,6 +13,13 @@ export interface Source {
   name: string;
 }
 
+//interface for fetch function
+
+export interface FetchNews {
+  fetchBase: string;
+  typeOfFetchBase: string;
+}
+
 import {
   VuexModule,
   Module,
@@ -21,6 +28,9 @@ import {
   Action,
 } from "vuex-module-decorators";
 import store from "@/store";
+
+//to use locally saved newsdata//
+// import testData from "@/testData";
 
 @Module({ namespaced: true, name: "newsDataModule", store, dynamic: true })
 class NewsModule extends VuexModule {
@@ -77,18 +87,18 @@ class NewsModule extends VuexModule {
     this.categoriesClickEventBoolean = data;
   }
 
-  @Action
-  async fetchNews() {
-    const url = `http://newsapi.org/v2/top-headlines?country=au&apiKey=771f495b60b94bfabf9a9800d4996456`;
-    const req = new Request(url);
-    await fetch(req)
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        this.context.commit("addNewsDataToState", data.articles);
-      });
-  }
+  // @Action
+  // async fetchNews() {
+  //   const url = `http://newsapi.org/v2/top-headlines?country=jp&apiKey=771f495b60b94bfabf9a9800d4996456`;
+  //   const req = new Request(url);
+  //   await fetch(req)
+  //     .then((response) => {
+  //       return response.json();
+  //     })
+  //     .then((data) => {
+  //       this.context.commit("addNewsDataToState", data.articles);
+  //     });
+  // }
 
   @Action
   sendPictureNotLoadedArray(pictureNotLoadedArray: string[]) {
@@ -101,243 +111,213 @@ class NewsModule extends VuexModule {
     this.context.commit("addBooleanOfCategoriesPageEvent", categoryPageBoolean);
     return categoryPageBoolean;
   }
+
   //fetch the country newsData if a user selects a certain country
   @Action
-  async fetchNewsQuery(selectedCountryOrCategory: string, input?: string) {
-    console.log(input);
-    let country = "";
+  async fetchNewsQuery(fetchBaseObject: FetchNews) {
+    console.log(fetchBaseObject);
+
+    // if(fetchBase === selectedCountry)
+
+    let url = "";
 
     //country conditions to fetch a country's news dynamically
     //the url needs to contain the country abbreviations
-
-    if (selectedCountryOrCategory === "Argentina") {
-      country = "ar";
-    }
-    if (selectedCountryOrCategory === "Australia") {
-      country = "au";
-    }
-    if (selectedCountryOrCategory === "Austria") {
-      country = "at";
-    }
-    if (selectedCountryOrCategory === "Belgium") {
-      country = "be";
-    }
-    if (selectedCountryOrCategory === "Brazil") {
-      country = "br";
-    }
-    if (selectedCountryOrCategory === "Bulgaria") {
-      country = "bg";
-    }
-    if (selectedCountryOrCategory === "Canada") {
-      country = "ca";
-    }
-    if (selectedCountryOrCategory === "China") {
-      country = "cn";
-    }
-    if (selectedCountryOrCategory === "Colombia") {
-      country = "co";
-    }
-    if (selectedCountryOrCategory === "Cuba") {
-      country = "cu";
-    }
-    if (selectedCountryOrCategory === "Czech Republic") {
-      country = "cz";
-    }
-    if (selectedCountryOrCategory === "Egypt") {
-      country = "eg";
-    }
-    if (selectedCountryOrCategory === "France") {
-      country = "fr";
-    }
-    if (selectedCountryOrCategory === "Germany") {
-      country = "de";
-    }
-    if (selectedCountryOrCategory === "Greece") {
-      country = "gr";
-    }
-    if (selectedCountryOrCategory === "Hong Kong") {
-      country = "hk";
-    }
-    if (selectedCountryOrCategory === "Hungary") {
-      country = "hu";
-    }
-    if (selectedCountryOrCategory === "India") {
-      country = "in";
-    }
-    if (selectedCountryOrCategory === "Indonesia") {
-      country = "id";
-    }
-    if (selectedCountryOrCategory === "Ireland") {
-      country = "ie";
-    }
-    if (selectedCountryOrCategory === "Israel") {
-      country = "il";
-    }
-    if (selectedCountryOrCategory === "Italy") {
-      country = "it";
-    }
-    if (selectedCountryOrCategory === "Japan") {
-      country = "jp";
-    }
-    if (selectedCountryOrCategory === "Latvia") {
-      country = "lv";
-    }
-    if (selectedCountryOrCategory === "Lithuania") {
-      country = "lt";
-    }
-    if (selectedCountryOrCategory === "Malaysia") {
-      country = "my";
-    }
-    if (selectedCountryOrCategory === "Mexico") {
-      country = "mx";
-    }
-    if (selectedCountryOrCategory === "Netherlands") {
-      country = "nl";
-    }
-    if (selectedCountryOrCategory === "New Zealand") {
-      country = "nz";
-    }
-    if (selectedCountryOrCategory === "Nigeria") {
-      country = "ng";
-    }
-    if (selectedCountryOrCategory === "Norway") {
-      country = "no";
-    }
-    if (selectedCountryOrCategory === "Philippines") {
-      country = "ph";
-    }
-    if (selectedCountryOrCategory === "Poland") {
-      country = "pl";
-    }
-    if (selectedCountryOrCategory === "Portugal") {
-      country = "pt";
-    }
-    if (selectedCountryOrCategory === "Romania") {
-      country = "ro";
-    }
-    if (selectedCountryOrCategory === "Russia") {
-      country = "ru";
-    }
-    if (selectedCountryOrCategory === "Saudi Arabia") {
-      country = "sa";
-    }
-    if (selectedCountryOrCategory === "Serbia") {
-      country = "rs";
-    }
-    if (selectedCountryOrCategory === "Singapore") {
-      country = "sg";
-    }
-    if (selectedCountryOrCategory === "Slovakia") {
-      country = "sk";
-    }
-    if (selectedCountryOrCategory === "Slovenia") {
-      country = "si";
-    }
-    if (selectedCountryOrCategory === "South Africa") {
-      country = "za";
-    }
-    if (selectedCountryOrCategory === "South Korea") {
-      country = "kr";
-    }
-    if (selectedCountryOrCategory === "Sweden") {
-      country = "se";
-    }
-    if (selectedCountryOrCategory === "Switzerland") {
-      country = "ch";
-    }
-    if (selectedCountryOrCategory === "Taiwan") {
-      country = "tw";
-    }
-    if (selectedCountryOrCategory === "Thailand") {
-      country = "th";
-    }
-    if (selectedCountryOrCategory === "Turkey") {
-      country = "tr";
-    }
-    if (selectedCountryOrCategory === "United Arabic Emirates") {
-      country = "ae";
-    }
-    if (selectedCountryOrCategory === "Ukraine") {
-      country = "ua";
-    }
-    if (selectedCountryOrCategory === "United Kingdom") {
-      country = "gb";
-    }
-    if (selectedCountryOrCategory === "United States") {
-      country = "us";
-    }
-    if (selectedCountryOrCategory === "Venezuela") {
-      country = "ve";
-    }
-    if (selectedCountryOrCategory === "Default Country") {
-      country = "Default Country";
-    }
-
-    //inititialize the url to fetch the news item data
-    let url = "";
-
-    //category to fetch
-
-    let countryToFetch: string | null = country;
-
-    //save country string in LocalStorage to get it from there if the country variable is empty
-    //fetchNewsQuery function parameter is a country string or a news category string, based on what the user selects in the NewsMenu component
-    //fetchNewsQuery gets called in the NewsMenu component and passes the country string or a news category string to the fetchNewsQuery function
-
-    if (countryToFetch !== "") {
-      localStorage.setItem("countryToFetch", countryToFetch);
-
-      //get the just set country string
-      countryToFetch = localStorage.getItem("countryToFetch");
-
-      url = `https://newsapi.org/v2/everything?q=${countryToFetch}&apiKey=771f495b60b94bfabf9a9800d4996456`;
-    }
-
-    let newsCategoryToFetch: string | null = "";
-    if (
-      selectedCountryOrCategory === "Economics" ||
-      selectedCountryOrCategory === "Politics" ||
-      selectedCountryOrCategory === "Science" ||
-      selectedCountryOrCategory === "Health" ||
-      selectedCountryOrCategory === "Sports" ||
-      selectedCountryOrCategory === "Leisure" ||
-      selectedCountryOrCategory === "Entertainment" ||
-      selectedCountryOrCategory === "Travel" ||
-      selectedCountryOrCategory === "Default News Category"
-    ) {
-      newsCategoryToFetch = selectedCountryOrCategory;
-      //save newsCategory in LocalStorage to get it from there if country is empty
-      if (newsCategoryToFetch !== "") {
-        localStorage.setItem("newsCategoryToFetch", newsCategoryToFetch);
+    if (fetchBaseObject.typeOfFetchBase === "fetchCountry") {
+      let countryToFetch = "";
+      if (fetchBaseObject.fetchBase === "Argentina") {
+        countryToFetch = "ar";
       }
-      newsCategoryToFetch = localStorage.getItem("newsCategoryToFetch");
-      console.log(newsCategoryToFetch);
+      if (fetchBaseObject.fetchBase === "Australia") {
+        countryToFetch = "au";
+      }
+      if (fetchBaseObject.fetchBase === "Austria") {
+        countryToFetch = "at";
+      }
+      if (fetchBaseObject.fetchBase === "Belgium") {
+        countryToFetch = "be";
+      }
+      if (fetchBaseObject.fetchBase === "Brazil") {
+        countryToFetch = "br";
+      }
+      if (fetchBaseObject.fetchBase === "Bulgaria") {
+        countryToFetch = "bg";
+      }
+      if (fetchBaseObject.fetchBase === "Canada") {
+        countryToFetch = "ca";
+      }
+      if (fetchBaseObject.fetchBase === "China") {
+        countryToFetch = "cn";
+      }
+      if (fetchBaseObject.fetchBase === "Colombia") {
+        countryToFetch = "co";
+      }
+      if (fetchBaseObject.fetchBase === "Cuba") {
+        countryToFetch = "cu";
+      }
+      if (fetchBaseObject.fetchBase === "Czech Republic") {
+        countryToFetch = "cz";
+      }
+      if (fetchBaseObject.fetchBase === "Egypt") {
+        countryToFetch = "eg";
+      }
+      if (fetchBaseObject.fetchBase === "France") {
+        countryToFetch = "fr";
+      }
+      if (fetchBaseObject.fetchBase === "Germany") {
+        countryToFetch = "de";
+      }
+      if (fetchBaseObject.fetchBase === "Greece") {
+        countryToFetch = "gr";
+      }
+      if (fetchBaseObject.fetchBase === "Hong Kong") {
+        countryToFetch = "hk";
+      }
+      if (fetchBaseObject.fetchBase === "Hungary") {
+        countryToFetch = "hu";
+      }
+      if (fetchBaseObject.fetchBase === "India") {
+        countryToFetch = "in";
+      }
+      if (fetchBaseObject.fetchBase === "Indonesia") {
+        countryToFetch = "id";
+      }
+      if (fetchBaseObject.fetchBase === "Ireland") {
+        countryToFetch = "ie";
+      }
+      if (fetchBaseObject.fetchBase === "Israel") {
+        countryToFetch = "il";
+      }
+      if (fetchBaseObject.fetchBase === "Italy") {
+        countryToFetch = "it";
+      }
+      if (fetchBaseObject.fetchBase === "Japan") {
+        countryToFetch = "jp";
+      }
+      if (fetchBaseObject.fetchBase === "Latvia") {
+        countryToFetch = "lv";
+      }
+      if (fetchBaseObject.fetchBase === "Lithuania") {
+        countryToFetch = "lt";
+      }
+      if (fetchBaseObject.fetchBase === "Malaysia") {
+        countryToFetch = "my";
+      }
+      if (fetchBaseObject.fetchBase === "Mexico") {
+        countryToFetch = "mx";
+      }
+      if (fetchBaseObject.fetchBase === "Netherlands") {
+        countryToFetch = "nl";
+      }
+      if (fetchBaseObject.fetchBase === "New Zealand") {
+        countryToFetch = "nz";
+      }
+      if (fetchBaseObject.fetchBase === "Nigeria") {
+        countryToFetch = "ng";
+      }
+      if (fetchBaseObject.fetchBase === "Norway") {
+        countryToFetch = "no";
+      }
+      if (fetchBaseObject.fetchBase === "Philippines") {
+        countryToFetch = "ph";
+      }
+      if (fetchBaseObject.fetchBase === "Poland") {
+        countryToFetch = "pl";
+      }
+      if (fetchBaseObject.fetchBase === "Portugal") {
+        countryToFetch = "pt";
+      }
+      if (fetchBaseObject.fetchBase === "Romania") {
+        countryToFetch = "ro";
+      }
+      if (fetchBaseObject.fetchBase === "Russia") {
+        countryToFetch = "ru";
+      }
+      if (fetchBaseObject.fetchBase === "Saudi Arabia") {
+        countryToFetch = "sa";
+      }
+      if (fetchBaseObject.fetchBase === "Serbia") {
+        countryToFetch = "rs";
+      }
+      if (fetchBaseObject.fetchBase === "Singapore") {
+        countryToFetch = "sg";
+      }
+      if (fetchBaseObject.fetchBase === "Slovakia") {
+        countryToFetch = "sk";
+      }
+      if (fetchBaseObject.fetchBase === "Slovenia") {
+        countryToFetch = "si";
+      }
+      if (fetchBaseObject.fetchBase === "South Africa") {
+        countryToFetch = "za";
+      }
+      if (fetchBaseObject.fetchBase === "South Korea") {
+        countryToFetch = "kr";
+      }
+      if (fetchBaseObject.fetchBase === "Sweden") {
+        countryToFetch = "se";
+      }
+      if (fetchBaseObject.fetchBase === "Switzerland") {
+        countryToFetch = "ch";
+      }
+      if (fetchBaseObject.fetchBase === "Taiwan") {
+        countryToFetch = "tw";
+      }
+      if (fetchBaseObject.fetchBase === "Thailand") {
+        countryToFetch = "th";
+      }
+      if (fetchBaseObject.fetchBase === "Turkey") {
+        countryToFetch = "tr";
+      }
+      if (fetchBaseObject.fetchBase === "United Arabic Emirates") {
+        countryToFetch = "ae";
+      }
+      if (fetchBaseObject.fetchBase === "Ukraine") {
+        countryToFetch = "ua";
+      }
+      if (fetchBaseObject.fetchBase === "United Kingdom") {
+        countryToFetch = "gb";
+      }
+      if (fetchBaseObject.fetchBase === "United States") {
+        countryToFetch = "us";
+      }
+      if (fetchBaseObject.fetchBase === "Venezuela") {
+        countryToFetch = "ve";
+      }
+      if (fetchBaseObject.fetchBase === "Default Country") {
+        countryToFetch = "jp";
+      }
+
+      url = `https://newsapi.org/v2/top-headlines?country=${countryToFetch}&apiKey=771f495b60b94bfabf9a9800d4996456`;
+    }
+
+    if (fetchBaseObject.typeOfFetchBase === "fetchNewsCategory") {
+      let newsCategoryToFetch = "";
+      if (
+        fetchBaseObject.fetchBase === "Economics" ||
+        fetchBaseObject.fetchBase === "Politics" ||
+        fetchBaseObject.fetchBase === "Science" ||
+        fetchBaseObject.fetchBase === "Health" ||
+        fetchBaseObject.fetchBase === "Sports" ||
+        fetchBaseObject.fetchBase === "Leisure" ||
+        fetchBaseObject.fetchBase === "Entertainment" ||
+        fetchBaseObject.fetchBase === "Travel" ||
+        fetchBaseObject.fetchBase === "Default News Category"
+      )
+        newsCategoryToFetch = fetchBaseObject.fetchBase;
       url = `https://newsapi.org/v2/everything?q=${newsCategoryToFetch}&apiKey=771f495b60b94bfabf9a9800d4996456`;
     }
-    //set the default url
-    if (
-      country === "Default Country" &&
-      newsCategoryToFetch === "Default News Category"
-    ) {
-      url =
-        "https://newsapi.org/v2/top-headlines?country=us&apiKey=771f495b60b94bfabf9a9800d4996456";
-      // "https://newsapi.org/v2/top-headlines?country=jp&q=Apple&apiKey=771f495b60b94bfabf9a9800d4996456";
+
+    if (fetchBaseObject.typeOfFetchBase === "fetchInput") {
+      const inputToFetch = fetchBaseObject.fetchBase;
+
+      url = `https://newsapi.org/v2/everything?q=${inputToFetch}&apiKey=771f495b60b94bfabf9a9800d4996456`;
     }
 
-    console.log(selectedCountryOrCategory);
-    console.log(input + "INPUTTT");
-    // if (input) {
-    //   url = `https://newsapi.org/v2/everything?q=${selectedCountryOrCategory}&apiKey=771f495b60b94bfabf9a9800d4996456`;
-    // }
-    // if (!input || newsCategoryToFetch == "Default News Category") {
-    //   url = `http://newsapi.org/v2/top-headlines?country=${countryToFetch}&apiKey=771f495b60b94bfabf9a9800d4996456`;
-    // }
-    console.log("299");
-    console.log(newsCategoryToFetch);
-    console.log(countryToFetch);
-    console.log("302");
-
     console.log(url);
+
+    // const data = testData;
+    //EVEN UITGEZET
     const req = new Request(url);
     await fetch(req)
       .then((response) => {
@@ -346,7 +326,10 @@ class NewsModule extends VuexModule {
       .then((data) => {
         console.log(data);
         this.context.commit("addQueriedNewsDataToState", data.articles);
+
+        // this.context.commit("addQueriedNewsDataToState", data);
       });
+    url = "";
   }
 
   // https://newsapi.org/v2/everything?q=bitcoin&apiKey=771f495b60b94bfabf9a9800d4996456

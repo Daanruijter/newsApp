@@ -3,6 +3,7 @@
     Get to know what's currently happening in the world. Tap on the title to
     know more.
     <div
+      @click="makeCategoriesDivClosed"
       class="home-newsitems-with-picture"
       v-for="(newsItem, index) in this.newsDataToDisplay"
       :key="newsItem.title"
@@ -27,6 +28,7 @@
     </div>
     <h1>Other news</h1>
     <div
+      @click="makeCategoriesDivClosed"
       class="home-newsitems-no-picture"
       v-for="newsItem in this.newsDataToDisplay"
       :key="newsItem.contents"
@@ -83,22 +85,33 @@ export default class Home extends Vue {
     news.sendPictureNotLoadedArray(pictureNotLoadedArray);
   }
 
+  //bus object needs to listen to events in another component on mounted hook
   async mounted() {
-    await news.fetchNewsQuery("Default Country");
+    const newsCategoryFetchObject = {
+      fetchBase: "Default Country",
+      typeOfFetchBase: "fetchCountry"
+    };
+
+    await news.fetchNewsQuery(newsCategoryFetchObject);
     console.log("mounted");
     // this.newsCountryQueriedIfPicture;
     // this.getAllNewsData;
     this.newsDataToDisplay = this.$store.getters[
       "vuexModuleDecorators/newsDataModule"
     ].newsCountryQueriedGetter;
-    bus.$on("selectedCountryOrCategory", () => {
-      console.log("I GOT THE CLICKEVENT");
-
+    bus.$on("selectedCountry", () => {
       this.newsDataToDisplay = this.$store.getters[
         "vuexModuleDecorators/newsDataModule"
       ].newsCountryQueriedGetter;
     });
-    bus.$on("useInputValueToFetchData", (data: string) => {
+    bus.$on("selectedNewsCategory", () => {
+      this.newsDataToDisplay = this.$store.getters[
+        "vuexModuleDecorators/newsDataModule"
+      ].newsCountryQueriedGetter;
+    });
+
+    //send input and onchange event to other components
+    bus.$on("useInputVsalueToFetchData", (data: string) => {
       console.log("I GOT THE INPUTEVENT");
       console.log(data);
 
@@ -113,6 +126,10 @@ export default class Home extends Vue {
       "vuexModuleDecorators/newsDataModule"
     ].newsCountryQueriedIfPicture;
     return null;
+  }
+
+  makeCategoriesDivClosed() {
+    bus.$emit("makeCategoriesDivClosedEventForDetailsPage");
   }
 }
 </script>
