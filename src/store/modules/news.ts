@@ -73,7 +73,7 @@ class NewsModule extends VuexModule {
 
   @Mutation
   addQueriedNewsDataToState(data: NewsItemType[]) {
-    console.log("addQueriedCountryACTION works");
+    console.log("addQueriedNewsDataACTION works");
     this.newsCountryQueried = data;
   }
 
