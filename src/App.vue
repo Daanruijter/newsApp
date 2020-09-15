@@ -2,8 +2,15 @@
   <div id="app">
     <div id="nav">
       <hr />
-      <div class="description">World news</div>
-      <div class="description">Your everyday headlines</div>
+      <div class="flex-header-items">
+        <div class="header-titles">
+          <div class="description world-news">WORLD NEWS</div>
+          <div class="description everyday-headlines">Your everyday headlines</div>
+        </div>
+        <div class="header-image-div">
+          <img class="globe" src="@/assets/globe.jpg" />
+        </div>
+      </div>
       <hr />
       <NewsMenu />
     </div>
@@ -37,6 +44,29 @@ export default class App extends Vue {}
   color: #2c3e50;
 }
 
+.flex-header-items {
+  display: flex;
+  justify-content: space-between;
+}
+.header-titles {
+  padding-left: 10%;
+}
+.header-image-div {
+  width: 20%;
+  padding-right: 2%;
+}
+
+.description {
+  font-family: "steelfish";
+  font-size: 20px;
+}
+.world-news {
+  font-weight: bold;
+}
+.globe {
+  width: 75%;
+}
+
 #nav {
   background-color: white;
   position: fixed;
@@ -58,9 +88,9 @@ export default class App extends Vue {}
     src: local("steelfish"),
       url(./steelfishfont/steelfishrg.ttf) format("truetype");
   }
-  .description {
-    font-family: "steelfish";
-    font-size: 20px;
-  }
+
+  // .everyday-headlines {
+  //   text-decoration: underline;
+  // }
 }
 </style>

@@ -1,48 +1,53 @@
 <template>
   <div class="home-container">
-    Get to know what's currently happening in the world. Tap on the title to
-    know more.
-    <div
-      @click="makeCategoriesDivClosed"
-      class="home-newsitems-with-picture"
-      v-for="(newsItem, index) in this.newsDataToDisplay"
-      :key="newsItem.title"
-    >
-      <router-link :to="{ name: 'DetailsPage', params: { title: newsItem.title } }">
-        <div
-          v-if="newsItem.urlToImage"
-          class="home-newsitem-title"
-          @mouseover="isHovering = true"
-          @mouseout="isHovering = false"
-          :class="{ hovering: isHovering }"
-        >{{ newsItem.title }}</div>
-      </router-link>
-      <div class="home-newsitem-picture">
-        <img
-          @error="pictureNotLoaded(index)"
-          v-if="newsItem.urlToImage"
-          v-bind:src="newsItem.urlToImage"
-        />
+    <div v-if="this.newsDataToDisplay[0]" class="home-newsdata-loaded">
+      Get to know what's currently happening in the world. Tap on the title to
+      know more.
+      <div
+        @click="makeCategoriesDivClosed"
+        class="home-newsitems-with-picture"
+        v-for="(newsItem, index) in this.newsDataToDisplay"
+        :key="newsItem.title"
+      >
+        <router-link :to="{ name: 'DetailsPage', params: { title: newsItem.title } }">
+          <div
+            v-if="newsItem.urlToImage"
+            class="home-newsitem-title"
+            @mouseover="isHovering = true"
+            @mouseout="isHovering = false"
+            :class="{ hovering: isHovering }"
+          >{{ newsItem.title }}</div>
+        </router-link>
+        <div class="home-newsitem-picture">
+          <img
+            @error="pictureNotLoaded(index)"
+            v-if="newsItem.urlToImage"
+            v-bind:src="newsItem.urlToImage"
+          />
+        </div>
+        <hr v-if="newsItem.urlToImage" />
       </div>
-      <hr v-if="newsItem.urlToImage" />
+      <h1>Other news</h1>
+      <div
+        @click="makeCategoriesDivClosed"
+        class="home-newsitems-no-picture"
+        v-for="newsItem in this.newsDataToDisplay"
+        :key="newsItem.contents"
+      >
+        <router-link :to="{ name: 'DetailsPage', params: { title: newsItem.title } }">
+          <div
+            v-if="!newsItem.urlToImage"
+            class="home-newsitem-title"
+            @mouseover="isHovering = true"
+            @mouseout="isHovering = false"
+            :class="{ hovering: isHovering }"
+          >{{ newsItem.title }}</div>
+        </router-link>
+        <hr v-if="!newsItem.urlToImage" />
+      </div>
     </div>
-    <h1>Other news</h1>
-    <div
-      @click="makeCategoriesDivClosed"
-      class="home-newsitems-no-picture"
-      v-for="newsItem in this.newsDataToDisplay"
-      :key="newsItem.contents"
-    >
-      <router-link :to="{ name: 'DetailsPage', params: { title: newsItem.title } }">
-        <div
-          v-if="!newsItem.urlToImage"
-          class="home-newsitem-title"
-          @mouseover="isHovering = true"
-          @mouseout="isHovering = false"
-          :class="{ hovering: isHovering }"
-        >{{ newsItem.title }}</div>
-      </router-link>
-      <hr v-if="!newsItem.urlToImage" />
+    <div v-if="!this.newsDataToDisplay[0]" class="home-newsdata-not-loaded">
+      <div class="home-no-newsitems">No news items to show</div>
     </div>
   </div>
 </template>
@@ -167,5 +172,19 @@ a {
 .home-newsitems-no-picture {
   font-weight: bold;
   color: black;
+}
+
+.home-newsdata-not-loaded {
+  background-color: purple;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: 50%;
+}
+
+.home-no-newsitems {
+  color: white;
+  font-weight: bold;
 }
 </style>

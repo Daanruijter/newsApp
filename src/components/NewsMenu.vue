@@ -83,12 +83,16 @@
         <option value="Entertainment">Entertainment</option>
         <option value="Travel">Travel</option>
       </select>
-      <input
-        type="text"
-        placeholder="search for a news item"
-        name="searchNewsItem"
-        @input="catchInputValue($event)"
-      />
+      <form @submit="onSubmit($event)">
+        <input
+          type="text"
+          placeholder="search for a news item"
+          name="searchNewsItem"
+          @input="catchInputValue($event)"
+        />
+
+        <input type="submit" value="Submit" />
+      </form>
     </div>
   </div>
 </template>
@@ -102,6 +106,7 @@ import { bus } from "../main";
 export default class NewsMenu extends Vue {
   @Prop() private msg!: string;
   categoriesPageBoolean = false;
+  inputValue = "";
 
   mounted() {
     bus.$on("makeCategoriesDivClosedEventForDetailsPage", () => {
@@ -138,11 +143,8 @@ export default class NewsMenu extends Vue {
 
   async catchInputValue(event: Event) {
     const inputValue = (event.target as HTMLTextAreaElement).value;
-    const inputFetchObject = {
-      fetchBase: inputValue,
-      typeOfFetchBase: "fetchInput"
-    };
-    await news.fetchNewsQuery(inputFetchObject);
+    this.inputValue = inputValue;
+
     // bus.$emit("useInputValueToFetchData", inputValue);
   }
 
@@ -150,10 +152,16 @@ export default class NewsMenu extends Vue {
     bus.$emit("makeCategoriesDivClosedEventForRandomPage");
   }
 
-  // catchSelectedSubject(event: Event) {
-  //   const selectedSubject = (event.target as HTMLTextAreaElement).value;
-  //   console.log(selectedSubject);
-  // }
+  async onSubmit(event: Event) {
+    console.log("submit");
+    event.preventDefault();
+    const inputValue = this.inputValue;
+    const inputFetchObject = {
+      fetchBase: inputValue,
+      typeOfFetchBase: "fetchInput"
+    };
+    await news.fetchNewsQuery(inputFetchObject);
+  }
 }
 </script>
 

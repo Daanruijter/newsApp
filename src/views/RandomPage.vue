@@ -1,47 +1,52 @@
 <template>
   <div class="randompage-container">
-    {{ this.newsItemPublishedTime }} GMT
-    <hr />
-    <div v-for="newsItem in this.randomNewsItem" :key="newsItem.title" class="randompage-data">
-      <div
-        class="randompage-title"
-        @mouseover="isHovering = true"
-        @mouseout="isHovering = false"
-        :class="{ hovering: isHovering }"
-      >
-        <a :href="newsItem.url">{{ newsItem.title }}</a>
-      </div>
+    <div v-if="this.randomNewsItem[0]" class="randompage-newsdata-loaded">
+      {{ this.newsItemPublishedTime }} GMT
+      <hr />
+      <div v-for="newsItem in this.randomNewsItem" :key="newsItem.title" class="randompage-data">
+        <div
+          class="randompage-title"
+          @mouseover="isHovering = true"
+          @mouseout="isHovering = false"
+          :class="{ hovering: isHovering }"
+        >
+          <a :href="newsItem.url">{{ newsItem.title }}</a>
+        </div>
 
-      <div v-if="newsItem.author">Written by:{{ " " }}{{ newsItem.author }}</div>
-      <br />
-      <div class="randompage-description">
-        <span class="randompage-small-header">Description</span>
+        <div v-if="newsItem.author">Written by:{{ " " }}{{ newsItem.author }}</div>
         <br />
-        {{
-        newsItem.description
-        }}
+        <div class="randompage-description">
+          <span class="randompage-small-header">Description</span>
+          <br />
+          {{
+          newsItem.description
+          }}
+        </div>
+        <div class="randompage-contents">
+          <span class="randompage-small-header">Contents</span>
+          <br />
+          {{
+          newsItem.content
+          }}
+        </div>
+        <div
+          class="randompage-read-more"
+          @mouseover="hoveringReadMore = true"
+          @mouseout="hoveringReadMore = false"
+          :class="{ hovering: hoveringReadMore }"
+        >
+          <a :href="newsItem.url">READ MORE</a>
+        </div>
+        <div class="randompage-button">
+          <button @click="changeRandomNewsItemOnButtonClick">Show another random news item</button>
+        </div>
+        <div class="randompage-picture">
+          <img v-bind:src="newsItem.urlToImage" />
+        </div>
       </div>
-      <div class="randompage-contents">
-        <span class="randompage-small-header">Contents</span>
-        <br />
-        {{
-        newsItem.content
-        }}
-      </div>
-      <div
-        class="randompage-read-more"
-        @mouseover="hoveringReadMore = true"
-        @mouseout="hoveringReadMore = false"
-        :class="{ hovering: hoveringReadMore }"
-      >
-        <a :href="newsItem.url">READ MORE</a>
-      </div>
-      <div class="randompage-button">
-        <button @click="changeRandomNewsItemOnButtonClick">Show another random news item</button>
-      </div>
-      <div class="randompage-picture">
-        <img v-bind:src="newsItem.urlToImage" />
-      </div>
+    </div>
+    <div v-if="!this.randomNewsItem[0]" class="randompage-newsdata-not-loaded">
+      <div class="randompage-no-newsitems">No news items to show</div>
     </div>
   </div>
 </template>
@@ -287,5 +292,19 @@ a {
 .randompage-button button {
   margin-bottom: 5%;
   font-size: 100%;
+}
+
+.randompage-newsdata-not-loaded {
+  background-color: purple;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: 50%;
+}
+
+.randompage-no-newsitems {
+  color: white;
+  font-weight: bold;
 }
 </style>
