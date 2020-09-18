@@ -12,11 +12,18 @@
       </div>
     </div>
     <div class="news-menu-categories" v-if="categoriesPageBoolean">
-      Get the most recent news per country, column or search for the news about a subject.
-      <br />
+      <div
+        class="news-menu-information"
+      >Get the most recent news per country, column or search for the news about a subject.</div>
+
       <br />
       <div class="news-menu-query-country">
-        <select @change="catchCountryValue($event)" name="country" id="country">
+        <select
+          v-model="countrySelected"
+          @change="catchCountryValue($event)"
+          name="country"
+          id="country"
+        >
           <option value="Default Country">Choose a country</option>
           <option value="Argentina">Argentina</option>
           <option value="Australia">Australia</option>
@@ -78,7 +85,12 @@
 
       <br />
       <div class="news-menu-query-subject">
-        <select @change="catchNewsCategoryValue($event)" name="subject" id="subject">
+        <select
+          v-model="newsCategorySelected"
+          @change="catchNewsCategoryValue($event)"
+          name="subject"
+          id="subject"
+        >
           <option value="Default News Category">Choose a news category</option>
           <option value="Economics">Economics</option>
           <option value="Politics">Politics</option>
@@ -119,6 +131,8 @@ export default class NewsMenu extends Vue {
   @Prop() private msg!: string;
   categoriesPageBoolean = false;
   inputValue = "";
+  countrySelected = "Default Country";
+  newsCategorySelected = "Default News Category";
 
   mounted() {
     bus.$on("makeCategoriesDivClosedEventForDetailsPage", () => {
@@ -139,6 +153,8 @@ export default class NewsMenu extends Vue {
       fetchBase: selectedCountry,
       typeOfFetchBase: "fetchCountry"
     };
+
+    this.newsCategorySelected = "Default News Category";
     await news.fetchNewsQuery(countryFetchObject);
     bus.$emit("selectedCountry", selectedCountry);
   }
@@ -149,6 +165,7 @@ export default class NewsMenu extends Vue {
       fetchBase: selectedNewsCategory,
       typeOfFetchBase: "fetchNewsCategory"
     };
+    this.countrySelected = "Default Country";
     await news.fetchNewsQuery(newsCategoryFetchObject);
     bus.$emit("selectedNewsCategory", selectedNewsCategory);
   }
@@ -156,6 +173,8 @@ export default class NewsMenu extends Vue {
   async catchInputValue(event: Event) {
     const inputValue = (event.target as HTMLTextAreaElement).value;
     this.inputValue = inputValue;
+    this.countrySelected = "Default Country";
+    this.newsCategorySelected = "Default News Category";
 
     // bus.$emit("useInputValueToFetchData", inputValue);
   }
@@ -173,6 +192,7 @@ export default class NewsMenu extends Vue {
       typeOfFetchBase: "fetchInput"
     };
     await news.fetchNewsQuery(inputFetchObject);
+    bus.$emit("useInputValueToFetchData");
   }
 }
 </script>
@@ -205,6 +225,9 @@ export default class NewsMenu extends Vue {
   margin-top: 18.2px;
   background-color: white;
   text-align: left;
+}
+.news-menu-information {
+  padding-left: 5%;
 }
 .news-menu-query-country select,
 .news-menu-query-subject select,

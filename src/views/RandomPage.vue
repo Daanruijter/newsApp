@@ -248,7 +248,7 @@ export default class RandomPage extends Vue {
 <style scoped>
 .randompage-container {
   color: black;
-  margin-top: 161px;
+  margin-top: 175px;
 }
 
 .randompage-title {

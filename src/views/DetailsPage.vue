@@ -118,7 +118,7 @@ export default class DetailsPage extends Vue {
 <style scoped>
 .detailspage-container {
   color: black;
-  margin-top: 161px;
+  margin-top: 175px;
 }
 .detailspage-title {
   font-weight: bold;
