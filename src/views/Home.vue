@@ -78,10 +78,14 @@ import DetailsPage from "./DetailsPage.vue";
 import VueRouter from "vue-router";
 import { bus } from "../main";
 
+interface Test {
+  newsDataToDisplay: NewsItemType[];
+}
+
 @Component({ components: { DetailsPage } })
 export default class Home extends Vue {
   isHovering = false;
-  // newsData = [];
+  newsData: NewsItemType[] = [];
   newsDataToDisplay: NewsItemType[] = [];
   test = [];
 
@@ -120,6 +124,9 @@ export default class Home extends Vue {
     this.newsDataToDisplay = this.$store.getters[
       "vuexModuleDecorators/newsDataModule"
     ].newsCountryQueriedGetter;
+    this.newsData = this.newsDataToDisplay = this.$store.getters[
+      "vuexModuleDecorators/newsDataModule"
+    ].newsCountryQueriedGetter;
     bus.$on("selectedCountry", () => {
       this.newsDataToDisplay = this.$store.getters[
         "vuexModuleDecorators/newsDataModule"
@@ -155,33 +162,45 @@ export default class Home extends Vue {
 
   //sort the news array bij news source name
   sortByNewsSource(event: Event) {
-    console.log(this.newsDataToDisplay);
-
     const targetValue = (event.target as HTMLTextAreaElement).name;
-
+    console.log(targetValue);
     function compare(a: NewsItemType, b: NewsItemType) {
+      let propertyName = {} as keyof typeof a | keyof typeof b;
+      const name = "name" as
+        | keyof typeof propertyName
+        | keyof typeof propertyName;
       if (targetValue === "sortByNewsTitle") {
-        a.source.name = a.title;
-        b.source.name = b.title;
-        console.log("hsortbynewstitkle");
-        console.log(a.source.name);
+        propertyName = "title";
       }
-
+      if (targetValue === "sortByNewsSource") {
+        console.log("NEWSCOUDERE");
+        propertyName = name as keyof typeof a;
+        console.log(a[propertyName]);
+      }
+      //   a.source.name = a.title;
+      //   b.source.name = b.title;
+      //   console.log("hsortbynewstitkle");
+      //   console.log(a.source.name);
+      // }
+      // if (targetValue === "sortByNewsSource") {
+      //   console.log("sortByNewsSource");
+      // }
+      console.log(propertyName);
       let returnComparisonNumber = 2;
 
-      if (a.source.name !== undefined && b.source.name !== undefined) {
-        if (a.source.name < b.source.name) {
+      if (a[propertyName] !== undefined && b[propertyName] !== undefined) {
+        if (a[propertyName] < b[propertyName]) {
           returnComparisonNumber = -1;
           console.log(returnComparisonNumber);
         }
-        if (a.source.name > b.source.name) {
+        if (a[propertyName] > b[propertyName]) {
           returnComparisonNumber = 1;
           console.log(returnComparisonNumber);
         }
 
         if (
-          !(a.source.name < b.source.name) &&
-          !(a.source.name > b.source.name)
+          !(a[propertyName] < b[propertyName]) &&
+          !(a[propertyName] > b[propertyName])
         ) {
           returnComparisonNumber = 0;
           console.log(returnComparisonNumber);
@@ -191,12 +210,10 @@ export default class Home extends Vue {
       return returnComparisonNumber;
     }
 
-    this.newsDataToDisplay = this.$store.getters[
-      "vuexModuleDecorators/newsDataModule"
-    ].newsCountryQueriedGetter;
+    this.newsDataToDisplay = this.newsData;
 
     //Before sorting filter the 10 least recent news items out of the array to have the 10 most recent ones left and display them
-    let newsDataToSort: NewsItemType[] = this.newsDataToDisplay;
+    let newsDataToSort: NewsItemType[] = this.newsData;
     newsDataToSort = newsDataToSort.filter(
       (item: NewsItemType, index: number) => {
         return index < 10;
