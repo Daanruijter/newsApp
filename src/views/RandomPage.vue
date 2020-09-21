@@ -155,7 +155,7 @@ export default class RandomPage extends Vue {
       this.fetchDataForRandomPage();
       this.newsData = this.$store.getters[
         "vuexModuleDecorators/newsDataModule"
-      ].newsCountryQueriedGetter;
+      ].queriedNewsItemsGetter;
       this.filterArrayByRandomIndex();
     });
   }

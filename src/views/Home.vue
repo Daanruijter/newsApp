@@ -44,7 +44,7 @@
         <hr v-if="newsItem.urlToImage && index < 10" />
       </div>
       <!-- if there is no picture, put those news items under the header Other News -->
-      <h1 v-if="this.noImage">Other news</h1>
+      <h2 v-if="this.noImage">Other news</h2>
       <div
         @click="makeCategoriesDivClosed"
         class="home-newsitems-no-picture"

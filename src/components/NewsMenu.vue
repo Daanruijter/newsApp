@@ -157,6 +157,7 @@ export default class NewsMenu extends Vue {
     this.newsCategorySelected = "Default News Category";
     await news.fetchNewsQuery(countryFetchObject);
     bus.$emit("selectedCountry", selectedCountry);
+    this.categoriesPageBoolean = false;
   }
 
   async catchNewsCategoryValue(event: Event) {
@@ -168,6 +169,7 @@ export default class NewsMenu extends Vue {
     this.countrySelected = "Default Country";
     await news.fetchNewsQuery(newsCategoryFetchObject);
     bus.$emit("selectedNewsCategory", selectedNewsCategory);
+    this.categoriesPageBoolean = false;
   }
 
   async catchInputValue(event: Event) {
@@ -193,6 +195,7 @@ export default class NewsMenu extends Vue {
     };
     await news.fetchNewsQuery(inputFetchObject);
     bus.$emit("useInputValueToFetchData");
+    this.categoriesPageBoolean = false;
   }
 }
 </script>

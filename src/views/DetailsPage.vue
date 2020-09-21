@@ -48,7 +48,7 @@
     <!-- three other relevant items -->
 
     <div class="detailspage-other-relevant-items">
-      <h1>Other relevant news items about{{" "}}{{ this.newsBase}}</h1>
+      <h2>More{{" "}}{{ this.newsBase}}{{" news"}}</h2>
       <hr />
       <div
         v-for="newsItem in this.threeRelevantExtraNewsItems"
@@ -92,6 +92,7 @@
         <div class="detailspage-picture">
           <img v-bind:src="newsItem.urlToImage" />
         </div>
+        <hr />
       </div>
     </div>
   </div>
@@ -121,6 +122,10 @@ export default class DetailsPage extends Vue {
     ].fetchDateObject;
 
     this.newsBase = fetchBaseData.fetchBase;
+
+    if (fetchBaseData.fetchBase === "Default Country") {
+      this.newsBase = "United States";
+    }
 
     // await news.fetchNewsQuery(countryFetchObject);
 
