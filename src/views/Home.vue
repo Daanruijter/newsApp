@@ -5,24 +5,24 @@
       <button
         name="sortByNewsSource"
         class="home-sort-by-newssource-button"
-        @click="sortByNewsSource($event)"
+        @click="sortByNewsSource"
       >Sort by news source</button>
       <button
         name="sortByNewsTitle"
         class="home-sort-by-newstitle-button"
-        @click="sortByNewsSource($event)"
+        @click="sortByNewsTitle"
       >Sort by news title</button>
+      <button name="reset" class="home-reset" @click="reset">Reset</button>
     </div>
     <br />
-    <div v-if="this.newsDataToDisplay[0]" class="home-newsdata-loaded">
+    <div class="home-newsdata-loaded">
       Get to know what's currently happening in the world. Tap on the title to
       know more.
       <div
-        value="sss"
         @click="makeCategoriesDivClosed"
         class="home-newsitems-with-picture"
         v-for="(newsItem, index) in this.newsDataToDisplay"
-        :key="newsItem.title"
+        :key="newsItem.title + index"
       >
         <router-link :to="{ name: 'DetailsPage', params: { title: newsItem.title } }">
           <div
@@ -42,12 +42,13 @@
         </div>
         <hr v-if="newsItem.urlToImage && index < 10" />
       </div>
-      <h1>Other news</h1>
+      <!-- if there is no picture, put those news items under the header Other News -->
+      <h1 v-if="this.noImage">Other news</h1>
       <div
         @click="makeCategoriesDivClosed"
         class="home-newsitems-no-picture"
         v-for="(newsItem, index) in this.newsDataToDisplay"
-        :key="newsItem.contents"
+        :key="newsItem.title"
       >
         <router-link :to="{ name: 'DetailsPage', params: { title: newsItem.title } }">
           <div
@@ -61,7 +62,7 @@
         <hr v-if="!newsItem.urlToImage" />
       </div>
     </div>
-    <div v-if="!this.newsDataToDisplay[0]" class="home-newsdata-not-loaded">
+    <div v-if="!this.newsDataToDisplay" class="home-newsdata-not-loaded">
       <div class="home-no-newsitems">No news items to show</div>
     </div>
   </div>
@@ -87,7 +88,7 @@ export default class Home extends Vue {
   isHovering = false;
   newsData: NewsItemType[] = [];
   newsDataToDisplay: NewsItemType[] = [];
-  test = [];
+  noImage = false;
 
   router = new VueRouter({
     routes: [
@@ -96,6 +97,7 @@ export default class Home extends Vue {
     ]
   });
 
+  //if a picture cannot load, filter it out of the newsItemTodisplay Array by filtering the item(s) out of that array in the news module
   pictureNotLoaded(index: number) {
     let i: number;
     const tenFirstNewsItemsIfPicture: NewsItemType[] = this.newsDataToDisplay;
@@ -119,23 +121,24 @@ export default class Home extends Vue {
 
     await news.fetchNewsQuery(newsCategoryFetchObject);
     console.log("mounted");
-    // this.newsCountryQueriedIfPicture;
-    // this.getAllNewsData;
+    console.log(this.newsData);
+
+    //load the data in the component through the queriedNewsItemsGetter
     this.newsDataToDisplay = this.$store.getters[
       "vuexModuleDecorators/newsDataModule"
-    ].newsCountryQueriedGetter;
-    this.newsData = this.newsDataToDisplay = this.$store.getters[
+    ].queriedNewsItemsGetter;
+    this.newsData = this.$store.getters[
       "vuexModuleDecorators/newsDataModule"
-    ].newsCountryQueriedGetter;
+    ].queriedNewsItemsGetter;
     bus.$on("selectedCountry", () => {
       this.newsDataToDisplay = this.$store.getters[
         "vuexModuleDecorators/newsDataModule"
-      ].newsCountryQueriedGetter;
+      ].queriedNewsItemsGetter;
     });
     bus.$on("selectedNewsCategory", () => {
       this.newsDataToDisplay = this.$store.getters[
         "vuexModuleDecorators/newsDataModule"
-      ].newsCountryQueriedGetter;
+      ].queriedNewsItemsGetter;
     });
 
     //send input and onchange event to other components
@@ -145,65 +148,54 @@ export default class Home extends Vue {
 
       this.newsDataToDisplay = this.$store.getters[
         "vuexModuleDecorators/newsDataModule"
-      ].newsCountryQueriedGetter;
+      ].queriedNewsItemsGetter;
     });
+
+    //EMIT THE CLICK TO DETAILSPAGE EVENT
+    //send input and onchange event to other components
+    bus.$on("useInputValueToFetchData", (data: string) => {
+      console.log("I GOT THE INPUTEVENT");
+      console.log(data);
+
+      this.newsDataToDisplay = this.$store.getters[
+        "vuexModuleDecorators/newsDataModule"
+      ].queriedNewsItemsGetter;
+    });
+    this.checkIfThereIsANewsItemWithoutAPicture();
   }
 
-  get getAllNewsData() {
-    this.newsDataToDisplay = this.$store.getters[
-      "vuexModuleDecorators/newsDataModule"
-    ].newsCountryQueriedIfPicture;
-    return null;
+  //hide "other news" if there is no news item without a picture.
+  //If so, set the data variable noImage to true and display the Other News header
+  checkIfThereIsANewsItemWithoutAPicture(): void {
+    console.log("hi");
+    let i = 0;
+    for (i = 0; i < this.newsDataToDisplay.length; i++) {
+      if (this.newsDataToDisplay[i].urlToImage === "") {
+        this.noImage = true;
+      }
+    }
   }
 
-  makeCategoriesDivClosed() {
+  makeCategoriesDivClosed(): void {
     bus.$emit("makeCategoriesDivClosedEventForDetailsPage");
   }
 
   //sort the news array bij news source name
-  sortByNewsSource(event: Event) {
-    const targetValue = (event.target as HTMLTextAreaElement).name;
-    console.log(targetValue);
-    function compare(a: NewsItemType, b: NewsItemType) {
-      let propertyName = {} as keyof typeof a | keyof typeof b;
-      // const name = "name" as
-      //   | keyof typeof propertyName
-      //   | keyof typeof propertyName;
-      if (targetValue === "sortByNewsTitle") {
-        propertyName = "title";
-      }
-      if (targetValue === "sortByNewsSource") {
-        console.log("NEWSCOUDERE");
-
-        propertyName = "source.name" as keyof typeof a;
-        console.log(a);
-        console.log(a[propertyName]);
-      }
-      //   a.source.name = a.title;
-      //   b.source.name = b.title;
-      //   console.log("hsortbynewstitkle");
-      //   console.log(a.source.name);
-      // }
-      // if (targetValue === "sortByNewsSource") {
-      //   console.log("sortByNewsSource");
-      // }
-      console.log(propertyName);
+  sortByNewsTitle(): void {
+    function compareTitles(a: NewsItemType, b: NewsItemType): number {
       let returnComparisonNumber = 2;
 
-      if (a[propertyName] !== undefined && b[propertyName] !== undefined) {
-        if (a[propertyName] < b[propertyName]) {
+      if (a.title !== undefined && b.title !== undefined) {
+        if (a.title < b.title) {
           returnComparisonNumber = -1;
           console.log(returnComparisonNumber);
         }
-        if (a[propertyName] > b[propertyName]) {
+        if (a.title > b.title) {
           returnComparisonNumber = 1;
           console.log(returnComparisonNumber);
         }
 
-        if (
-          !(a[propertyName] < b[propertyName]) &&
-          !(a[propertyName] > b[propertyName])
-        ) {
+        if (!(a.title < b.title) && !(a.title > b.title)) {
           returnComparisonNumber = 0;
           console.log(returnComparisonNumber);
         }
@@ -221,15 +213,56 @@ export default class Home extends Vue {
         return index < 10;
       }
     );
-
-    const sorted: NewsItemType[] = newsDataToSort.sort(compare);
-    console.log(sorted);
-    console.log(this.newsDataToDisplay);
+    const sorted: NewsItemType[] = newsDataToSort.sort(compareTitles);
     this.newsDataToDisplay = sorted;
   }
 
-  sortByNewsTitle() {
-    console.log("sortByNewsTitle");
+  sortByNewsSource(): void {
+    function compareSourceNames(a: NewsItemType, b: NewsItemType): number {
+      let returnComparisonNumber = 2;
+
+      if (a.source.name !== undefined && b.source.name !== undefined) {
+        if (a.source.name < b.source.name) {
+          returnComparisonNumber = -1;
+          // console.log(returnComparisonNumber);
+        }
+        if (a.source.name > b.source.name) {
+          returnComparisonNumber = 1;
+          // console.log(returnComparisonNumber);
+        }
+
+        if (
+          !(a.source.name < b.source.name) &&
+          !(a.source.name > b.source.name)
+        ) {
+          returnComparisonNumber = 0;
+          // console.log(returnComparisonNumber);
+        }
+      }
+
+      return returnComparisonNumber;
+    }
+
+    this.newsDataToDisplay = this.newsData;
+
+    //Before sorting filter the 10 least recent news items out of the array to have the 10 most recent ones left and display them
+    let newsDataToSort: NewsItemType[] = this.newsData;
+    newsDataToSort = newsDataToSort.filter(
+      (item: NewsItemType, index: number) => {
+        return index < 10;
+      }
+    );
+    this.newsDataToDisplay = newsDataToSort;
+
+    const sorted: NewsItemType[] = newsDataToSort.sort(compareSourceNames);
+    // console.log(sorted);
+    // console.log(this.newsDataToDisplay);
+    this.newsDataToDisplay = sorted;
+  }
+
+  //reset the sorted news items to the list that it was
+  reset(): void {
+    this.newsDataToDisplay = this.newsData;
   }
 }
 </script>

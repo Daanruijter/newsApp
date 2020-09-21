@@ -50,23 +50,70 @@
 
 <script lang="ts">
 import NewsItemType from "../interfacesforapp";
-
+// import { bus } from "../main";
 import { Vue, Component } from "vue-property-decorator";
 //EVEN UITGEZET!!!
 // import news from "../store/modules/news";
 //EVEN UITGEZET!!!
 import { convertNewsItemPublishedTime } from "../methodsForGeneralUse";
 
+interface FetchBase {
+  fetchBase: string;
+  typeOfFetchBase: string;
+}
+
 @Component
 export default class DetailsPage extends Vue {
   async mounted() {
     console.log("mounted");
 
-    //fetch the newsData and put it in the vuex store
+    // const countryFetchObject = {
+    //   fetchBase: "Default Country",
+    //   typeOfFetchBase: "fetchCountry"
+    // };
 
-    //EVEN UITGEZET!!!
-    //     await news.fetchNews();
-    // //EVEN UITGEZET!!!
+    // await news.fetchNewsQuery(countryFetchObject);
+
+    // //get the info about what data to fetch
+
+    // bus.$on("selectedCountry", (selectedCountry: string) => {
+    //   const countryFetchObject: FetchBase = {
+    //     fetchBase: selectedCountry,
+    //     typeOfFetchBase: "fetchCountry"
+    //   };
+    //   const itemsToFetch = countryFetchObject;
+    //   console.log(itemsToFetch);
+    //   //EVEN UITGEZET!!!
+    //   // news.fetchNewsQuery(itemsToFetch);
+    //   // //EVEN UITGEZET!!!
+    // });
+
+    // bus.$on("selectedNewsCategory", (selectedNewsCategory: string) => {
+    //   const newsCategoryFetchObject = {
+    //     fetchBase: selectedNewsCategory,
+    //     typeOfFetchBase: "fetchNewsCategory"
+    //   };
+    //   const itemsToFetch = newsCategoryFetchObject;
+    //   console.log(itemsToFetch);
+    //   //EVEN UITGEZET!!!
+    //   // news.fetchNewsQuery(itemsToFetch);
+    //   // //EVEN UITGEZET!!!
+    // });
+
+    // bus.$on("useInputValueToFetchData", (inputValue: string) => {
+    //   const inputFetchObject = {
+    //     fetchBase: inputValue,
+    //     typeOfFetchBase: "fetchInput"
+    //   };
+
+    //   const itemsToFetch = inputFetchObject;
+    //   console.log(itemsToFetch);
+    //   //EVEN UITGEZET!!!
+    //   // news.fetchNewsQuery(itemsToFetch);
+    //   // //EVEN UITGEZET!!!
+    // });
+
+    //fetch the newsData and put it in the vuex store
 
     //get the newsdata when the vuex store is populated with newsdata
     this.getAllNewsData;
@@ -94,7 +141,7 @@ export default class DetailsPage extends Vue {
   get getAllNewsData() {
     this.newsData = this.$store.getters[
       "vuexModuleDecorators/newsDataModule"
-    ].newsCountryQueriedGetter;
+    ].queriedNewsItemsGetter;
 
     return null;
   }

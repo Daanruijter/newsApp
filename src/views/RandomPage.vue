@@ -203,7 +203,7 @@ export default class RandomPage extends Vue {
   get getAllNewsData() {
     this.newsData = this.$store.getters[
       "vuexModuleDecorators/newsDataModule"
-    ].newsCountryQueriedGetter;
+    ].queriedNewsItemsGetter;
     this.filterArrayByRandomIndex();
     return null;
   }
@@ -239,7 +239,7 @@ export default class RandomPage extends Vue {
     this.fetchDataForRandomPage();
     this.newsData = this.$store.getters[
       "vuexModuleDecorators/newsDataModule"
-    ].newsCountryQueriedGetter;
+    ].queriedNewsItemsGetter;
     this.filterArrayByRandomIndex();
   }
 }

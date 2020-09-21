@@ -176,7 +176,7 @@ export default class NewsMenu extends Vue {
     this.countrySelected = "Default Country";
     this.newsCategorySelected = "Default News Category";
 
-    // bus.$emit("useInputValueToFetchData", inputValue);
+    bus.$emit("useInputValueToFetchData", inputValue);
   }
 
   makeCategoriesDivClosed() {

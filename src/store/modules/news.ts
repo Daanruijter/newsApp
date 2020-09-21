@@ -36,7 +36,7 @@ import store from "@/store";
 class NewsModule extends VuexModule {
   //state
   news: NewsItemType[] = [];
-  newsCountryQueried: NewsItemType[] = [];
+  queriedNewsItems: NewsItemType[] = [];
   pictureNotLoadedArray: string[] = [];
   categoriesClickEventBoolean = false;
 
@@ -48,10 +48,11 @@ class NewsModule extends VuexModule {
     return newsDataViaGetter;
   }
 
-  get newsCountryQueriedGetter(): NewsItemType[] {
-    console.log("countriesqueried");
+  //getter to load the data in components
+  get queriedNewsItemsGetter(): NewsItemType[] {
+    console.log("queriedNewsItemsGetter");
 
-    const newsCountryQueriedIfPicture = this.newsCountryQueried.filter(
+    const queriedNewsItemsIfPicture = this.queriedNewsItems.filter(
       (news: NewsItemType) => {
         return (
           news.urlToImage !== this.pictureNotLoadedArray[0] &&
@@ -62,8 +63,8 @@ class NewsModule extends VuexModule {
         );
       }
     );
-    console.log(newsCountryQueriedIfPicture);
-    return newsCountryQueriedIfPicture;
+    console.log(queriedNewsItemsIfPicture);
+    return queriedNewsItemsIfPicture;
   }
 
   @Mutation
@@ -74,7 +75,7 @@ class NewsModule extends VuexModule {
   @Mutation
   addQueriedNewsDataToState(data: NewsItemType[]) {
     console.log("addQueriedNewsDataACTION works");
-    this.newsCountryQueried = data;
+    this.queriedNewsItems = data;
   }
 
   @Mutation
@@ -483,21 +484,21 @@ class NewsModule extends VuexModule {
       },
       {
         source: {
-          id: "reuters",
-          name: "Reuters",
+          id: null,
+          name: "Yahoo Entertainment",
         },
-        author: "Reuters Editorial",
+        author: "PR Newswire",
         title:
-          "KKR-backed Academy Sports and Outdoors files for U.S. IPO - Reuters",
+          "German real estate investment company LINUS Capital opens office in London, UK",
         description:
-          "Academy Sports and Outdoors Inc, owned by U.S. private equity firm KKR & Co , on Wednesday filed for an initial public offering in the United States, making it the latest firm to cash in on the stunning recovery in capital markets from the COVID-19 pandemic.",
+          "LINUS Capital continues its growth trajectory by establishing a presence in the United Kingdom (UK). The Berlin-based investment company finances real estate projects with debt and mezzanine capital through its self-managed £320 million debt fund. LINUS gives…",
         url:
-          "https://www.reuters.com/article/us-academy-sports-and-outdoors-ipo-idUSKBN26037X",
+          "https://finance.yahoo.com/news/german-real-estate-investment-company-080000300.html",
         urlToImage:
-          "https://s4.reutersmedia.net/resources_v2/images/rcom-default.png",
-        publishedAt: "2020-09-09T20:35:00Z",
+          "https://s.yimg.com/uu/api/res/1.2/iJxOA4vWlW5bRYh1aH3Rdw--~B/aD02NDt3PTQwMDthcHBpZD15dGFjaHlvbg--/https://media.zenfs.com/en/prnewswire.com/41e1da18c257866b74a50dea36f97730",
+        publishedAt: "2020-09-21T08:00:00Z",
         content:
-          "(Reuters) - Academy Sports and Outdoors Inc, owned by U.S. private equity firm KKR &amp; Co (KKR.N), on Wednesday filed for an initial public offering in the United States, making it the latest firm … [+1038 chars]",
+          "In the trailer for First Kid, the forgettable 1996 comedy about a Secret Service agent assigned to protect the presidents son, the title character, played by a teenage Brock Pierce, describes himself… [+27305 chars]",
       },
       {
         source: {
