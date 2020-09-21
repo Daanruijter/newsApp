@@ -166,15 +166,17 @@ export default class Home extends Vue {
     console.log(targetValue);
     function compare(a: NewsItemType, b: NewsItemType) {
       let propertyName = {} as keyof typeof a | keyof typeof b;
-      const name = "name" as
-        | keyof typeof propertyName
-        | keyof typeof propertyName;
+      // const name = "name" as
+      //   | keyof typeof propertyName
+      //   | keyof typeof propertyName;
       if (targetValue === "sortByNewsTitle") {
         propertyName = "title";
       }
       if (targetValue === "sortByNewsSource") {
         console.log("NEWSCOUDERE");
-        propertyName = name as keyof typeof a;
+
+        propertyName = "source.name" as keyof typeof a;
+        console.log(a);
         console.log(a[propertyName]);
       }
       //   a.source.name = a.title;
