@@ -45,6 +45,55 @@
         <img v-bind:src="newsItem.urlToImage" />
       </div>
     </div>
+    <!-- three other relevant items -->
+
+    <div class="detailspage-other-relevant-items">
+      <h1>Other relevant news items about{{" "}}{{ this.newsBase}}</h1>
+      <hr />
+      <div
+        v-for="newsItem in this.threeRelevantExtraNewsItems"
+        :key="newsItem.title"
+        class="detailspage-data"
+      >
+        <div
+          class="detailspage-title"
+          @mouseover="isHovering = true"
+          @mouseout="isHovering = false"
+          :class="{ hovering: isHovering }"
+        >
+          <a :href="newsItem.url">{{ newsItem.title }}</a>
+        </div>
+
+        <div>Written by:{{ " " }}{{ newsItem.author }}</div>
+        <br />
+        <div class="detailspage-description">
+          <span class="detailspage-small-header">Description</span>
+          <br />
+          {{
+          newsItem.description
+          }}
+        </div>
+        <div class="detailspage-contents">
+          <span class="detailspage-small-header">Contents</span>
+          <br />
+          {{
+          newsItem.content
+          }}
+        </div>
+        <div
+          class="detailspage-read-more"
+          @mouseover="hoveringReadMore = true"
+          @mouseout="hoveringReadMore = false"
+          :class="{ hovering: hoveringReadMore }"
+        >
+          <a :href="newsItem.url">READ MORE</a>
+        </div>
+
+        <div class="detailspage-picture">
+          <img v-bind:src="newsItem.urlToImage" />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -67,10 +116,11 @@ export default class DetailsPage extends Vue {
   async mounted() {
     console.log("mounted");
 
-    // const countryFetchObject = {
-    //   fetchBase: "Default Country",
-    //   typeOfFetchBase: "fetchCountry"
-    // };
+    const fetchBaseData = this.$store.getters[
+      "vuexModuleDecorators/newsDataModule"
+    ].fetchDateObject;
+
+    this.newsBase = fetchBaseData.fetchBase;
 
     // await news.fetchNewsQuery(countryFetchObject);
 
@@ -131,11 +181,13 @@ export default class DetailsPage extends Vue {
   isHovering = false;
   hoveringReadMore = false;
   newsData = [];
+  newsBase = "";
 
   //get the newsitem where a user clicked on to go to its detail page from params
   newsItemTitle = this.$route.params.title;
   newsItemPublishedTime = "";
   valuesForDetailComponent: NewsItemType[] = [];
+  threeRelevantExtraNewsItems: NewsItemType[] = [];
 
   //populate the newsdata data array (necessary to filter based on the newsItemTitle variable)
   get getAllNewsData() {
@@ -146,17 +198,54 @@ export default class DetailsPage extends Vue {
     return null;
   }
 
+  //get a random number for the index. Number must be higher than 10, because I don't want to display newsItems that already got displayed on the homepage.
+  //The random number must also not be higher than the length of the array of newsitems
+  randomIntFromInterval(min: number, max: number): number {
+    // min and max included
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
+
   //populate the newsdata data item by filtering it, saving the newsItem that matches the newsItem a user clicked on to go to its detail page
   get getValuesForDetailComponent() {
+    //initiate the variable "indexNotToShowInExtraNewsItems" to save the index from the item that gets displayed
+    //use that to exclude it from the extra three items displayed
+    let filterDisplayedItemOut = 0;
+
+    //initiate the variable "indexToShowExtraNewsItems" to get the most recent three news extra items
+
+    let indexToShowExtraNewsItems = 3;
+
+    //get the clicked news item from the array
     const valuesForDetailComponentFiltered: NewsItemType[] = this.newsData.filter(
-      (item: NewsItemType) => {
+      (item: NewsItemType, index: number) => {
+        // save the index of the clicked news item
+        if (item.title === this.newsItemTitle) {
+          filterDisplayedItemOut = index;
+        }
         return item.title === this.newsItemTitle;
       }
     );
-    console.log(valuesForDetailComponentFiltered);
-    console.log(this.valuesForDetailComponent);
-    this.valuesForDetailComponent = valuesForDetailComponentFiltered;
 
+    //if the news item displayed is one of them, increase the variable "indexToShowExtraNewsItems" to filter three items out of the array by 1 to display three, not two items
+    if (
+      filterDisplayedItemOut == 0 ||
+      filterDisplayedItemOut == 1 ||
+      filterDisplayedItemOut == 2
+    ) {
+      indexToShowExtraNewsItems += 1;
+    }
+
+    const extraValuesForDetailComponent: NewsItemType[] = this.newsData.filter(
+      (item: NewsItemType, index: number) => {
+        // }
+        return (
+          index !== filterDisplayedItemOut && index < indexToShowExtraNewsItems
+        );
+      }
+    );
+
+    this.valuesForDetailComponent = valuesForDetailComponentFiltered;
+    this.threeRelevantExtraNewsItems = extraValuesForDetailComponent;
     return valuesForDetailComponentFiltered;
   }
 }

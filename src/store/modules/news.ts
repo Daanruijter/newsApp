@@ -20,6 +20,11 @@ export interface FetchNews {
   typeOfFetchBase: string;
 }
 
+export interface FetchBase {
+  fetchBase?: string;
+  typeOfFetchBase?: string;
+}
+
 import {
   VuexModule,
   Module,
@@ -39,6 +44,7 @@ class NewsModule extends VuexModule {
   queriedNewsItems: NewsItemType[] = [];
   pictureNotLoadedArray: string[] = [];
   categoriesClickEventBoolean = false;
+  fetchBaseObject: FetchBase = {};
 
   //getters
   get newsDataGetter(): NewsItemType[] {
@@ -67,6 +73,11 @@ class NewsModule extends VuexModule {
     return queriedNewsItemsIfPicture;
   }
 
+  //getter to get the fetchBaseObject in components after each data fetching
+  get fetchDateObject(): FetchBase {
+    return this.fetchBaseObject;
+  }
+
   @Mutation
   addNewsDataToState(data: NewsItemType[]) {
     this.news = data;
@@ -86,6 +97,11 @@ class NewsModule extends VuexModule {
   @Mutation
   addBooleanOfCategoriesPageEvent(data: boolean) {
     this.categoriesClickEventBoolean = data;
+  }
+
+  @Mutation
+  addFetchBaseToState(fetchBaseObject: FetchBase) {
+    this.fetchBaseObject = fetchBaseObject;
   }
 
   // @Action
@@ -673,6 +689,7 @@ class NewsModule extends VuexModule {
     // this.context.commit("addQueriedNewsDataToState", data.articles);
 
     this.context.commit("addQueriedNewsDataToState", data);
+    this.context.commit("addFetchBaseToState", fetchBaseObject);
     // });
     url = "";
   }

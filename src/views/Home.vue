@@ -30,6 +30,7 @@
             class="home-newsitem-title"
             @mouseover="isHovering = true"
             @mouseout="isHovering = false"
+            @click="sendClickEventToGoToDetailsPage"
             :class="{ hovering: isHovering }"
           >{{ newsItem.title }}</div>
         </router-link>
@@ -62,6 +63,7 @@
         <hr v-if="!newsItem.urlToImage" />
       </div>
     </div>
+
     <div v-if="!this.newsDataToDisplay" class="home-newsdata-not-loaded">
       <div class="home-no-newsitems">No news items to show</div>
     </div>
@@ -151,19 +153,13 @@ export default class Home extends Vue {
       ].queriedNewsItemsGetter;
     });
 
-    //EMIT THE CLICK TO DETAILSPAGE EVENT
-    //send input and onchange event to other components
-    bus.$on("useInputValueToFetchData", (data: string) => {
-      console.log("I GOT THE INPUTEVENT");
-      console.log(data);
-
-      this.newsDataToDisplay = this.$store.getters[
-        "vuexModuleDecorators/newsDataModule"
-      ].queriedNewsItemsGetter;
-    });
     this.checkIfThereIsANewsItemWithoutAPicture();
   }
 
+  //send click event to other components
+  sendClickEventToGoToDetailsPage() {
+    console.log("sendclickevent");
+  }
   //hide "other news" if there is no news item without a picture.
   //If so, set the data variable noImage to true and display the Other News header
   checkIfThereIsANewsItemWithoutAPicture(): void {

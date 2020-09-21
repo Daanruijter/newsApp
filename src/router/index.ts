@@ -25,7 +25,7 @@ const routes: Array<RouteConfig> = [
       import(/* webpackChunkName: "about" */ "../views/RandomPage.vue"),
   },
   {
-    path: "/details:title",
+    path: "/details/:title",
     name: "DetailsPage",
 
     component: () =>
