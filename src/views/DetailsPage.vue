@@ -55,6 +55,8 @@
         :key="newsItem.title"
         class="detailspage-data"
       >
+        <div>{{newsItem.publishedAt}} GMT</div>
+        <br />
         <div
           class="detailspage-title"
           @mouseover="isHovering = true"
@@ -115,19 +117,49 @@ interface FetchBase {
 @Component
 export default class DetailsPage extends Vue {
   async mounted() {
+    console.log(this.newsData["__ob__" as string].value.length);
     console.log("mounted");
-
-    const fetchBaseData = this.$store.getters[
+    this.newsData = this.$store.getters[
       "vuexModuleDecorators/newsDataModule"
-    ].fetchBaseObject;
+    ].queriedNewsItemsGetter;
 
-    this.newsBase = fetchBaseData.fetchBase;
+    if (this.newsData === []) {
+      console.log("lege array");
+      console.log(localStorage.getItem("typeOfFetchBase"));
 
-    if (fetchBaseData.fetchBase === "Default Country") {
-      this.newsBase = "United States";
+      console.log(localStorage.getItem("fetchBase"));
     }
 
-    // await news.fetchNewsQuery(countryFetchObject);
+    // const fetchBaseData = this.$store.getters[
+    //   "vuexModuleDecorators/newsDataModule"
+    // ].fetchBaseObject;
+    // console.log(
+    //   this.$store.getters["vuexModuleDecorators/newsDataModule"]
+    //     .fetchBaseObject === {}
+    // );
+    // const newsCategoryFetchObject = {
+    //   fetchBase: "Default Country",
+    //   typeOfFetchBase: "fetchCountry"
+    // };
+
+    // if (fetchBaseData === {}) {
+    //   console.log("fecth the data");
+    //   await news.fetchNewsQuery(newsCategoryFetchObject);
+    //   this.newsData = this.$store.getters[
+    //     "vuexModuleDecorators/newsDataModule"
+    //   ].queriedNewsItemsGetter;
+    //   this.newsBase = fetchBaseData.fetchBase;
+    // }
+
+    // if (fetchBaseData.fetchBase === "Default Country") {
+    //   this.newsBase = "United States";
+    // }
+
+    // if (fetchBaseData) {
+    //   await news.fetchNewsQuery(fetchBaseData);
+    // }
+
+    // await news.fetchNewsQuery(fetchBaseData);
 
     // //get the info about what data to fetch
 
@@ -171,7 +203,7 @@ export default class DetailsPage extends Vue {
     //fetch the newsData and put it in the vuex store
 
     //get the newsdata when the vuex store is populated with newsdata
-    this.getAllNewsData;
+    // this.getAllNewsData;
 
     //get the right detail object for a given newsitem
     this.getValuesForDetailComponent;
@@ -195,13 +227,13 @@ export default class DetailsPage extends Vue {
   threeRelevantExtraNewsItems: NewsItemType[] = [];
 
   //populate the newsdata data array (necessary to filter based on the newsItemTitle variable)
-  get getAllNewsData() {
-    this.newsData = this.$store.getters[
-      "vuexModuleDecorators/newsDataModule"
-    ].queriedNewsItemsGetter;
+  // get getAllNewsData(): null {
+  //   this.newsData = this.$store.getters[
+  //     "vuexModuleDecorators/newsDataModule"
+  //   ].queriedNewsItemsGetter;
 
-    return null;
-  }
+  //   return null;
+  // }
 
   //get a random number for the index. Number must be higher than 10, because I don't want to display newsItems that already got displayed on the homepage.
   //The random number must also not be higher than the length of the array of newsitems
@@ -240,12 +272,23 @@ export default class DetailsPage extends Vue {
       indexToShowExtraNewsItems += 1;
     }
 
-    const extraValuesForDetailComponent: NewsItemType[] = this.newsData.filter(
+    let extraValuesForDetailComponent: NewsItemType[] = this.newsData.filter(
       (item: NewsItemType, index: number) => {
         // }
         return (
           index !== filterDisplayedItemOut && index < indexToShowExtraNewsItems
         );
+      }
+    );
+
+    console.log(extraValuesForDetailComponent);
+
+    extraValuesForDetailComponent = extraValuesForDetailComponent.map(
+      (item: NewsItemType) => {
+        if (item.publishedAt) {
+          item.publishedAt = convertNewsItemPublishedTime(item.publishedAt);
+        }
+        return item;
       }
     );
 
