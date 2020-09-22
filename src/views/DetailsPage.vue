@@ -119,7 +119,7 @@ export default class DetailsPage extends Vue {
 
     const fetchBaseData = this.$store.getters[
       "vuexModuleDecorators/newsDataModule"
-    ].fetchDateObject;
+    ].fetchBaseObject;
 
     this.newsBase = fetchBaseData.fetchBase;
 

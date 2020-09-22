@@ -157,7 +157,30 @@ export default class RandomPage extends Vue {
         "vuexModuleDecorators/newsDataModule"
       ].queriedNewsItemsGetter;
       this.filterArrayByRandomIndex();
+      this.addNewsSource();
     });
+    this.addNewsSource();
+  }
+
+  //add the news source if it's not shown
+  addNewsSource(): void {
+    let newsDataFiltered = this.randomNewsItem.filter(
+      (item: NewsItemType, index: number) => {
+        return index < 10;
+      }
+    );
+    newsDataFiltered = newsDataFiltered.map((item: NewsItemType) => {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      if (
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        !item.title.includes(item.source.name!) &&
+        item.source.name !== null
+      ) {
+        item.title = item.title + " - " + item.source.name;
+      }
+      return item;
+    });
+    this.randomNewsItem = newsDataFiltered;
   }
 
   //function fetches from the API randomly:
@@ -241,6 +264,7 @@ export default class RandomPage extends Vue {
       "vuexModuleDecorators/newsDataModule"
     ].queriedNewsItemsGetter;
     this.filterArrayByRandomIndex();
+    this.addNewsSource();
   }
 }
 </script>

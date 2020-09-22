@@ -30,7 +30,6 @@
             class="home-newsitem-title"
             @mouseover="isHovering = true"
             @mouseout="isHovering = false"
-            @click="sendClickEventToGoToDetailsPage"
             :class="{ hovering: isHovering }"
           >{{ newsItem.title }}</div>
         </router-link>
@@ -100,7 +99,7 @@ export default class Home extends Vue {
   });
 
   //if a picture cannot load, filter it out of the newsItemTodisplay Array by filtering the item(s) out of that array in the news module
-  pictureNotLoaded(index: number) {
+  pictureNotLoaded(index: number): void {
     let i: number;
     const tenFirstNewsItemsIfPicture: NewsItemType[] = this.newsDataToDisplay;
     const pictureNotLoadedArray: string[] = [];
@@ -126,47 +125,53 @@ export default class Home extends Vue {
     console.log(this.newsData);
 
     //load the data in the component through the queriedNewsItemsGetter
+    this.setData();
+    bus.$on("selectedCountry", () => {
+      this.setData();
+      this.addNewsSource();
+    });
+    bus.$on("selectedNewsCategory", () => {
+      this.setData();
+      this.addNewsSource();
+    });
+
+    //send input and onchange event to other components
+    bus.$on("useInputValueToFetchData", () => {
+      this.setData();
+      this.addNewsSource();
+    });
+    // this.newsData = this.$store.getters[
+    //   "vuexModuleDecorators/newsDataModule"
+    // ].queriedNewsItemsGetter;
+    bus.$on("loadDefaultNewsItemsAfterClickOnHomeButton", () => {
+      this.setData();
+      this.addNewsSource();
+    });
+
+    this.checkIfThereIsANewsItemWithoutAPicture();
+    this.addNewsSource();
+  }
+
+  //set the data to the current values in the news module
+  setData(): void {
     this.newsDataToDisplay = this.$store.getters[
       "vuexModuleDecorators/newsDataModule"
     ].queriedNewsItemsGetter;
     this.newsData = this.$store.getters[
       "vuexModuleDecorators/newsDataModule"
     ].queriedNewsItemsGetter;
-    bus.$on("selectedCountry", () => {
-      this.newsDataToDisplay = this.$store.getters[
-        "vuexModuleDecorators/newsDataModule"
-      ].queriedNewsItemsGetter;
-    });
-    bus.$on("selectedNewsCategory", () => {
-      this.newsDataToDisplay = this.$store.getters[
-        "vuexModuleDecorators/newsDataModule"
-      ].queriedNewsItemsGetter;
-    });
-
-    //send input and onchange event to other components
-    bus.$on("useInputValueToFetchData", (data: string) => {
-      console.log("I GOT THE INPUTEVENT");
-      console.log(data);
-
-      this.newsDataToDisplay = this.$store.getters[
-        "vuexModuleDecorators/newsDataModule"
-      ].queriedNewsItemsGetter;
-    });
-
-    this.checkIfThereIsANewsItemWithoutAPicture();
   }
 
-  //send click event to other components
-  sendClickEventToGoToDetailsPage() {
-    console.log("sendclickevent");
-  }
   //hide "other news" if there is no news item without a picture.
   //If so, set the data variable noImage to true and display the Other News header
   checkIfThereIsANewsItemWithoutAPicture(): void {
     console.log("hi");
     let i = 0;
     for (i = 0; i < this.newsDataToDisplay.length; i++) {
-      if (this.newsDataToDisplay[i].urlToImage === "") {
+      if (
+        this.newsDataToDisplay[i].urlToImage === "" ||
+        this.newsDataToDisplay[i].urlToImage === null
+      ) {
         this.noImage = true;
       }
     }
@@ -174,6 +179,27 @@ export default class Home extends Vue {
 
   makeCategoriesDivClosed(): void {
     bus.$emit("makeCategoriesDivClosedEventForDetailsPage");
+  }
+
+  //add the news source if it's not shown
+  addNewsSource(): void {
+    let newsDataFiltered = this.newsDataToDisplay.filter(
+      (item: NewsItemType, index: number) => {
+        return index < 10;
+      }
+    );
+    newsDataFiltered = newsDataFiltered.map((item: NewsItemType) => {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      if (
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        !item.title.includes(item.source.name!) &&
+        item.source.name !== null
+      ) {
+        item.title = item.title + " - " + item.source.name;
+      }
+      return item;
+    });
+    this.newsDataToDisplay = newsDataFiltered;
   }
 
   //sort the news array bij news source name

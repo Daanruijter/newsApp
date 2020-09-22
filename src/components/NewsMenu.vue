@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="news-menu-container">
-      <div class="news-menu-home">
+      <div @click="loadDefaultNewsItems" class="news-menu-home">
         <router-link to="/">HOME</router-link>
       </div>
       <div @click="setCategoriesBoolean">
@@ -141,6 +141,16 @@ export default class NewsMenu extends Vue {
     bus.$on("makeCategoriesDivClosedEventForRandomPage", () => {
       this.categoriesPageBoolean = false;
     });
+  }
+
+  async loadDefaultNewsItems() {
+    const countryFetchObject = {
+      fetchBase: "Default Country",
+      typeOfFetchBase: "fetchCountry"
+    };
+
+    await news.fetchNewsQuery(countryFetchObject);
+    bus.$emit("loadDefaultNewsItemsAfterClickOnHomeButton");
   }
 
   setCategoriesBoolean() {
