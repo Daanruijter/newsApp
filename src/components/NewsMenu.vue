@@ -188,7 +188,7 @@ export default class NewsMenu extends Vue {
     this.countrySelected = "Default Country";
     this.newsCategorySelected = "Default News Category";
 
-    bus.$emit("useInputValueToFetchData", inputValue);
+    bus.$emit("useInputValueToFetchData");
   }
 
   makeCategoriesDivClosed() {
@@ -204,7 +204,8 @@ export default class NewsMenu extends Vue {
       typeOfFetchBase: "fetchInput"
     };
     await news.fetchNewsQuery(inputFetchObject);
-    bus.$emit("useInputValueToFetchData");
+    const inputFetchValue = inputFetchObject.fetchBase;
+    bus.$emit("useInputValueToFetchData", inputFetchValue);
     this.categoriesPageBoolean = false;
   }
 }

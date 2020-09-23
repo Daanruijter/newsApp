@@ -149,8 +149,8 @@ export default class Home extends Vue {
     });
 
     //send input and onchange event to other components
-    bus.$on("useInputValueToFetchData", (useInputValueToFetchData: string) => {
-      this.fetchedCategory = useInputValueToFetchData;
+    bus.$on("useInputValueToFetchData", (inputFetchValue: string) => {
+      this.fetchedCategory = inputFetchValue;
 
       this.setData();
       this.addNewsSource();
