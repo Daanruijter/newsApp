@@ -117,18 +117,36 @@ interface FetchBase {
 @Component
 export default class DetailsPage extends Vue {
   async mounted() {
-    console.log(this.newsData["__ob__" as string].value.length);
+    // let obj: {[index: string]: number} = {}
+
     console.log("mounted");
     this.newsData = this.$store.getters[
       "vuexModuleDecorators/newsDataModule"
     ].queriedNewsItemsGetter;
 
-    if (this.newsData === []) {
-      console.log("lege array");
-      console.log(localStorage.getItem("typeOfFetchBase"));
+    // this.newsData['__ob__'] = {
+    const newsdatadata = this.$store.getters[
+      "vuexModuleDecorators/newsDataModule"
+    ].queriedNewsItemsGetter;
 
-      console.log(localStorage.getItem("fetchBase"));
+    const test: keyof typeof newsdatadata = "__ob__";
+    // const test: {[key: string]: string}  = this.newsData
+
+    const test2: number = newsdatadata[test];
+
+    interface Example {
+      number: number;
+      string: string;
     }
+
+    console.log(Object.keys(this.newsData).length);
+
+    // if (this.newsData === "") {
+    //   console.log("lege array");
+    //   console.log(localStorage.getItem("typeOfFetchBase"));
+
+    //   console.log(localStorage.getItem("fetchBase"));
+    // }
 
     // const fetchBaseData = this.$store.getters[
     //   "vuexModuleDecorators/newsDataModule"
