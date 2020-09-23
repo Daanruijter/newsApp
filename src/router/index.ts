@@ -32,9 +32,9 @@ const routes: Array<RouteConfig> = [
       import(/* webpackChunkName: "about" */ "../views/DetailsPage.vue"),
   },
   // {
-  //   path:      '/',
-  //   name:      'index',
-  //   component: Index,
+  //   path: "/",
+  //   name: "index",
+  //   component: Home,
   // },
 ];
 

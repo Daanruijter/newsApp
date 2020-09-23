@@ -1,24 +1,28 @@
-import VueRouterSitemap from "vue-router-sitemap";
-import path from "path";
-import { router } from "router";
+// import { express } from "express";
+// const app = express();
 
-export const sitemapMiddleware = () => {
-  return (req, res) => {
-    res.set("Content-Type", "application/xml");
+// import VueRouterSitemap from "vue-router-sitemap";
+// import path from "path";
+// import { router } from "router";
 
-    const staticSitemap = path.resolve("dist/static", "sitemap.xml");
-    const filterConfig = {
-      isValid: false,
-      rules: [/\/example-page/, /\*/],
-    };
+// export const sitemapMiddleware = () => {
+//   return (req, res) => {
+//     res.set("Content-Type", "application/xml");
 
-    new VueRouterSitemap(router)
-      .filterPaths(filterConfig)
-      .build("http://example.com")
-      .save(staticSitemap);
+//     const staticSitemap = path.resolve("dist/static", "sitemap.xml");
+//     const filterConfig = {
+//       isValid: false,
+//       rules: [/\/example-page/, /\*/],
+//     };
 
-    return res.sendFile(staticSitemap);
-  };
-};
+//     new VueRouterSitemap(router)
+//       .filterPaths(filterConfig)
+//       .build("http://homeexample.com")
+//       .save(staticSitemap);
+//     console.log("FSKJSLGLSLGLDDFLKKLDFGHKDK");
 
-app.get("/sitemap.xml", sitemapMiddleware());
+//     return res.sendFile(staticSitemap);
+//   };
+// };
+
+// app.get("/sitemap.xml", sitemapMiddleware());
