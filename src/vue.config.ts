@@ -1,15 +1,16 @@
-require = require("esm")(module);
-const { routes } = require("./src/routes.js");
-
 module.exports = {
   transpileDependencies: ["vuex-module-decorators"],
 };
 
+// require("esm")(module);
+import routes from "./routes";
+
 module.exports = {
   pluginOptions: {
     sitemap: {
-      baseURL: "https://example.com",
+      baseURL: "http://localhost:8081/#",
       routes,
+      outputDir: "/temp/sitemap",
     },
   },
 };
