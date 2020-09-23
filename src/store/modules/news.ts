@@ -132,6 +132,9 @@ class NewsModule extends VuexModule {
   //fetch the country newsData if a user selects a certain country
   @Action
   async fetchNewsQuery(fetchBaseObject: FetchNews) {
+    console.log("FETCHNEWSQUERY CALLED");
+    console.log(fetchBaseObject);
+
     //save the fetch base in localStorage for when a user reloads the Detail Page
     localStorage.setItem("fetchBase", fetchBaseObject.fetchBase);
     localStorage.setItem("typeOfFetchBase", fetchBaseObject.typeOfFetchBase);

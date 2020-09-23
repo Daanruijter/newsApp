@@ -104,9 +104,7 @@
 import NewsItemType from "../interfacesforapp";
 // import { bus } from "../main";
 import { Vue, Component } from "vue-property-decorator";
-//EVEN UITGEZET!!!
-// import news from "../store/modules/news";
-//EVEN UITGEZET!!!
+import news from "../store/modules/news";
 import { convertNewsItemPublishedTime } from "../methodsForGeneralUse";
 
 interface FetchBase {
@@ -120,64 +118,26 @@ export default class DetailsPage extends Vue {
     // let obj: {[index: string]: number} = {}
 
     console.log("mounted");
-    this.newsData = this.$store.getters[
-      "vuexModuleDecorators/newsDataModule"
-    ].queriedNewsItemsGetter;
 
-    // this.newsData['__ob__'] = {
-    const newsdatadata = this.$store.getters[
-      "vuexModuleDecorators/newsDataModule"
-    ].queriedNewsItemsGetter;
+    if (Object.keys(this.newsData).length === 0) {
+      const newsCategoryFetchObject = {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        fetchBase: localStorage.getItem("fetchBase")!,
 
-    const test: keyof typeof newsdatadata = "__ob__";
-    // const test: {[key: string]: string}  = this.newsData
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        typeOfFetchBase: localStorage.getItem("typeOfFetchBase")!
+      };
 
-    const test2: number = newsdatadata[test];
+      await news.fetchNewsQuery(newsCategoryFetchObject);
+      this.newsData = this.$store.getters[
+        "vuexModuleDecorators/newsDataModule"
+      ].queriedNewsItemsGetter;
 
-    interface Example {
-      number: number;
-      string: string;
+      this.newsBase = newsCategoryFetchObject.fetchBase;
+      if (newsCategoryFetchObject.typeOfFetchBase === "Default country") {
+        [(this.newsBase = "United States")];
+      }
     }
-
-    console.log(Object.keys(this.newsData).length);
-
-    // if (this.newsData === "") {
-    //   console.log("lege array");
-    //   console.log(localStorage.getItem("typeOfFetchBase"));
-
-    //   console.log(localStorage.getItem("fetchBase"));
-    // }
-
-    // const fetchBaseData = this.$store.getters[
-    //   "vuexModuleDecorators/newsDataModule"
-    // ].fetchBaseObject;
-    // console.log(
-    //   this.$store.getters["vuexModuleDecorators/newsDataModule"]
-    //     .fetchBaseObject === {}
-    // );
-    // const newsCategoryFetchObject = {
-    //   fetchBase: "Default Country",
-    //   typeOfFetchBase: "fetchCountry"
-    // };
-
-    // if (fetchBaseData === {}) {
-    //   console.log("fecth the data");
-    //   await news.fetchNewsQuery(newsCategoryFetchObject);
-    //   this.newsData = this.$store.getters[
-    //     "vuexModuleDecorators/newsDataModule"
-    //   ].queriedNewsItemsGetter;
-    //   this.newsBase = fetchBaseData.fetchBase;
-    // }
-
-    // if (fetchBaseData.fetchBase === "Default Country") {
-    //   this.newsBase = "United States";
-    // }
-
-    // if (fetchBaseData) {
-    //   await news.fetchNewsQuery(fetchBaseData);
-    // }
-
-    // await news.fetchNewsQuery(fetchBaseData);
 
     // //get the info about what data to fetch
 
@@ -262,6 +222,7 @@ export default class DetailsPage extends Vue {
 
   //populate the newsdata data item by filtering it, saving the newsItem that matches the newsItem a user clicked on to go to its detail page
   get getValuesForDetailComponent() {
+    console.log(this.newsData);
     //initiate the variable "indexNotToShowInExtraNewsItems" to save the index from the item that gets displayed
     //use that to exclude it from the extra three items displayed
     let filterDisplayedItemOut = 0;
@@ -273,13 +234,18 @@ export default class DetailsPage extends Vue {
     //get the clicked news item from the array
     const valuesForDetailComponentFiltered: NewsItemType[] = this.newsData.filter(
       (item: NewsItemType, index: number) => {
+        console.log(item.title);
+        console.log(this.newsItemTitle);
+
         // save the index of the clicked news item
-        if (item.title === this.newsItemTitle) {
+        if (this.newsItemTitle.includes(item.title)) {
+          console.log(index);
           filterDisplayedItemOut = index;
         }
-        return item.title === this.newsItemTitle;
+        return this.newsItemTitle.includes(item.title);
       }
     );
+    console.log(valuesForDetailComponentFiltered);
 
     //if the news item displayed is one of them, increase the variable "indexToShowExtraNewsItems" to filter three items out of the array by 1 to display three, not two items
     if (
