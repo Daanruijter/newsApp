@@ -102,7 +102,6 @@
 
 <script lang="ts">
 import NewsItemType from "../interfacesforapp";
-// import { bus } from "../main";
 import { Vue, Component } from "vue-property-decorator";
 import news from "../store/modules/news";
 import { convertNewsItemPublishedTime } from "../methodsForGeneralUse";
@@ -115,11 +114,9 @@ interface FetchBase {
 @Component
 export default class DetailsPage extends Vue {
   async mounted() {
-    // let obj: {[index: string]: number} = {}
-
-    console.log("mounted");
-
+    //if the news items array is not populated, because of a page reload, fetch it again
     if (Object.keys(this.newsData).length === 0) {
+      //get the right info for fetching the data
       const newsCategoryFetchObject = {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         fetchBase: localStorage.getItem("fetchBase")!,
@@ -128,65 +125,23 @@ export default class DetailsPage extends Vue {
         typeOfFetchBase: localStorage.getItem("typeOfFetchBase")!
       };
 
+      //fetch the data
       await news.fetchNewsQuery(newsCategoryFetchObject);
       this.newsData = this.$store.getters[
         "vuexModuleDecorators/newsDataModule"
       ].queriedNewsItemsGetter;
 
+      //get the data in the component
       this.newsBase = newsCategoryFetchObject.fetchBase;
       if (newsCategoryFetchObject.typeOfFetchBase === "Default country") {
         [(this.newsBase = "United States")];
       }
     }
 
-    // //get the info about what data to fetch
-
-    // bus.$on("selectedCountry", (selectedCountry: string) => {
-    //   const countryFetchObject: FetchBase = {
-    //     fetchBase: selectedCountry,
-    //     typeOfFetchBase: "fetchCountry"
-    //   };
-    //   const itemsToFetch = countryFetchObject;
-    //   console.log(itemsToFetch);
-    //   //EVEN UITGEZET!!!
-    //   // news.fetchNewsQuery(itemsToFetch);
-    //   // //EVEN UITGEZET!!!
-    // });
-
-    // bus.$on("selectedNewsCategory", (selectedNewsCategory: string) => {
-    //   const newsCategoryFetchObject = {
-    //     fetchBase: selectedNewsCategory,
-    //     typeOfFetchBase: "fetchNewsCategory"
-    //   };
-    //   const itemsToFetch = newsCategoryFetchObject;
-    //   console.log(itemsToFetch);
-    //   //EVEN UITGEZET!!!
-    //   // news.fetchNewsQuery(itemsToFetch);
-    //   // //EVEN UITGEZET!!!
-    // });
-
-    // bus.$on("useInputValueToFetchData", (inputValue: string) => {
-    //   const inputFetchObject = {
-    //     fetchBase: inputValue,
-    //     typeOfFetchBase: "fetchInput"
-    //   };
-
-    //   const itemsToFetch = inputFetchObject;
-    //   console.log(itemsToFetch);
-    //   //EVEN UITGEZET!!!
-    //   // news.fetchNewsQuery(itemsToFetch);
-    //   // //EVEN UITGEZET!!!
-    // });
-
-    //fetch the newsData and put it in the vuex store
-
-    //get the newsdata when the vuex store is populated with newsdata
-    // this.getAllNewsData;
-
     //get the right detail object for a given newsitem
     this.getValuesForDetailComponent;
 
-    //convert the publishedAt timestring to be more concrete
+    //convert the publishedAt timestring to be readable
     if (this.valuesForDetailComponent[0].publishedAt) {
       this.newsItemPublishedTime = convertNewsItemPublishedTime(
         this.valuesForDetailComponent[0].publishedAt
@@ -198,20 +153,11 @@ export default class DetailsPage extends Vue {
   newsData = [];
   newsBase = "";
 
-  //get the newsitem where a user clicked on to go to its detail page from params
+  //get the newsitem where a user clicked on to go to its detail page from params (because there is no parent/child relation between the home and detailspage component)
   newsItemTitle = this.$route.params.title;
   newsItemPublishedTime = "";
   valuesForDetailComponent: NewsItemType[] = [];
   threeRelevantExtraNewsItems: NewsItemType[] = [];
-
-  //populate the newsdata data array (necessary to filter based on the newsItemTitle variable)
-  // get getAllNewsData(): null {
-  //   this.newsData = this.$store.getters[
-  //     "vuexModuleDecorators/newsDataModule"
-  //   ].queriedNewsItemsGetter;
-
-  //   return null;
-  // }
 
   //get a random number for the index. Number must be higher than 10, because I don't want to display newsItems that already got displayed on the homepage.
   //The random number must also not be higher than the length of the array of newsitems
@@ -222,7 +168,6 @@ export default class DetailsPage extends Vue {
 
   //populate the newsdata data item by filtering it, saving the newsItem that matches the newsItem a user clicked on to go to its detail page
   get getValuesForDetailComponent() {
-    console.log(this.newsData);
     //initiate the variable "indexNotToShowInExtraNewsItems" to save the index from the item that gets displayed
     //use that to exclude it from the extra three items displayed
     let filterDisplayedItemOut = 0;
@@ -234,18 +179,13 @@ export default class DetailsPage extends Vue {
     //get the clicked news item from the array
     const valuesForDetailComponentFiltered: NewsItemType[] = this.newsData.filter(
       (item: NewsItemType, index: number) => {
-        console.log(item.title);
-        console.log(this.newsItemTitle);
-
         // save the index of the clicked news item
         if (this.newsItemTitle.includes(item.title)) {
-          console.log(index);
           filterDisplayedItemOut = index;
         }
         return this.newsItemTitle.includes(item.title);
       }
     );
-    console.log(valuesForDetailComponentFiltered);
 
     //if the news item displayed is one of them, increase the variable "indexToShowExtraNewsItems" to filter three items out of the array by 1 to display three, not two items
     if (
@@ -256,6 +196,7 @@ export default class DetailsPage extends Vue {
       indexToShowExtraNewsItems += 1;
     }
 
+    //filter the newsitems array to get three other most recent items
     let extraValuesForDetailComponent: NewsItemType[] = this.newsData.filter(
       (item: NewsItemType, index: number) => {
         // }
@@ -265,8 +206,7 @@ export default class DetailsPage extends Vue {
       }
     );
 
-    console.log(extraValuesForDetailComponent);
-
+    //convert the publishedAt timestring to be readable
     extraValuesForDetailComponent = extraValuesForDetailComponent.map(
       (item: NewsItemType) => {
         if (item.publishedAt) {
@@ -276,6 +216,7 @@ export default class DetailsPage extends Vue {
       }
     );
 
+    //populate the variables to display the data in the template
     this.valuesForDetailComponent = valuesForDetailComponentFiltered;
     this.threeRelevantExtraNewsItems = extraValuesForDetailComponent;
     return valuesForDetailComponentFiltered;

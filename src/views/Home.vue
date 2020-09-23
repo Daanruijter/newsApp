@@ -1,5 +1,10 @@
 <template>
   <div class="home-container">
+    <div
+      class="home-show-selected-category"
+      v-if="this.fetchedCategory!=='Default Country'"
+    >You selected {{this.fetchedCategory}} news</div>
+    <br />
     <div>
       sort the data
       <button
@@ -90,7 +95,7 @@ export default class Home extends Vue {
   newsData: NewsItemType[] = [];
   newsDataToDisplay: NewsItemType[] = [];
   noImage = false;
-
+  fetchedCategory: null | string = "";
   router = new VueRouter({
     routes: [
       // dynamic segments start with a colon
@@ -115,30 +120,41 @@ export default class Home extends Vue {
 
   //bus object needs to listen to events in another component on mounted hook
   async mounted() {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
     const newsCategoryFetchObject = {
       fetchBase: "Default Country",
       typeOfFetchBase: "fetchCountry"
     };
 
     await news.fetchNewsQuery(newsCategoryFetchObject);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.fetchedCategory = localStorage.getItem("fetchBase"!);
     console.log("mounted");
     console.log(this.newsData);
 
     //load the data in the component through the queriedNewsItemsGetter
     this.setData();
-    bus.$on("selectedCountry", () => {
+    bus.$on("selectedCountry", (selectedCountry: string) => {
+      this.fetchedCategory = selectedCountry;
       this.setData();
       this.addNewsSource();
+      this.hideSelectedCategoryDiv();
     });
-    bus.$on("selectedNewsCategory", () => {
+    bus.$on("selectedNewsCategory", (selectedNewsCategory: string) => {
+      this.fetchedCategory = selectedNewsCategory;
       this.setData();
       this.addNewsSource();
+      this.hideSelectedCategoryDiv();
     });
 
     //send input and onchange event to other components
-    bus.$on("useInputValueToFetchData", () => {
+    bus.$on("useInputValueToFetchData", (useInputValueToFetchData: string) => {
+      this.fetchedCategory = useInputValueToFetchData;
+
       this.setData();
       this.addNewsSource();
+      this.hideSelectedCategoryDiv();
     });
     // this.newsData = this.$store.getters[
     //   "vuexModuleDecorators/newsDataModule"
@@ -160,6 +176,13 @@ export default class Home extends Vue {
     this.newsData = this.$store.getters[
       "vuexModuleDecorators/newsDataModule"
     ].queriedNewsItemsGetter;
+  }
+
+  //hide selected category div after a few seconds
+  hideSelectedCategoryDiv(): void {
+    setTimeout(() => {
+      this.fetchedCategory = "Default Country";
+    }, 3000);
   }
 
   //hide "other news" if there is no news item without a picture.
@@ -290,6 +313,14 @@ export default class Home extends Vue {
 </script>
 
 <style scoped>
+.home-show-selected-category {
+  background-color: darkblue;
+  color: white;
+
+  padding-top: 1%;
+  padding-bottom: 1%;
+}
+
 .home-container {
   margin-top: 175px;
 }
