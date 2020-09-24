@@ -9,7 +9,7 @@
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint",
     "sitemap": "vue-cli-service sitemap",
-    "start": "node server.ts"
+
   },
   "dependencies": {
     "axios": "^0.20.0",
