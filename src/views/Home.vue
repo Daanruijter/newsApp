@@ -31,7 +31,7 @@
       >
         <router-link :to="{ name: 'DetailsPage', params: { title: newsItem.title } }">
           <div
-            v-if="newsItem.urlToImage  && index < 10"
+            v-if="newsItem.urlToImage  && index < 10 && index!==pictureNotLoadedArray[0]"
             class="home-newsitem-title"
             @mouseover="isHovering = true"
             @mouseout="isHovering = false"
@@ -41,14 +41,14 @@
         <div class="home-newsitem-picture">
           <img
             @error="pictureNotLoaded(index)"
-            v-if="newsItem.urlToImage && index < 10"
+            v-if="newsItem.urlToImage && index < 10 && index!==pictureNotLoadedArray[0]"
             v-bind:src="newsItem.urlToImage"
           />
         </div>
-        <hr v-if="newsItem.urlToImage && index < 10" />
+        <hr v-if="newsItem.urlToImage && index < 10 && index!==pictureNotLoadedArray[0]" />
       </div>
       <!-- if there is no picture, put those news items under the header Other News -->
-      <h2 v-if="this.noImage">Other news</h2>
+      <h2 v-if="noImage || pictureNotLoadedArray.length!==0">Other news</h2>
       <div
         @click="makeCategoriesDivClosed"
         class="home-newsitems-no-picture"
@@ -57,7 +57,7 @@
       >
         <router-link :to="{ name: 'DetailsPage', params: { title: newsItem.title } }">
           <div
-            v-if="!newsItem.urlToImage && index < 10"
+            v-if="!newsItem.urlToImage && index < 10 || index===pictureNotLoadedArray[0]"
             class="home-newsitem-title"
             @mouseover="isHovering = true"
             @mouseout="isHovering = false"
@@ -68,7 +68,7 @@
       </div>
     </div>
 
-    <div v-if="!this.newsDataToDisplay" class="home-newsdata-not-loaded">
+    <div v-if="!newsDataToDisplay" class="home-newsdata-not-loaded">
       <div class="home-no-newsitems">No news items to show</div>
     </div>
   </div>
@@ -102,20 +102,21 @@ export default class Home extends Vue {
       { path: "/details /:id", component: DetailsPage }
     ]
   });
+  pictureNotLoadedArray: Array<number> = [];
 
   //if a picture cannot load, filter it out of the newsItemTodisplay Array by filtering the item(s) out of that array in the news module
   pictureNotLoaded(index: number): void {
     let i: number;
-    const tenFirstNewsItemsIfPicture: NewsItemType[] = this.newsDataToDisplay;
-    const pictureNotLoadedArray: string[] = [];
+    console.log(this.newsDataToDisplay);
+    // const tenFirstNewsItemsIfPicture: NewsItemType[] = this.newsDataToDisplay;
+    // const pictureNotLoadedArray: string[] = [];
 
-    for (i = 0; i < tenFirstNewsItemsIfPicture.length; i++) {
+    for (i = 0; i < this.newsDataToDisplay.length; i++) {
       if (i === index) {
-        pictureNotLoadedArray.push(tenFirstNewsItemsIfPicture[i].urlToImage);
+        this.pictureNotLoadedArray.push(index);
       }
     }
-
-    news.sendPictureNotLoadedArray(pictureNotLoadedArray);
+    console.log(this.pictureNotLoadedArray);
   }
 
   //bus object needs to listen to events in another component on mounted hook
