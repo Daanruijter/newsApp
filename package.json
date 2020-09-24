@@ -8,7 +8,8 @@
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint",
-    "sitemap": "vue-cli-service sitemap"
+    "sitemap": "vue-cli-service sitemap",
+    "start": "node server.ts"
   },
   "dependencies": {
     "axios": "^0.20.0",
@@ -41,6 +42,7 @@
     "eslint-plugin-vue": "^6.2.2",
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
+    "sitemap-webpack-plugin": "^0.8.1",
     "typescript": "~3.9.3",
     "vue-cli-plugin-sitemap": "~2.2.1",
     "vue-template-compiler": "^2.6.11"

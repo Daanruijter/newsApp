@@ -31,7 +31,7 @@
       >
         <router-link :to="{ name: 'DetailsPage', params: { title: newsItem.title } }">
           <div
-            v-if="newsItem.urlToImage  && index < 10 && index!==pictureNotLoadedArray[0]"
+            v-if="newsItem.urlToImage  && index < 10 && index!==pictureNotLoadedArray[0] && index!==pictureNotLoadedArray[1]"
             class="home-newsitem-title"
             @mouseover="isHovering = true"
             @mouseout="isHovering = false"
@@ -41,11 +41,13 @@
         <div class="home-newsitem-picture">
           <img
             @error="pictureNotLoaded(index)"
-            v-if="newsItem.urlToImage && index < 10 && index!==pictureNotLoadedArray[0]"
+            v-if="newsItem.urlToImage && index < 10 && index!==pictureNotLoadedArray[0] && index!==pictureNotLoadedArray[1]"
             v-bind:src="newsItem.urlToImage"
           />
         </div>
-        <hr v-if="newsItem.urlToImage && index < 10 && index!==pictureNotLoadedArray[0]" />
+        <hr
+          v-if="newsItem.urlToImage && index < 10 && index!==pictureNotLoadedArray[0] && index!==pictureNotLoadedArray[1]"
+        />
       </div>
       <!-- if there is no picture, put those news items under the header Other News -->
       <h2 v-if="noImage || pictureNotLoadedArray.length!==0">Other news</h2>
@@ -57,7 +59,7 @@
       >
         <router-link :to="{ name: 'DetailsPage', params: { title: newsItem.title } }">
           <div
-            v-if="!newsItem.urlToImage && index < 10 || index===pictureNotLoadedArray[0]"
+            v-if="!newsItem.urlToImage && index < 10 || index===pictureNotLoadedArray[0] || index===pictureNotLoadedArray[1]"
             class="home-newsitem-title"
             @mouseover="isHovering = true"
             @mouseout="isHovering = false"
@@ -107,7 +109,7 @@ export default class Home extends Vue {
   //if a picture cannot load, filter it out of the newsItemTodisplay Array by filtering the item(s) out of that array in the news module
   pictureNotLoaded(index: number): void {
     let i: number;
-    console.log(this.newsDataToDisplay);
+
     // const tenFirstNewsItemsIfPicture: NewsItemType[] = this.newsDataToDisplay;
     // const pictureNotLoadedArray: string[] = [];
 
@@ -116,7 +118,6 @@ export default class Home extends Vue {
         this.pictureNotLoadedArray.push(index);
       }
     }
-    console.log(this.pictureNotLoadedArray);
   }
 
   //bus object needs to listen to events in another component on mounted hook
@@ -132,7 +133,6 @@ export default class Home extends Vue {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     this.fetchedCategory = localStorage.getItem("fetchBase"!);
     console.log("mounted");
-    console.log(this.newsData);
 
     //load the data in the component through the queriedNewsItemsGetter
     this.setData();
@@ -157,9 +157,7 @@ export default class Home extends Vue {
       this.addNewsSource();
       this.hideSelectedCategoryDiv();
     });
-    // this.newsData = this.$store.getters[
-    //   "vuexModuleDecorators/newsDataModule"
-    // ].queriedNewsItemsGetter;
+
     bus.$on("loadDefaultNewsItemsAfterClickOnHomeButton", () => {
       this.setData();
       this.addNewsSource();
@@ -189,7 +187,6 @@ export default class Home extends Vue {
   //hide "other news" if there is no news item without a picture.
   //If so, set the data variable noImage to true and display the Other News header
   checkIfThereIsANewsItemWithoutAPicture(): void {
-    console.log("hi");
     let i = 0;
     for (i = 0; i < this.newsDataToDisplay.length; i++) {
       if (
@@ -234,16 +231,13 @@ export default class Home extends Vue {
       if (a.title !== undefined && b.title !== undefined) {
         if (a.title < b.title) {
           returnComparisonNumber = -1;
-          console.log(returnComparisonNumber);
         }
         if (a.title > b.title) {
           returnComparisonNumber = 1;
-          console.log(returnComparisonNumber);
         }
 
         if (!(a.title < b.title) && !(a.title > b.title)) {
           returnComparisonNumber = 0;
-          console.log(returnComparisonNumber);
         }
       }
 
@@ -270,11 +264,9 @@ export default class Home extends Vue {
       if (a.source.name !== undefined && b.source.name !== undefined) {
         if (a.source.name < b.source.name) {
           returnComparisonNumber = -1;
-          // console.log(returnComparisonNumber);
         }
         if (a.source.name > b.source.name) {
           returnComparisonNumber = 1;
-          // console.log(returnComparisonNumber);
         }
 
         if (
@@ -282,7 +274,6 @@ export default class Home extends Vue {
           !(a.source.name > b.source.name)
         ) {
           returnComparisonNumber = 0;
-          // console.log(returnComparisonNumber);
         }
       }
 
@@ -301,8 +292,7 @@ export default class Home extends Vue {
     this.newsDataToDisplay = newsDataToSort;
 
     const sorted: NewsItemType[] = newsDataToSort.sort(compareSourceNames);
-    // console.log(sorted);
-    // console.log(this.newsDataToDisplay);
+
     this.newsDataToDisplay = sorted;
   }
 
