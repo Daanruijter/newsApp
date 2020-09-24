@@ -30,6 +30,7 @@
           }}
         </div>
         <div
+          @click="saveRandomArticleInLocalStorage"
           class="randompage-read-more"
           @mouseover="hoveringReadMore = true"
           @mouseout="hoveringReadMore = false"
@@ -145,21 +146,30 @@ export default class RandomPage extends Vue {
 
   async mounted() {
     console.log("mounted");
-
-    //display a random newsItem when the component mounts/on refreshing the page
-    this.fetchDataForRandomPage();
-
-    //display a random newsItem when the user clicks the random button from the navbar
+    this.setRandomArticle();
+    // console.log(this.newsData);
+    // //display a random newsItem when the component mounts/on refreshing the page
+    // await this.fetchDataForRandomPage();
+    // this.newsData = this.$store.getters[
+    //   "vuexModuleDecorators/newsDataModule"
+    // ].queriedNewsItemsGetter;
+    // this.filterArrayByRandomIndex();
+    // this.addNewsSource();
+    // //display a random newsItem when the user clicks the random button from the navbar
 
     await bus.$on("makeCategoriesDivClosedEventForRandomPage", () => {
+      console.log("hi");
       this.fetchDataForRandomPage();
       this.newsData = this.$store.getters[
         "vuexModuleDecorators/newsDataModule"
       ].queriedNewsItemsGetter;
       this.filterArrayByRandomIndex();
       this.addNewsSource();
+
+      //when a user clicks the random button from the navbar, add the random item to localStorage
+      //then it can be reloaded after a page reload or if a user comes back from the external link to the article
+      this.saveRandomArticleInLocalStorage();
     });
-    this.addNewsSource();
   }
 
   //add the news source if it's not shown
@@ -220,6 +230,20 @@ export default class RandomPage extends Vue {
 
     //fetch the newsData and put it in the vuex store
     await news.fetchNewsQuery(fetchRandomNewsItemObject);
+  }
+
+  //when a user clicks the random button from the navbar, add the random item to localStorage
+  //then it can be reloaded after a page reload or if a user comes back from the external link to the article
+  saveRandomArticleInLocalStorage() {
+    localStorage.setItem("randomArticle", JSON.stringify(this.randomNewsItem));
+  }
+
+  //when the page reloads or if a user comes back from the external link to the article
+  //set the random item to what it was before the page reload or clicking the external link
+  setRandomArticle() {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.randomNewsItem = JSON.parse(localStorage.getItem("randomArticle"!)!);
+    // this.randomNewsItem = localStorage.getItem("randomArticle"!);
   }
 
   //populate the newsdata data array (necessary to filter based on the newsItemTitle variable)

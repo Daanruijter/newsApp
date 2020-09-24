@@ -191,6 +191,7 @@ export default class NewsMenu extends Vue {
     bus.$emit("useInputValueToFetchData");
   }
 
+  //if someone clicks the random button, he gets redirected to the random page, where the category selection menu should not be shown
   makeCategoriesDivClosed() {
     bus.$emit("makeCategoriesDivClosedEventForRandomPage");
   }
