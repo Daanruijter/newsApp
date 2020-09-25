@@ -21,16 +21,12 @@
       <div class="detailspage-description">
         <span class="detailspage-small-header">Description</span>
         <br />
-        {{
-        newsItem.description
-        }}
+        {{ newsItem.description }}
       </div>
       <div class="detailspage-contents">
         <span class="detailspage-small-header">Contents</span>
         <br />
-        {{
-        newsItem.content
-        }}
+        {{ newsItem.content }}
       </div>
       <div
         class="detailspage-read-more"
@@ -48,14 +44,14 @@
     <!-- three other relevant items -->
 
     <div class="detailspage-other-relevant-items">
-      <h2>More{{" "}}{{ this.newsBase}}{{" news"}}</h2>
+      <h2>More{{ " " }}{{ this.newsBase }}{{ " news" }}</h2>
       <hr />
       <div
         v-for="newsItem in this.threeRelevantExtraNewsItems"
         :key="newsItem.title"
         class="detailspage-data"
       >
-        <div>{{newsItem.publishedAt}} GMT</div>
+        <div>{{ newsItem.publishedAt }} GMT</div>
         <br />
         <div
           class="detailspage-title"
@@ -71,16 +67,12 @@
         <div class="detailspage-description">
           <span class="detailspage-small-header">Description</span>
           <br />
-          {{
-          newsItem.description
-          }}
+          {{ newsItem.description }}
         </div>
         <div class="detailspage-contents">
           <span class="detailspage-small-header">Contents</span>
           <br />
-          {{
-          newsItem.content
-          }}
+          {{ newsItem.content }}
         </div>
         <div
           class="detailspage-read-more"
@@ -105,6 +97,7 @@ import NewsItemType from "../interfacesforapp";
 import { Vue, Component } from "vue-property-decorator";
 import news from "../store/modules/news";
 import { convertNewsItemPublishedTime } from "../methodsForGeneralUse";
+import { bus } from "../main";
 
 interface FetchBase {
   fetchBase: string;
@@ -122,7 +115,7 @@ export default class DetailsPage extends Vue {
         fetchBase: localStorage.getItem("fetchBase")!,
 
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        typeOfFetchBase: localStorage.getItem("typeOfFetchBase")!
+        typeOfFetchBase: localStorage.getItem("typeOfFetchBase")!,
       };
 
       //fetch the data
@@ -147,6 +140,11 @@ export default class DetailsPage extends Vue {
         this.valuesForDetailComponent[0].publishedAt
       );
     }
+
+    //if a user clicks an item below the header "details page" in de footer, make sure that the details page gets rerendendered with the title where a user clicked on
+    bus.$on("triggerdetailspagereload", (title: string) => {
+      this.newsItemTitle = title;
+    });
   }
   isHovering = false;
   hoveringReadMore = false;
@@ -180,6 +178,7 @@ export default class DetailsPage extends Vue {
     const valuesForDetailComponentFiltered: NewsItemType[] = this.newsData.filter(
       (item: NewsItemType, index: number) => {
         // save the index of the clicked news item
+        console.log(this.newsItemTitle.includes(item.title));
         if (this.newsItemTitle.includes(item.title)) {
           filterDisplayedItemOut = index;
         }

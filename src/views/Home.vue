@@ -2,8 +2,10 @@
   <div class="home-container">
     <div
       class="home-show-selected-category"
-      v-if="this.fetchedCategory!=='Default Country'"
-    >You selected {{this.fetchedCategory}} news</div>
+      v-if="this.fetchedCategory !== 'Default Country'"
+    >
+      You selected {{ this.fetchedCategory }} news
+    </div>
     <br />
     <div>
       sort the data
@@ -11,12 +13,16 @@
         name="sortByNewsSource"
         class="home-sort-by-newssource-button"
         @click="sortByNewsSource"
-      >Sort by news source</button>
+      >
+        Sort by news source
+      </button>
       <button
         name="sortByNewsTitle"
         class="home-sort-by-newstitle-button"
         @click="sortByNewsTitle"
-      >Sort by news title</button>
+      >
+        Sort by news title
+      </button>
       <button name="reset" class="home-reset" @click="reset">Reset</button>
     </div>
     <br />
@@ -29,42 +35,69 @@
         v-for="(newsItem, index) in this.newsDataToDisplay"
         :key="newsItem.title + index"
       >
-        <router-link :to="{ name: 'DetailsPage', params: { title: newsItem.title } }">
+        <router-link
+          :to="{ name: 'DetailsPage', params: { title: newsItem.title } }"
+        >
           <div
-            v-if="newsItem.urlToImage  && index < 10 && index!==pictureNotLoadedArray[0] && index!==pictureNotLoadedArray[1]"
+            v-if="
+              newsItem.urlToImage &&
+                index < 10 &&
+                index !== pictureNotLoadedArray[0] &&
+                index !== pictureNotLoadedArray[1]
+            "
             class="home-newsitem-title"
             @mouseover="isHovering = true"
             @mouseout="isHovering = false"
             :class="{ hovering: isHovering }"
-          >{{ newsItem.title }}</div>
+          >
+            {{ newsItem.title }}
+          </div>
         </router-link>
         <div class="home-newsitem-picture">
           <img
             @error="pictureNotLoaded(index)"
-            v-if="newsItem.urlToImage && index < 10 && index!==pictureNotLoadedArray[0] && index!==pictureNotLoadedArray[1]"
+            v-if="
+              newsItem.urlToImage &&
+                index < 10 &&
+                index !== pictureNotLoadedArray[0] &&
+                index !== pictureNotLoadedArray[1]
+            "
             v-bind:src="newsItem.urlToImage"
           />
         </div>
         <hr
-          v-if="newsItem.urlToImage && index < 10 && index!==pictureNotLoadedArray[0] && index!==pictureNotLoadedArray[1]"
+          v-if="
+            newsItem.urlToImage &&
+              index < 10 &&
+              index !== pictureNotLoadedArray[0] &&
+              index !== pictureNotLoadedArray[1]
+          "
         />
       </div>
       <!-- if there is no picture, put those news items under the header Other News -->
-      <h2 v-if="noImage || pictureNotLoadedArray.length!==0">Other news</h2>
+      <h2 v-if="noImage || pictureNotLoadedArray.length !== 0">Other news</h2>
       <div
         @click="makeCategoriesDivClosed"
         class="home-newsitems-no-picture"
         v-for="(newsItem, index) in this.newsDataToDisplay"
         :key="newsItem.title"
       >
-        <router-link :to="{ name: 'DetailsPage', params: { title: newsItem.title } }">
+        <router-link
+          :to="{ name: 'DetailsPage', params: { title: newsItem.title } }"
+        >
           <div
-            v-if="!newsItem.urlToImage && index < 10 || index===pictureNotLoadedArray[0] || index===pictureNotLoadedArray[1]"
+            v-if="
+              (!newsItem.urlToImage && index < 10) ||
+                index === pictureNotLoadedArray[0] ||
+                index === pictureNotLoadedArray[1]
+            "
             class="home-newsitem-title"
             @mouseover="isHovering = true"
             @mouseout="isHovering = false"
             :class="{ hovering: isHovering }"
-          >{{ newsItem.title }}</div>
+          >
+            {{ newsItem.title }}
+          </div>
         </router-link>
         <hr v-if="!newsItem.urlToImage" />
       </div>
@@ -87,10 +120,6 @@ import DetailsPage from "./DetailsPage.vue";
 import VueRouter from "vue-router";
 import { bus } from "../main";
 
-interface Test {
-  newsDataToDisplay: NewsItemType[];
-}
-
 @Component({ components: { DetailsPage } })
 export default class Home extends Vue {
   isHovering = false;
@@ -101,8 +130,8 @@ export default class Home extends Vue {
   router = new VueRouter({
     routes: [
       // dynamic segments start with a colon
-      { path: "/details /:id", component: DetailsPage }
-    ]
+      { path: "/details /:id", component: DetailsPage },
+    ],
   });
   pictureNotLoadedArray: Array<number> = [];
 
@@ -126,7 +155,7 @@ export default class Home extends Vue {
 
     const newsCategoryFetchObject = {
       fetchBase: "Default Country",
-      typeOfFetchBase: "fetchCountry"
+      typeOfFetchBase: "fetchCountry",
     };
 
     await news.fetchNewsQuery(newsCategoryFetchObject);
