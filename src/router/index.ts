@@ -11,7 +11,7 @@ const routes: Array<RouteConfig> = [
     component: Home,
   },
   {
-    path: "/categories",
+    path: "/",
     name: "CategoriesPage",
 
     component: () =>

@@ -12,9 +12,10 @@
       </div>
     </div>
     <div class="news-menu-categories" v-if="categoriesPageBoolean">
-      <div
-        class="news-menu-information"
-      >Get the most recent news per country, column or search for the news about a subject.</div>
+      <div class="news-menu-information">
+        Get the most recent news per country, column or search for the news
+        about a subject.
+      </div>
 
       <br />
       <div class="news-menu-query-country">
@@ -115,6 +116,10 @@
 
           <input type="submit" value="Submit" />
         </form>
+        <br />
+        <div @click="closeCategoriesDiv" class="news-menu-close-categoriesdiv">
+          X
+        </div>
       </div>
       <br />
     </div>
@@ -135,10 +140,20 @@ export default class NewsMenu extends Vue {
   newsCategorySelected = "Default News Category";
 
   mounted() {
+    console.log("NEWSMENU mounted");
+    //get the data from vuex in the newsFooter component
+    bus.$emit("triggerDataToFetchInFooter");
+
     bus.$on("makeCategoriesDivClosedEventForDetailsPage", () => {
       this.categoriesPageBoolean = false;
     });
     bus.$on("makeCategoriesDivClosedEventForRandomPage", () => {
+      this.categoriesPageBoolean = false;
+    });
+    bus.$on("openCategoriesDivFromNewsFooter", () => {
+      this.categoriesPageBoolean = !this.categoriesPageBoolean;
+    });
+    bus.$on("closeCategoriesDivFromNewsFooter", () => {
       this.categoriesPageBoolean = false;
     });
   }
@@ -146,11 +161,15 @@ export default class NewsMenu extends Vue {
   async loadDefaultNewsItems() {
     const countryFetchObject = {
       fetchBase: "Default Country",
-      typeOfFetchBase: "fetchCountry"
+      typeOfFetchBase: "fetchCountry",
     };
 
     await news.fetchNewsQuery(countryFetchObject);
     bus.$emit("loadDefaultNewsItemsAfterClickOnHomeButton");
+
+    //if a user clicks on home, reset the categories settings to their defaults
+    this.countrySelected = "Default Country";
+    this.newsCategorySelected = "Default News Category";
   }
 
   setCategoriesBoolean() {
@@ -161,7 +180,7 @@ export default class NewsMenu extends Vue {
     const selectedCountry = (event.target as HTMLTextAreaElement).value;
     const countryFetchObject = {
       fetchBase: selectedCountry,
-      typeOfFetchBase: "fetchCountry"
+      typeOfFetchBase: "fetchCountry",
     };
 
     this.newsCategorySelected = "Default News Category";
@@ -174,7 +193,7 @@ export default class NewsMenu extends Vue {
     const selectedNewsCategory = (event.target as HTMLTextAreaElement).value;
     const newsCategoryFetchObject = {
       fetchBase: selectedNewsCategory,
-      typeOfFetchBase: "fetchNewsCategory"
+      typeOfFetchBase: "fetchNewsCategory",
     };
     this.countrySelected = "Default Country";
     await news.fetchNewsQuery(newsCategoryFetchObject);
@@ -196,13 +215,18 @@ export default class NewsMenu extends Vue {
     bus.$emit("makeCategoriesDivClosedEventForRandomPage");
   }
 
+  //close the categoriesdiv from the menu itself
+  closeCategoriesDiv() {
+    this.categoriesPageBoolean = false;
+  }
+
   async onSubmit(event: Event) {
     console.log("submit");
     event.preventDefault();
     const inputValue = this.inputValue;
     const inputFetchObject = {
       fetchBase: inputValue,
-      typeOfFetchBase: "fetchInput"
+      typeOfFetchBase: "fetchInput",
     };
     await news.fetchNewsQuery(inputFetchObject);
     const inputFetchValue = inputFetchObject.fetchBase;
@@ -256,5 +280,12 @@ export default class NewsMenu extends Vue {
   width: 59% !important;
   margin-left: 20%;
   margin-right: 20%;
+}
+.news-menu-close-categoriesdiv {
+  color: red;
+  font-weight: bold;
+  font-size: 150%;
+  text-align: right;
+  padding-right: 8%;
 }
 </style>

@@ -3,7 +3,11 @@
     <div v-if="this.randomNewsItem[0]" class="randompage-newsdata-loaded">
       {{ this.newsItemPublishedTime }} GMT
       <hr />
-      <div v-for="newsItem in this.randomNewsItem" :key="newsItem.title" class="randompage-data">
+      <div
+        v-for="newsItem in this.randomNewsItem"
+        :key="newsItem.title"
+        class="randompage-data"
+      >
         <div
           class="randompage-title"
           @mouseover="isHovering = true"
@@ -13,21 +17,19 @@
           <a :href="newsItem.url">{{ newsItem.title }}</a>
         </div>
 
-        <div v-if="newsItem.author">Written by:{{ " " }}{{ newsItem.author }}</div>
+        <div v-if="newsItem.author">
+          Written by:{{ " " }}{{ newsItem.author }}
+        </div>
         <br />
         <div class="randompage-description">
           <span class="randompage-small-header">Description</span>
           <br />
-          {{
-          newsItem.description
-          }}
+          {{ newsItem.description }}
         </div>
         <div class="randompage-contents">
           <span class="randompage-small-header">Contents</span>
           <br />
-          {{
-          newsItem.content
-          }}
+          {{ newsItem.content }}
         </div>
         <div
           @click="saveRandomArticleInLocalStorage"
@@ -39,7 +41,9 @@
           <a :href="newsItem.url">READ MORE</a>
         </div>
         <div class="randompage-button">
-          <button @click="changeRandomNewsItemOnButtonClick">Show another random news item</button>
+          <button @click="changeRandomNewsItemOnButtonClick">
+            Show another random news item
+          </button>
         </div>
         <div class="randompage-picture">
           <img v-bind:src="newsItem.urlToImage" />
@@ -78,7 +82,7 @@ export default class RandomPage extends Vue {
     "Leisure",
     "Entertainment",
     "Travel",
-    "Default News Category"
+    "Default News Category",
   ];
 
   //base to fetch news from a random country
@@ -136,16 +140,19 @@ export default class RandomPage extends Vue {
     "United Kingdom",
     "United States",
     "Venezuela",
-    "Default Country"
+    "Default Country",
   ];
 
   randomNewsCategoryFetchBaseArray = [
     this.randomCountryCategoriesArray,
-    this.randomNewsCategoriesArray
+    this.randomNewsCategoriesArray,
   ];
 
   async mounted() {
-    console.log("mounted");
+    console.log("RANDOMPAGE mounted");
+    //get the data from vuex in the newsFooter component
+    bus.$emit("triggerDataToFetchInFooter");
+
     this.setRandomArticle();
     // console.log(this.newsData);
     // //display a random newsItem when the component mounts/on refreshing the page
@@ -225,7 +232,7 @@ export default class RandomPage extends Vue {
 
     const fetchRandomNewsItemObject = {
       fetchBase: pickFetchBase,
-      typeOfFetchBase: pickType
+      typeOfFetchBase: pickType,
     };
 
     //fetch the newsData and put it in the vuex store

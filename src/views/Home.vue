@@ -151,6 +151,9 @@ export default class Home extends Vue {
 
   //bus object needs to listen to events in another component on mounted hook
   async mounted() {
+    //get the data from vuex in the newsFooter component
+    bus.$emit("triggerDataToFetchInFooter");
+
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 
     const newsCategoryFetchObject = {
@@ -168,13 +171,13 @@ export default class Home extends Vue {
     bus.$on("selectedCountry", (selectedCountry: string) => {
       this.fetchedCategory = selectedCountry;
       this.setData();
-      this.addNewsSource();
+      // this.addNewsSource();
       this.hideSelectedCategoryDiv();
     });
     bus.$on("selectedNewsCategory", (selectedNewsCategory: string) => {
       this.fetchedCategory = selectedNewsCategory;
       this.setData();
-      this.addNewsSource();
+      // this.addNewsSource();
       this.hideSelectedCategoryDiv();
     });
 
@@ -183,17 +186,17 @@ export default class Home extends Vue {
       this.fetchedCategory = inputFetchValue;
 
       this.setData();
-      this.addNewsSource();
+      // this.addNewsSource();
       this.hideSelectedCategoryDiv();
     });
 
     bus.$on("loadDefaultNewsItemsAfterClickOnHomeButton", () => {
       this.setData();
-      this.addNewsSource();
+      // this.addNewsSource();
     });
 
     this.checkIfThereIsANewsItemWithoutAPicture();
-    this.addNewsSource();
+    // this.addNewsSource();
   }
 
   //set the data to the current values in the news module
@@ -231,26 +234,26 @@ export default class Home extends Vue {
     bus.$emit("makeCategoriesDivClosedEventForDetailsPage");
   }
 
-  //add the news source if it's not shown
-  addNewsSource(): void {
-    let newsDataFiltered = this.newsDataToDisplay.filter(
-      (item: NewsItemType, index: number) => {
-        return index < 10;
-      }
-    );
-    newsDataFiltered = newsDataFiltered.map((item: NewsItemType) => {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      if (
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        !item.title.includes(item.source.name!) &&
-        item.source.name !== null
-      ) {
-        item.title = item.title + " - " + item.source.name;
-      }
-      return item;
-    });
-    this.newsDataToDisplay = newsDataFiltered;
-  }
+  // //add the news source if it's not shown
+  // addNewsSource(): void {
+  //   let newsDataFiltered = this.newsDataToDisplay.filter(
+  //     (item: NewsItemType, index: number) => {
+  //       return index < 10;
+  //     }
+  //   );
+  //   newsDataFiltered = newsDataFiltered.map((item: NewsItemType) => {
+  //     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  //     if (
+  //       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  //       !item.title.includes(item.source.name!) &&
+  //       item.source.name !== null
+  //     ) {
+  //       item.title = item.title + " - " + item.source.name;
+  //     }
+  //     return item;
+  //   });
+  //   this.newsDataToDisplay = newsDataFiltered;
+  // }
 
   //sort the news array bij news source name
   sortByNewsTitle(): void {

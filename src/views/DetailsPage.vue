@@ -141,9 +141,13 @@ export default class DetailsPage extends Vue {
       );
     }
 
-    //if a user clicks an item below the header "details page" in de footer, make sure that the details page gets rerendendered with the title where a user clicked on
+    // //load the first element of the details page when a user clicks "details" in the sitemap
+    // bus.$on("loadFirstElementOfDetailsPage", () => {});
+
+    //if a user clicks an item below the header "details page" in the footer, make sure that the details page gets rerendered with the title where a user clicked on
     bus.$on("triggerdetailspagereload", (title: string) => {
       this.newsItemTitle = title;
+      console.log(title);
     });
   }
   isHovering = false;
@@ -177,6 +181,7 @@ export default class DetailsPage extends Vue {
     //get the clicked news item from the array
     const valuesForDetailComponentFiltered: NewsItemType[] = this.newsData.filter(
       (item: NewsItemType, index: number) => {
+        console.log(this.newsItemTitle);
         // save the index of the clicked news item
         console.log(this.newsItemTitle.includes(item.title));
         if (this.newsItemTitle.includes(item.title)) {
@@ -218,6 +223,7 @@ export default class DetailsPage extends Vue {
     //populate the variables to display the data in the template
     this.valuesForDetailComponent = valuesForDetailComponentFiltered;
     this.threeRelevantExtraNewsItems = extraValuesForDetailComponent;
+
     return valuesForDetailComponentFiltered;
   }
 }

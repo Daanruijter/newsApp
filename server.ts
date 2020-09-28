@@ -36,3 +36,5 @@ mongoose
   .catch((err) => console.log(err + "There is no connection"));
 
 mongoose.set("debug", true);
+
+app.use("/", require("./worldNewsUrls"));
