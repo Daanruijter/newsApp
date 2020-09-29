@@ -6,29 +6,36 @@
     >
       You selected {{ this.fetchedCategory }} news
     </div>
-    <br />
-    <div>
-      sort the data
-      <button
-        name="sortByNewsSource"
-        class="home-sort-by-newssource-button"
-        @click="sortByNewsSource"
-      >
-        Sort by news source
-      </button>
-      <button
-        name="sortByNewsTitle"
-        class="home-sort-by-newstitle-button"
-        @click="sortByNewsTitle"
-      >
-        Sort by news title
-      </button>
-      <button name="reset" class="home-reset" @click="reset">Reset</button>
-    </div>
-    <br />
+
     <div class="home-newsdata-loaded">
-      Get to know what's currently happening in the world. Tap on the title to
-      know more.
+      <div>
+        Get to know what's currently happening in the world. Tap on a title to
+        know more.
+      </div>
+      <div>
+        <div class="home-sort-the-data">
+          Sort the data by:
+        </div>
+
+        <button
+          name="sortByNewsSource"
+          class="home-sort-by-newssource-button"
+          @click="sortByNewsSource"
+        >
+          News source
+        </button>
+
+        <button
+          name="sortByNewsTitle"
+          class="home-sort-by-newstitle-button"
+          @click="sortByNewsTitle"
+        >
+          News title
+        </button>
+
+        <button name="reset" class="home-reset" @click="reset">Reset</button>
+      </div>
+
       <div
         @click="makeCategoriesDivClosed"
         class="home-newsitems-with-picture"
@@ -342,10 +349,18 @@ export default class Home extends Vue {
 
   padding-top: 1%;
   padding-bottom: 1%;
+  margin-bottom: 3%;
 }
 
 .home-container {
   margin-top: 175px;
+}
+
+.home-sort-the-data {
+  margin-top: 5%;
+  margin-bottom: 1%;
+  text-align: center;
+  font-weight: bold;
 }
 
 .home-newsitem-title {
@@ -360,6 +375,12 @@ export default class Home extends Vue {
 
 a {
   text-decoration: none;
+}
+
+button {
+  width: 28%;
+  margin-left: 2%;
+  margin-right: 2%;
 }
 
 .home-newsitem-picture {

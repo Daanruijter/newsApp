@@ -107,6 +107,39 @@ interface FetchBase {
 @Component
 export default class DetailsPage extends Vue {
   async mounted() {
+    console.log("DETAILSPAGE mounted");
+    await this.processDataForRandomComponent();
+    //get the data from vuex in the newsFooter component
+    bus.$emit("triggerDataToFetchInFooter");
+
+    //if a user clicks on the details button in the footer, make sure that the details page gets rerendered with a default title
+    bus.$on("loadFirstElementOfDetailsPage", (title: string) => {
+      console.log("LOADFIRSTELEMENT");
+      console.log(title);
+      this.newsItemTitle = title;
+      console.log(title);
+      this.processDataForRandomComponent();
+    });
+
+    //if a user clicks an item below the header "details page" in the footer, make sure that the details page gets rerendered with the title where a user clicked on
+    bus.$on("triggerdetailspagereload", (title: string) => {
+      this.newsItemTitle = title;
+      console.log(title);
+      this.processDataForRandomComponent();
+    });
+  }
+  isHovering = false;
+  hoveringReadMore = false;
+  newsData = [];
+  newsBase = "";
+
+  //get the newsitem where a user clicked on to go to its detail page from params (because there is no parent/child relation between the home and detailspage component)
+  newsItemTitle = this.$route.params.title;
+  newsItemPublishedTime = "";
+  valuesForDetailComponent: NewsItemType[] = [];
+  threeRelevantExtraNewsItems: NewsItemType[] = [];
+
+  processDataForRandomComponent() {
     //if the news items array is not populated, because of a page reload, fetch it again
     if (Object.keys(this.newsData).length === 0) {
       //get the right info for fetching the data
@@ -119,7 +152,7 @@ export default class DetailsPage extends Vue {
       };
 
       //fetch the data
-      await news.fetchNewsQuery(newsCategoryFetchObject);
+      news.fetchNewsQuery(newsCategoryFetchObject);
       this.newsData = this.$store.getters[
         "vuexModuleDecorators/newsDataModule"
       ].queriedNewsItemsGetter;
@@ -140,26 +173,7 @@ export default class DetailsPage extends Vue {
         this.valuesForDetailComponent[0].publishedAt
       );
     }
-
-    // //load the first element of the details page when a user clicks "details" in the sitemap
-    // bus.$on("loadFirstElementOfDetailsPage", () => {});
-
-    //if a user clicks an item below the header "details page" in the footer, make sure that the details page gets rerendered with the title where a user clicked on
-    bus.$on("triggerdetailspagereload", (title: string) => {
-      this.newsItemTitle = title;
-      console.log(title);
-    });
   }
-  isHovering = false;
-  hoveringReadMore = false;
-  newsData = [];
-  newsBase = "";
-
-  //get the newsitem where a user clicked on to go to its detail page from params (because there is no parent/child relation between the home and detailspage component)
-  newsItemTitle = this.$route.params.title;
-  newsItemPublishedTime = "";
-  valuesForDetailComponent: NewsItemType[] = [];
-  threeRelevantExtraNewsItems: NewsItemType[] = [];
 
   //get a random number for the index. Number must be higher than 10, because I don't want to display newsItems that already got displayed on the homepage.
   //The random number must also not be higher than the length of the array of newsitems
@@ -181,9 +195,8 @@ export default class DetailsPage extends Vue {
     //get the clicked news item from the array
     const valuesForDetailComponentFiltered: NewsItemType[] = this.newsData.filter(
       (item: NewsItemType, index: number) => {
-        console.log(this.newsItemTitle);
         // save the index of the clicked news item
-        console.log(this.newsItemTitle.includes(item.title));
+
         if (this.newsItemTitle.includes(item.title)) {
           filterDisplayedItemOut = index;
         }

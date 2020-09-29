@@ -172,7 +172,7 @@ export default class RandomPage extends Vue {
       ].queriedNewsItemsGetter;
       this.filterArrayByRandomIndex();
       this.addNewsSource();
-
+      bus.$emit("triggerDataToFetchInFooter");
       //when a user clicks the random button from the navbar, add the random item to localStorage
       //then it can be reloaded after a page reload or if a user comes back from the external link to the article
       this.saveRandomArticleInLocalStorage();

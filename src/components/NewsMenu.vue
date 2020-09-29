@@ -17,7 +17,6 @@
         about a subject.
       </div>
 
-      <br />
       <div class="news-menu-query-country">
         <select
           v-model="countrySelected"
@@ -84,7 +83,8 @@
         </select>
       </div>
 
-      <br />
+      <div class="news-menu-possiblities">or</div>
+
       <div class="news-menu-query-subject">
         <select
           v-model="newsCategorySelected"
@@ -103,9 +103,9 @@
           <option value="Travel">Travel</option>
         </select>
       </div>
+      <div class="news-menu-possiblities">or</div>
       <div class="news-menu-query-newsitem">
         <form @submit="onSubmit($event)">
-          <br />
           <input
             class="news-menu-query-newsitem-input"
             type="text"
@@ -265,8 +265,15 @@ export default class NewsMenu extends Vue {
   background-color: white;
   text-align: left;
 }
+
+.news-menu-possiblities {
+  text-align: center;
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
 .news-menu-information {
   padding-left: 5%;
+  margin-bottom: 5%;
 }
 .news-menu-query-country select,
 .news-menu-query-subject select,
