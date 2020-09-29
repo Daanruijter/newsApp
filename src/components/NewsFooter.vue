@@ -139,8 +139,6 @@ export default class NewsFooter extends Vue {
   }
   //if a user clicks on the categories button, open the categories div in
   doStuffOnCLickInSitemap(event: Event): void {
-    console.log("afhsklshjsflfhj");
-
     const routeText = (event.target as HTMLAnchorElement).text;
 
     //open the categories div if a user hits the categories button
@@ -161,16 +159,13 @@ export default class NewsFooter extends Vue {
       console.log(this.router);
       // this.router.push({ params: title });
 
-      bus.$emit(
-        "loadFirstElementOfDetailsPage",
-        title //hier titel doorgeven//..
-      );
+      bus.$emit("loadFirstElementOfDetailsPage", title);
     }
 
     //trigger the addNewsItem function on the random component
     if (routeText === "Random") {
       bus.$emit(
-        "triggerAddNewsItem" //hier titel doorgeven//..
+        "triggerRandomPageLogic" //hier titel doorgeven//..
       );
     }
     //trigger the addNewsItem function on the random component

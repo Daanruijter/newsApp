@@ -3,11 +3,7 @@
     <div v-if="this.randomNewsItem[0]" class="randompage-newsdata-loaded">
       {{ this.newsItemPublishedTime }} GMT
       <hr />
-      <div
-        v-for="newsItem in this.randomNewsItem"
-        :key="newsItem.title"
-        class="randompage-data"
-      >
+      <div v-for="newsItem in this.randomNewsItem" :key="newsItem.title" class="randompage-data">
         <div
           class="randompage-title"
           @mouseover="isHovering = true"
@@ -17,9 +13,7 @@
           <a :href="newsItem.url">{{ newsItem.title }}</a>
         </div>
 
-        <div v-if="newsItem.author">
-          Written by:{{ " " }}{{ newsItem.author }}
-        </div>
+        <div v-if="newsItem.author">Written by:{{ " " }}{{ newsItem.author }}</div>
         <br />
         <div class="randompage-description">
           <span class="randompage-small-header">Description</span>
@@ -32,7 +26,6 @@
           {{ newsItem.content }}
         </div>
         <div
-          @click="saveRandomArticleInLocalStorage"
           class="randompage-read-more"
           @mouseover="hoveringReadMore = true"
           @mouseout="hoveringReadMore = false"
@@ -41,9 +34,7 @@
           <a :href="newsItem.url">READ MORE</a>
         </div>
         <div class="randompage-button">
-          <button @click="changeRandomNewsItemOnButtonClick">
-            Show another random news item
-          </button>
+          <button @click="changeRandomNewsItemOnButtonClick">Show another random news item</button>
         </div>
         <div class="randompage-picture">
           <img v-bind:src="newsItem.urlToImage" />
@@ -82,7 +73,7 @@ export default class RandomPage extends Vue {
     "Leisure",
     "Entertainment",
     "Travel",
-    "Default News Category",
+    "Default News Category"
   ];
 
   //base to fetch news from a random country
@@ -140,64 +131,39 @@ export default class RandomPage extends Vue {
     "United Kingdom",
     "United States",
     "Venezuela",
-    "Default Country",
+    "Default Country"
   ];
 
   randomNewsCategoryFetchBaseArray = [
     this.randomCountryCategoriesArray,
-    this.randomNewsCategoriesArray,
+    this.randomNewsCategoriesArray
   ];
 
   async mounted() {
     console.log("RANDOMPAGE mounted");
-    //get the data from vuex in the newsFooter component
+    //trigger a logic that gets the newsdata array from vuex into the newsFooter component
     bus.$emit("triggerDataToFetchInFooter");
 
-    this.setRandomArticle();
-    // console.log(this.newsData);
-    // //display a random newsItem when the component mounts/on refreshing the page
-    // await this.fetchDataForRandomPage();
-    // this.newsData = this.$store.getters[
-    //   "vuexModuleDecorators/newsDataModule"
-    // ].queriedNewsItemsGetter;
-    // this.filterArrayByRandomIndex();
-    // this.addNewsSource();
-    // //display a random newsItem when the user clicks the random button from the navbar
+    //on reload, load the article that was there before the reload
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.randomNewsItem = JSON.parse(localStorage.getItem("randomArticle"!)!);
 
-    await bus.$on("makeCategoriesDivClosedEventForRandomPage", () => {
-      console.log("hi");
-      this.fetchDataForRandomPage();
-      this.newsData = this.$store.getters[
-        "vuexModuleDecorators/newsDataModule"
-      ].queriedNewsItemsGetter;
-      this.filterArrayByRandomIndex();
-      this.addNewsSource();
-      bus.$emit("triggerDataToFetchInFooter");
-      //when a user clicks the random button from the navbar, add the random item to localStorage
-      //then it can be reloaded after a page reload or if a user comes back from the external link to the article
-      this.saveRandomArticleInLocalStorage();
-    });
-  }
-
-  //add the news source if it's not shown
-  addNewsSource(): void {
-    let newsDataFiltered = this.randomNewsItem.filter(
-      (item: NewsItemType, index: number) => {
-        return index < 10;
-      }
+    //get the publish date of the news item
+    this.newsItemPublishedTime = convertNewsItemPublishedTime(
+      this.randomNewsItem[0].publishedAt
     );
-    newsDataFiltered = newsDataFiltered.map((item: NewsItemType) => {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      if (
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        !item.title.includes(item.source.name!) &&
-        item.source.name !== null
-      ) {
-        item.title = item.title + " - " + item.source.name;
-      }
-      return item;
+
+    //if a user clicks on the random page button in the navbar, fetch the data and load it in the random component
+    await bus.$on("makeCategoriesDivClosedEventForRandomPage", () => {
+      //fetch the data and load it in the random component
+      this.prepareDataForDisplay();
     });
-    this.randomNewsItem = newsDataFiltered;
+
+    //if a user clicks on the random page button in the footer, fetch the data and load it in the random component
+    await bus.$on("triggerRandomPageLogic", () => {
+      //fetch the data and load it in the random component
+      this.prepareDataForDisplay();
+    });
   }
 
   //function fetches from the API randomly:
@@ -206,7 +172,7 @@ export default class RandomPage extends Vue {
   //passes that information on to the fetch action, which fetches the data
   //the newsCountryQueriedGetter getter is are used to get the data in the component
 
-  async fetchDataForRandomPage() {
+  async fetchDataForRandomPageAndLoadItInRandomComponent() {
     const randomNumberZeroOrOne = this.randomIntFromInterval(0, 1);
     const pickCountryOrNewsCategoriesArray = this
       .randomNewsCategoryFetchBaseArray[randomNumberZeroOrOne];
@@ -232,34 +198,19 @@ export default class RandomPage extends Vue {
 
     const fetchRandomNewsItemObject = {
       fetchBase: pickFetchBase,
-      typeOfFetchBase: pickType,
+      typeOfFetchBase: pickType
     };
 
     //fetch the newsData and put it in the vuex store
     await news.fetchNewsQuery(fetchRandomNewsItemObject);
+
+    // this.fetchTheData();
   }
 
-  //when a user clicks the random button from the navbar, add the random item to localStorage
-  //then it can be reloaded after a page reload or if a user comes back from the external link to the article
-  saveRandomArticleInLocalStorage() {
-    localStorage.setItem("randomArticle", JSON.stringify(this.randomNewsItem));
-  }
-
-  //when the page reloads or if a user comes back from the external link to the article
-  //set the random item to what it was before the page reload or clicking the external link
-  setRandomArticle() {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    this.randomNewsItem = JSON.parse(localStorage.getItem("randomArticle"!)!);
-    // this.randomNewsItem = localStorage.getItem("randomArticle"!);
-  }
-
-  //populate the newsdata data array (necessary to filter based on the newsItemTitle variable)
-  get getAllNewsData() {
-    this.newsData = this.$store.getters[
-      "vuexModuleDecorators/newsDataModule"
-    ].queriedNewsItemsGetter;
-    this.filterArrayByRandomIndex();
-    return null;
+  //if a user hits the button on the random page, it triggers another newsItem to show
+  async changeRandomNewsItemOnButtonClick() {
+    //fetch the data and load it in the random component
+    this.prepareDataForDisplay();
   }
 
   //get a random number for the index. Number must be higher than 10, because I don't want to display newsItems that already got displayed on the homepage.
@@ -270,6 +221,7 @@ export default class RandomPage extends Vue {
   }
   //filter the array with one random index to display a random news item
   filterArrayByRandomIndex() {
+    console.log("filterArrayByRandomIndex");
     const randomNewsItemNumber = this.randomIntFromInterval(
       0,
       this.newsData.length - 1
@@ -281,21 +233,26 @@ export default class RandomPage extends Vue {
       }
     );
     this.randomNewsItem = filterToGetRandomNewsItem;
-
+    console.log(this.newsItemPublishedTime);
     this.newsItemPublishedTime = convertNewsItemPublishedTime(
       this.randomNewsItem[0].publishedAt
     );
+
+    console.log(this.newsItemPublishedTime);
     return filterToGetRandomNewsItem;
   }
-
-  //if a user hits the button on the random page, it triggers another newsItem to show
-  changeRandomNewsItemOnButtonClick() {
-    this.fetchDataForRandomPage();
+  prepareDataForDisplay() {
+    //fetch the data and load it in the random component
+    this.fetchDataForRandomPageAndLoadItInRandomComponent();
     this.newsData = this.$store.getters[
       "vuexModuleDecorators/newsDataModule"
     ].queriedNewsItemsGetter;
+
+    //filter the data to display one random item
     this.filterArrayByRandomIndex();
-    this.addNewsSource();
+
+    //save the random news item to pick it up on reload or comeing back from an external page
+    localStorage.setItem("randomArticle", JSON.stringify(this.randomNewsItem));
   }
 }
 </script>

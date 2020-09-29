@@ -114,17 +114,15 @@ export default class DetailsPage extends Vue {
 
     //if a user clicks on the details button in the footer, make sure that the details page gets rerendered with a default title
     bus.$on("loadFirstElementOfDetailsPage", (title: string) => {
-      console.log("LOADFIRSTELEMENT");
-      console.log(title);
       this.newsItemTitle = title;
-      console.log(title);
+
       this.processDataForRandomComponent();
     });
 
     //if a user clicks an item below the header "details page" in the footer, make sure that the details page gets rerendered with the title where a user clicked on
     bus.$on("triggerdetailspagereload", (title: string) => {
       this.newsItemTitle = title;
-      console.log(title);
+
       this.processDataForRandomComponent();
     });
   }
