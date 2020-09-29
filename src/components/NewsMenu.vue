@@ -117,9 +117,7 @@
           <input type="submit" value="Submit" />
         </form>
         <br />
-        <div @click="closeCategoriesDiv" class="news-menu-close-categoriesdiv">
-          X
-        </div>
+        <div @click="closeCategoriesDiv" class="news-menu-close-categoriesdiv">X</div>
       </div>
       <br />
     </div>
@@ -159,9 +157,11 @@ export default class NewsMenu extends Vue {
   }
 
   async loadDefaultNewsItems() {
+    //trigger a logic that gets the newsdata array from vuex into the newsFooter component
+    bus.$emit("triggerDataToFetchInFooter");
     const countryFetchObject = {
       fetchBase: "Default Country",
-      typeOfFetchBase: "fetchCountry",
+      typeOfFetchBase: "fetchCountry"
     };
 
     await news.fetchNewsQuery(countryFetchObject);
@@ -173,27 +173,34 @@ export default class NewsMenu extends Vue {
   }
 
   setCategoriesBoolean() {
+    //trigger a logic that gets the newsdata array from vuex into the newsFooter component
+    bus.$emit("triggerDataToFetchInFooter");
     this.categoriesPageBoolean = !this.categoriesPageBoolean;
   }
 
   async catchCountryValue(event: Event) {
+    //trigger a logic that gets the newsdata array from vuex into the newsFooter component
+    bus.$emit("triggerDataToFetchInFooter");
     const selectedCountry = (event.target as HTMLTextAreaElement).value;
     const countryFetchObject = {
       fetchBase: selectedCountry,
-      typeOfFetchBase: "fetchCountry",
+      typeOfFetchBase: "fetchCountry"
     };
 
     this.newsCategorySelected = "Default News Category";
+
     await news.fetchNewsQuery(countryFetchObject);
     bus.$emit("selectedCountry", selectedCountry);
     this.categoriesPageBoolean = false;
   }
 
   async catchNewsCategoryValue(event: Event) {
+    //trigger a logic that gets the newsdata array from vuex into the newsFooter component
+    bus.$emit("triggerDataToFetchInFooter");
     const selectedNewsCategory = (event.target as HTMLTextAreaElement).value;
     const newsCategoryFetchObject = {
       fetchBase: selectedNewsCategory,
-      typeOfFetchBase: "fetchNewsCategory",
+      typeOfFetchBase: "fetchNewsCategory"
     };
     this.countrySelected = "Default Country";
     await news.fetchNewsQuery(newsCategoryFetchObject);
@@ -212,6 +219,8 @@ export default class NewsMenu extends Vue {
 
   //if someone clicks the random button, he gets redirected to the random page, where the category selection menu should not be shown
   makeCategoriesDivClosed() {
+    //trigger a logic that gets the newsdata array from vuex into the newsFooter component
+    bus.$emit("triggerDataToFetchInFooter");
     bus.$emit("makeCategoriesDivClosedEventForRandomPage");
   }
 
@@ -221,12 +230,14 @@ export default class NewsMenu extends Vue {
   }
 
   async onSubmit(event: Event) {
+    //trigger a logic that gets the newsdata array from vuex into the newsFooter component
+    bus.$emit("triggerDataToFetchInFooter");
     console.log("submit");
     event.preventDefault();
     const inputValue = this.inputValue;
     const inputFetchObject = {
       fetchBase: inputValue,
-      typeOfFetchBase: "fetchInput",
+      typeOfFetchBase: "fetchInput"
     };
     await news.fetchNewsQuery(inputFetchObject);
     const inputFetchValue = inputFetchObject.fetchBase;

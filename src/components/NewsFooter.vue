@@ -1,35 +1,34 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 <template>
   <div class="newsfooter-container">
-    <div class="newsfooter-sitemap-header"><h2>Sitemap</h2></div>
+    <div class="newsfooter-sitemap-header">
+      <h2>Sitemap</h2>
+    </div>
 
     <div v-for="route in routes" :key="route.name" class="newsfooter-routes">
-      <div
-        @click="doStuffOnCLickInSitemap($event)"
-        class="newsfooter-individual-routes"
-      >
-        <router-link v-if="route.name !== 'Details'" :to="route.path">{{
+      <div @click="doStuffOnCLickInSitemap($event)" class="newsfooter-individual-routes">
+        <router-link v-if="route.name !== 'Details'" :to="route.path">
+          {{
           route.name
-        }}</router-link>
+          }}
+        </router-link>
         <router-link
           v-if="route.name === 'Details' && newsData[0] !== undefined"
           :to="{ name: 'DetailsPage', params: { title: newsData[0].title } }"
-          >{{ route.name }}</router-link
-        >
+        >{{ route.name }}</router-link>
       </div>
       <div class="newsfooter-detailspage" v-if="route.name === 'Details'">
         <div :key="item.title" v-for="(item, index) in newsData">
           <router-link
             class="newsfooter-links"
             :to="{ name: 'DetailsPage', params: { title: item.title } }"
-            ><div
+          >
+            <div
               @click="triggerDetailPageToReload(item.title)"
               v-if="index < 10"
               class="title"
-            >
-              {{ item.title }}
-            </div></router-link
-          >
+            >{{ item.title }}</div>
+          </router-link>
         </div>
       </div>
     </div>
@@ -61,8 +60,8 @@ export default class NewsFooter extends Vue {
   router = new VueRouter({
     routes: [
       // dynamic segments start with a colon
-      { path: "/details /:id", component: DetailsPage },
-    ],
+      { path: "/details /:id", component: DetailsPage }
+    ]
   });
 
   async mounted() {
@@ -81,7 +80,7 @@ export default class NewsFooter extends Vue {
           fetchBase: localStorage.getItem("fetchBase")!,
 
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          typeOfFetchBase: localStorage.getItem("typeOfFetchBase")!,
+          typeOfFetchBase: localStorage.getItem("typeOfFetchBase")!
         };
 
         //fetch the data
