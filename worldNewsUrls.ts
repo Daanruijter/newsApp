@@ -1,11 +1,11 @@
-// const express = require("express");
+let express = require("express");
 const router = express.Router();
 console.log("WORLDNEWSURLSROUTE");
 
-//get the current user with the token
-
 router.get("/", (req, res) => {
   console.log("get works");
+  const data = 6;
+  res.send(data);
 });
 
 module.exports = router;
