@@ -33,8 +33,6 @@
       </div>
     </div>
   </div>
-
-  <!-- v-for="(newsItem, index) in this.newsDataToDisplay" -->
 </template>
 
 <script lang="ts">
@@ -76,38 +74,14 @@ export default class NewsFooter extends Vue {
       this.getData();
     });
 
-    //   this.getNewsDataFromVuexFunction();
-
-    //   if (this.newsData.length === 0) {
-    //     //get the right info for fetching the data
-    //     const newsCategoryFetchObject = {
-    //       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    //       fetchBase: localStorage.getItem("fetchBase")!,
-
-    //       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    //       typeOfFetchBase: localStorage.getItem("typeOfFetchBase")!
-    //     };
-
-    //     //fetch the data
-    //     this.fetchData(newsCategoryFetchObject);
-
-    //     this.newsData = this.$store.getters[
-    //       "vuexModuleDecorators/newsDataModule"
-    //     ].queriedNewsItemsGetter;
-    //   }
-    // });
-
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const routeNames = route.options.routes!;
     let i = 0;
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     for (i = 0; i < routeNames.length!; i++) {
+      //make sure that the name Page is removed from the string
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       if (routeNames[i].name!.includes("Page")) {
-        //make sure that the name Page is removed from the string
-
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const res = routeNames[i].name!.replace("Page", "");
         routeNames[i].name = res;
@@ -115,7 +89,6 @@ export default class NewsFooter extends Vue {
     }
 
     this.routes = routeNames;
-    console.log(this.routes[1].name);
   }
 
   //get data from localStorage
@@ -125,32 +98,9 @@ export default class NewsFooter extends Vue {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       localStorage.getItem("newsData")!
     );
-    console.log(newsDataFromLocalStorage);
+
     this.newsData = newsDataFromLocalStorage;
   }
-
-  // fetchData(newsCategoryFetchObject: FetchNews) {
-  //   news.fetchNewsQuery(newsCategoryFetchObject);
-  // }
-
-  // get getNewsDataFromVuex() {
-  //   console.log("kjk");
-  //   this.assignNewsDataToNewsDataVariable();
-  //   return null;
-  // }
-
-  // assignNewsDataToNewsDataVariable() {
-  //   this.newsData = this.$store.getters[
-  //     "vuexModuleDecorators/newsDataModule"
-  //   ].queriedNewsItemsGetter;
-  // }
-
-  // getNewsDataFromVuexFunction() {
-  //   console.log(this.newsData);
-  //   this.assignNewsDataToNewsDataVariable();
-
-  //   console.log(this.newsData);
-  // }
 
   //if a user clicks an item below the header "details page" in de footer, make sure that the details page gets rerendendered with the title where a user clicked on
 
@@ -176,9 +126,6 @@ export default class NewsFooter extends Vue {
     //load the first item of the details page by triggering the load function in the DetailsPage component
     if (routeText === "Details") {
       const title = this.newsData[0].title;
-      console.log(this.router);
-      // this.router.push({ params: title });
-
       bus.$emit("loadFirstElementOfDetailsPage", title);
     }
 

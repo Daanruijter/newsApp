@@ -48,15 +48,12 @@ class NewsModule extends VuexModule {
   //getters
   get newsDataGetter(): NewsItemType[] {
     const newsDataViaGetter = this.news;
-    // console.log(newsDataViaGetter);
 
     return newsDataViaGetter;
   }
 
   //getter to load the data in components
   get queriedNewsItemsGetter(): NewsItemType[] {
-    console.log("queriedNewsItemsGetter");
-
     return this.queriedNewsItems;
   }
 
@@ -72,8 +69,6 @@ class NewsModule extends VuexModule {
 
   @Mutation
   addQueriedNewsDataToState(data: NewsItemType[]) {
-    console.log("addQueriedNewsDataACTION works");
-
     data = data.map((item: NewsItemType) => {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       if (
@@ -108,9 +103,6 @@ class NewsModule extends VuexModule {
   //fetch the country newsData if a user selects a certain country
   @Action
   async fetchNewsQuery(fetchBaseObject: FetchNews) {
-    console.log("FETCHNEWSQUERY CALLED");
-    console.log(fetchBaseObject);
-
     //save the fetch base in localStorage for when a user reloads the Detail Page
     localStorage.setItem("fetchBase", fetchBaseObject.fetchBase);
     localStorage.setItem("typeOfFetchBase", fetchBaseObject.typeOfFetchBase);
