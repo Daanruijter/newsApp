@@ -3,9 +3,7 @@
     <div
       class="home-show-selected-category"
       v-if="this.fetchedCategory !== 'Default Country'"
-    >
-      You selected {{ this.fetchedCategory }} news
-    </div>
+    >You selected {{ this.fetchedCategory }} news</div>
 
     <div class="home-newsdata-loaded">
       <div>
@@ -13,25 +11,19 @@
         know more.
       </div>
       <div>
-        <div class="home-sort-the-data">
-          Sort the data by:
-        </div>
+        <div class="home-sort-the-data">Sort the data by:</div>
 
         <button
           name="sortByNewsSource"
           class="home-sort-by-newssource-button"
           @click="sortByNewsSource"
-        >
-          News source
-        </button>
+        >News source</button>
 
         <button
           name="sortByNewsTitle"
           class="home-sort-by-newstitle-button"
           @click="sortByNewsTitle"
-        >
-          News title
-        </button>
+        >News title</button>
 
         <button name="reset" class="home-reset" @click="reset">Reset</button>
       </div>
@@ -42,9 +34,7 @@
         v-for="(newsItem, index) in this.newsDataToDisplay"
         :key="newsItem.title + index"
       >
-        <router-link
-          :to="{ name: 'DetailsPage', params: { title: newsItem.title } }"
-        >
+        <router-link :to="{ name: 'DetailsPage', params: { title: newsItem.title } }">
           <div
             v-if="
               newsItem.urlToImage &&
@@ -56,9 +46,7 @@
             @mouseover="isHovering = true"
             @mouseout="isHovering = false"
             :class="{ hovering: isHovering }"
-          >
-            {{ newsItem.title }}
-          </div>
+          >{{ newsItem.title }}</div>
         </router-link>
         <div class="home-newsitem-picture">
           <img
@@ -89,9 +77,7 @@
         v-for="(newsItem, index) in this.newsDataToDisplay"
         :key="newsItem.title"
       >
-        <router-link
-          :to="{ name: 'DetailsPage', params: { title: newsItem.title } }"
-        >
+        <router-link :to="{ name: 'DetailsPage', params: { title: newsItem.title } }">
           <div
             v-if="
               (!newsItem.urlToImage && index < 10) ||
@@ -102,9 +88,7 @@
             @mouseover="isHovering = true"
             @mouseout="isHovering = false"
             :class="{ hovering: isHovering }"
-          >
-            {{ newsItem.title }}
-          </div>
+          >{{ newsItem.title }}</div>
         </router-link>
         <hr v-if="!newsItem.urlToImage" />
       </div>
@@ -137,8 +121,8 @@ export default class Home extends Vue {
   router = new VueRouter({
     routes: [
       // dynamic segments start with a colon
-      { path: "/details /:id", component: DetailsPage },
-    ],
+      { path: "/details /:id", component: DetailsPage }
+    ]
   });
   pictureNotLoadedArray: Array<number> = [];
 
@@ -158,20 +142,21 @@ export default class Home extends Vue {
 
   //bus object needs to listen to events in another component on mounted hook
   async mounted() {
-    //get the data from vuex in the newsFooter component
-    bus.$emit("triggerDataToFetchInFooter");
+    console.log("mounted");
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 
     const newsCategoryFetchObject = {
       fetchBase: "Default Country",
-      typeOfFetchBase: "fetchCountry",
+      typeOfFetchBase: "fetchCountry"
     };
 
     await news.fetchNewsQuery(newsCategoryFetchObject);
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     this.fetchedCategory = localStorage.getItem("fetchBase"!);
-    console.log("mounted");
+
+    //get the data from vuex in the newsFooter component
+    bus.$emit("triggerDataToFetchInFooter");
 
     //load the data in the component through the queriedNewsItemsGetter
     this.setData();

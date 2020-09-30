@@ -109,8 +109,6 @@ export default class DetailsPage extends Vue {
   async mounted() {
     console.log("DETAILSPAGE mounted");
     await this.processDataForRandomComponent();
-    //get the data from vuex in the newsFooter component
-    bus.$emit("triggerDataToFetchInFooter");
 
     //if a user clicks on the details button in the footer, make sure that the details page gets rerendered with a default title
     bus.$on("loadFirstElementOfDetailsPage", (title: string) => {
@@ -137,7 +135,7 @@ export default class DetailsPage extends Vue {
   valuesForDetailComponent: NewsItemType[] = [];
   threeRelevantExtraNewsItems: NewsItemType[] = [];
 
-  processDataForRandomComponent() {
+  async processDataForRandomComponent() {
     //if the news items array is not populated, because of a page reload, fetch it again
     if (Object.keys(this.newsData).length === 0) {
       //get the right info for fetching the data
@@ -146,11 +144,11 @@ export default class DetailsPage extends Vue {
         fetchBase: localStorage.getItem("fetchBase")!,
 
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        typeOfFetchBase: localStorage.getItem("typeOfFetchBase")!,
+        typeOfFetchBase: localStorage.getItem("typeOfFetchBase")!
       };
 
       //fetch the data
-      news.fetchNewsQuery(newsCategoryFetchObject);
+      await news.fetchNewsQuery(newsCategoryFetchObject);
       this.newsData = this.$store.getters[
         "vuexModuleDecorators/newsDataModule"
       ].queriedNewsItemsGetter;

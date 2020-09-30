@@ -314,7 +314,6 @@ class NewsModule extends VuexModule {
 
     console.log(url);
 
-    // const data = testData;
     //EVEN UITGEZET
     const req = new Request(url);
     await fetch(req)
@@ -700,6 +699,8 @@ class NewsModule extends VuexModule {
           data.sort(comparePublishData);
         }
         sortOnPublishedDate();
+
+        localStorage.setItem("newsData", JSON.stringify(data));
 
         this.context.commit("addQueriedNewsDataToState", data);
 

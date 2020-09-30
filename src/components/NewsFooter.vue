@@ -45,7 +45,7 @@ import VueRouter from "vue-router";
 import DetailsPage from "../views/DetailsPage.vue";
 import NewsItemType from "../interfacesforapp";
 import { bus } from "../main";
-import news from "../store/modules/news";
+// import news from "../store/modules/news";
 
 export interface FetchNews {
   fetchBase: string;
@@ -64,33 +64,38 @@ export default class NewsFooter extends Vue {
     ]
   });
 
-  async mounted() {
+  mounted() {
     console.log("newsfooter mounted");
-    this.getNewsDataFromVuexMethod();
+
+    this.getData();
+
+    // this.getNewsDataFromVuexFunction();
 
     bus.$on("triggerDataToFetchInFooter", () => {
       console.log("fecthdatainNEWSFOOTER");
-      console.log(this.newsData);
-      this.getNewsDataFromVuexMethod();
-
-      if (this.newsData.length === 0) {
-        //get the right info for fetching the data
-        const newsCategoryFetchObject = {
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          fetchBase: localStorage.getItem("fetchBase")!,
-
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          typeOfFetchBase: localStorage.getItem("typeOfFetchBase")!
-        };
-
-        //fetch the data
-        this.fetchData(newsCategoryFetchObject);
-
-        this.newsData = this.$store.getters[
-          "vuexModuleDecorators/newsDataModule"
-        ].queriedNewsItemsGetter;
-      }
+      this.getData();
     });
+
+    //   this.getNewsDataFromVuexFunction();
+
+    //   if (this.newsData.length === 0) {
+    //     //get the right info for fetching the data
+    //     const newsCategoryFetchObject = {
+    //       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    //       fetchBase: localStorage.getItem("fetchBase")!,
+
+    //       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    //       typeOfFetchBase: localStorage.getItem("typeOfFetchBase")!
+    //     };
+
+    //     //fetch the data
+    //     this.fetchData(newsCategoryFetchObject);
+
+    //     this.newsData = this.$store.getters[
+    //       "vuexModuleDecorators/newsDataModule"
+    //     ].queriedNewsItemsGetter;
+    //   }
+    // });
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 
@@ -113,23 +118,39 @@ export default class NewsFooter extends Vue {
     console.log(this.routes[1].name);
   }
 
-  async fetchData(newsCategoryFetchObject: FetchNews) {
-    await news.fetchNewsQuery(newsCategoryFetchObject);
+  //get data from localStorage
+  getData() {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const newsDataFromLocalStorage = JSON.parse(
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      localStorage.getItem("newsData")!
+    );
+    console.log(newsDataFromLocalStorage);
+    this.newsData = newsDataFromLocalStorage;
   }
 
-  get getNewsDataFromVuex() {
-    console.log("kjk");
-    this.newsData = this.$store.getters[
-      "vuexModuleDecorators/newsDataModule"
-    ].queriedNewsItemsGetter;
-    return null;
-  }
+  // fetchData(newsCategoryFetchObject: FetchNews) {
+  //   news.fetchNewsQuery(newsCategoryFetchObject);
+  // }
 
-  getNewsDataFromVuexMethod() {
-    this.newsData = this.$store.getters[
-      "vuexModuleDecorators/newsDataModule"
-    ].queriedNewsItemsGetter;
-  }
+  // get getNewsDataFromVuex() {
+  //   console.log("kjk");
+  //   this.assignNewsDataToNewsDataVariable();
+  //   return null;
+  // }
+
+  // assignNewsDataToNewsDataVariable() {
+  //   this.newsData = this.$store.getters[
+  //     "vuexModuleDecorators/newsDataModule"
+  //   ].queriedNewsItemsGetter;
+  // }
+
+  // getNewsDataFromVuexFunction() {
+  //   console.log(this.newsData);
+  //   this.assignNewsDataToNewsDataVariable();
+
+  //   console.log(this.newsData);
+  // }
 
   //if a user clicks an item below the header "details page" in de footer, make sure that the details page gets rerendendered with the title where a user clicked on
 

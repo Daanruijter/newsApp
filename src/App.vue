@@ -5,9 +5,7 @@
       <div class="flex-header-items">
         <div class="header-titles">
           <div class="description world-news">WORLD NEWS</div>
-          <div class="description everyday-headlines">
-            Your everyday headlines
-          </div>
+          <div class="description everyday-headlines">Your everyday headlines</div>
         </div>
         <div class="header-image-div">
           <img class="globe" src="@/assets/globe.jpg" />
@@ -32,7 +30,7 @@ import NewsFooter from "@/components/NewsFooter.vue";
 import DetailsPage from "@/views/DetailsPage.vue";
 
 @Component({
-  components: { NewsMenu, NewsFooter, DetailsPage },
+  components: { NewsMenu, NewsFooter, DetailsPage }
 })
 export default class App extends Vue {}
 </script>
@@ -74,6 +72,7 @@ export default class App extends Vue {}
   position: fixed;
   left: 0;
   top: 0;
+  height: 175px !important;
   width: 100vw;
   z-index: 200;
   a {

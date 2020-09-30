@@ -141,8 +141,6 @@ export default class RandomPage extends Vue {
 
   async mounted() {
     console.log("RANDOMPAGE mounted");
-    //trigger a logic that gets the newsdata array from vuex into the newsFooter component
-    bus.$emit("triggerDataToFetchInFooter");
 
     //on reload, load the article that was there before the reload
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -241,9 +239,9 @@ export default class RandomPage extends Vue {
     console.log(this.newsItemPublishedTime);
     return filterToGetRandomNewsItem;
   }
-  prepareDataForDisplay() {
+  async prepareDataForDisplay() {
     //fetch the data and load it in the random component
-    this.fetchDataForRandomPageAndLoadItInRandomComponent();
+    await this.fetchDataForRandomPageAndLoadItInRandomComponent();
     this.newsData = this.$store.getters[
       "vuexModuleDecorators/newsDataModule"
     ].queriedNewsItemsGetter;

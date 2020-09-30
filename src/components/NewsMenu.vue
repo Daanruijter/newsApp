@@ -157,8 +157,6 @@ export default class NewsMenu extends Vue {
   }
 
   async loadDefaultNewsItems() {
-    //trigger a logic that gets the newsdata array from vuex into the newsFooter component
-    bus.$emit("triggerDataToFetchInFooter");
     const countryFetchObject = {
       fetchBase: "Default Country",
       typeOfFetchBase: "fetchCountry"
@@ -173,14 +171,10 @@ export default class NewsMenu extends Vue {
   }
 
   setCategoriesBoolean() {
-    //trigger a logic that gets the newsdata array from vuex into the newsFooter component
-    bus.$emit("triggerDataToFetchInFooter");
     this.categoriesPageBoolean = !this.categoriesPageBoolean;
   }
 
   async catchCountryValue(event: Event) {
-    //trigger a logic that gets the newsdata array from vuex into the newsFooter component
-    bus.$emit("triggerDataToFetchInFooter");
     const selectedCountry = (event.target as HTMLTextAreaElement).value;
     const countryFetchObject = {
       fetchBase: selectedCountry,
@@ -188,15 +182,17 @@ export default class NewsMenu extends Vue {
     };
 
     this.newsCategorySelected = "Default News Category";
+    //trigger a logic that gets the newsdata array from vuex into the newsFooter component
 
     await news.fetchNewsQuery(countryFetchObject);
     bus.$emit("selectedCountry", selectedCountry);
     this.categoriesPageBoolean = false;
+    bus.$emit("triggerDataToFetchInFooter");
   }
 
   async catchNewsCategoryValue(event: Event) {
     //trigger a logic that gets the newsdata array from vuex into the newsFooter component
-    bus.$emit("triggerDataToFetchInFooter");
+
     const selectedNewsCategory = (event.target as HTMLTextAreaElement).value;
     const newsCategoryFetchObject = {
       fetchBase: selectedNewsCategory,
@@ -206,6 +202,7 @@ export default class NewsMenu extends Vue {
     await news.fetchNewsQuery(newsCategoryFetchObject);
     bus.$emit("selectedNewsCategory", selectedNewsCategory);
     this.categoriesPageBoolean = false;
+    bus.$emit("triggerDataToFetchInFooter");
   }
 
   async catchInputValue(event: Event) {
@@ -219,8 +216,6 @@ export default class NewsMenu extends Vue {
 
   //if someone clicks the random button, he gets redirected to the random page, where the category selection menu should not be shown
   makeCategoriesDivClosed() {
-    //trigger a logic that gets the newsdata array from vuex into the newsFooter component
-    bus.$emit("triggerDataToFetchInFooter");
     bus.$emit("makeCategoriesDivClosedEventForRandomPage");
   }
 
@@ -230,8 +225,6 @@ export default class NewsMenu extends Vue {
   }
 
   async onSubmit(event: Event) {
-    //trigger a logic that gets the newsdata array from vuex into the newsFooter component
-    bus.$emit("triggerDataToFetchInFooter");
     console.log("submit");
     event.preventDefault();
     const inputValue = this.inputValue;
@@ -243,6 +236,8 @@ export default class NewsMenu extends Vue {
     const inputFetchValue = inputFetchObject.fetchBase;
     bus.$emit("useInputValueToFetchData", inputFetchValue);
     this.categoriesPageBoolean = false;
+    //trigger a logic that gets the newsdata array from vuex into the newsFooter component
+    bus.$emit("triggerDataToFetchInFooter");
   }
 }
 </script>
