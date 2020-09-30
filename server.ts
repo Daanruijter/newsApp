@@ -8,13 +8,27 @@ var serveStatic = require("serve-static");
 const app = express();
 const cors = require("cors");
 app.use(cors());
-app.use(serveStatic(__dirname + "/dist"));
+if (process.env.NODE_ENV === "production") {
+  console.log("development");
+  app.use(serveStatic(__dirname + "/dist"));
+}
+
+if (process.env.NODE_ENV === "development") {
+  app.use(serveStatic(__dirname + "/worldnews-app"));
+}
+
 var port = process.env.PORT || 5000;
 
 const bodyParser = require("body-parser");
 
 // const db = config.get("mongoURI");
 app.use(bodyParser.json());
+
+// app.get("/s", (req, res) => {
+//   res.json({
+//     message: "Behold The MEVN Stack!",
+//   });
+// });
 app.use(
   bodyParser.urlencoded({
     extended: true,

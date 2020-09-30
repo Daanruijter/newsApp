@@ -4,7 +4,7 @@ console.log("WORLDNEWSURLSROUTE");
 
 router.get("/", (req, res) => {
   console.log("get works");
-  const data = 6;
+  const data = { test: "etst" };
   res.send(data);
 });
 
