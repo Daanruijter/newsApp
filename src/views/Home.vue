@@ -144,45 +144,6 @@ export default class Home extends Vue {
   async mounted() {
     console.log("mounted");
 
-    //TRYING TO CALL AN API ROUTE
-
-    let url = "";
-
-    if (process.env.NODE_ENV === "development") {
-      url = "http://localhost:5000/";
-    }
-    if (process.env.NODE_ENV === "production") {
-      url = "https://worldnews-app.herokuapp.com/#/";
-    }
-
-    fetch(
-      url,
-
-      {
-        method: "GET",
-
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*"
-        }
-      }
-    )
-      .then(response => {
-        return response.json();
-      })
-
-      .then(data => {
-        console.log(data);
-      })
-
-      .catch(error => {
-        const errorMessage = error.message;
-        console.log(errorMessage);
-      });
-
-    //TRYING TO CALL AN API ROUTE
-
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 
     const newsCategoryFetchObject = {

@@ -4,8 +4,30 @@ console.log("WORLDNEWSURLSROUTE");
 
 router.get("/", (req, res) => {
   console.log("get works");
-  const data = { test: "etst" };
-  res.send(data);
+  console.log(req);
+
+  fetch(
+    "https://newsapi.org/v2/top-headlines?country=us&apiKey=771f495b60b94bfabf9a9800d4996456",
+
+    {
+      method: "GET",
+
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+
+    .then((data) => {
+      console.log(data);
+      const test = data;
+      data = test;
+    });
 });
 
 module.exports = router;
