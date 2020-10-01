@@ -1,10 +1,10 @@
 let express = require("express");
 const router = express.Router();
 console.log("WORLDNEWSURLSROUTE");
+const fetch = require("node-fetch");
 
 router.get("/", (req, res) => {
   console.log("get works");
-  console.log(req);
 
   fetch(
     "https://newsapi.org/v2/top-headlines?country=us&apiKey=771f495b60b94bfabf9a9800d4996456",
@@ -25,8 +25,10 @@ router.get("/", (req, res) => {
 
     .then((data) => {
       console.log(data);
-      const test = data;
-      data = test;
+      res.send(data);
+    })
+    .catch((err) => {
+      return res.json({ succes: false, err });
     });
 });
 

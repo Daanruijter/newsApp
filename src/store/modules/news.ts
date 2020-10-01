@@ -315,7 +315,7 @@ class NewsModule extends VuexModule {
       url = "https://worldnews-app.herokuapp.com/#/";
     }
 
-    fetch(
+    await fetch(
       url,
 
       {
@@ -329,6 +329,7 @@ class NewsModule extends VuexModule {
       }
     )
       .then((response) => {
+        console.log(response);
         return response.json();
       })
 
