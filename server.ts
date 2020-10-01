@@ -3,7 +3,7 @@ console.log("server.js executes");
 // server.js
 const mongoose = require("mongoose");
 let express = require("express");
-// var path = require("path");
+var path = require("path");
 var serveStatic = require("serve-static");
 const app = express();
 const cors = require("cors");
@@ -16,7 +16,14 @@ if (process.env.NODE_ENV === "production") {
 if (process.env.NODE_ENV === "development") {
   app.use(serveStatic(__dirname + "/worldnews-app"));
 }
-
+app.use(
+  "/robots.txt",
+  express.static(path.join(__dirname, "dist/static/robots.txt"))
+);
+app.use(
+  "/sitemap.xml",
+  express.static(path.join(__dirname, "dist/static/sitemap.xml"))
+);
 var port = process.env.PORT || 5000;
 
 const bodyParser = require("body-parser");

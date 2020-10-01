@@ -1,6 +1,20 @@
 <template>
-  <div>
-    <div class="news-menu-container">
+  <div id="nav">
+    <hr />
+    <div class="news-menu-flex-header-items">
+      <div class="news-menu-header-titles">
+        <div class="news-menu-description news-menu-world-news">WORLD NEWS</div>
+        <div class="news-menu-description news-menu-everyday-headlines">
+          Your everyday headlines
+        </div>
+      </div>
+      <div class="news-menu-header-image-div">
+        <img class="news-menu-globe" src="@/assets/globe.jpg" />
+      </div>
+    </div>
+    <hr />
+
+    <div class="news-menu-bar">
       <div @click="loadDefaultNewsItems" class="news-menu-home">
         <router-link to="/">HOME</router-link>
       </div>
@@ -117,7 +131,9 @@
           <input type="submit" value="Submit" />
         </form>
         <br />
-        <div @click="closeCategoriesDiv" class="news-menu-close-categoriesdiv">X</div>
+        <div @click="closeCategoriesDiv" class="news-menu-close-categoriesdiv">
+          X
+        </div>
       </div>
       <br />
     </div>
@@ -159,7 +175,7 @@ export default class NewsMenu extends Vue {
   async loadDefaultNewsItems() {
     const countryFetchObject = {
       fetchBase: "Default Country",
-      typeOfFetchBase: "fetchCountry"
+      typeOfFetchBase: "fetchCountry",
     };
 
     await news.fetchNewsQuery(countryFetchObject);
@@ -178,7 +194,7 @@ export default class NewsMenu extends Vue {
     const selectedCountry = (event.target as HTMLTextAreaElement).value;
     const countryFetchObject = {
       fetchBase: selectedCountry,
-      typeOfFetchBase: "fetchCountry"
+      typeOfFetchBase: "fetchCountry",
     };
 
     this.newsCategorySelected = "Default News Category";
@@ -196,7 +212,7 @@ export default class NewsMenu extends Vue {
     const selectedNewsCategory = (event.target as HTMLTextAreaElement).value;
     const newsCategoryFetchObject = {
       fetchBase: selectedNewsCategory,
-      typeOfFetchBase: "fetchNewsCategory"
+      typeOfFetchBase: "fetchNewsCategory",
     };
     this.countrySelected = "Default Country";
     await news.fetchNewsQuery(newsCategoryFetchObject);
@@ -230,7 +246,7 @@ export default class NewsMenu extends Vue {
     const inputValue = this.inputValue;
     const inputFetchObject = {
       fetchBase: inputValue,
-      typeOfFetchBase: "fetchInput"
+      typeOfFetchBase: "fetchInput",
     };
     await news.fetchNewsQuery(inputFetchObject);
     const inputFetchValue = inputFetchObject.fetchBase;
@@ -244,61 +260,222 @@ export default class NewsMenu extends Vue {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-.news-menu-container {
-  display: flex;
-  justify-content: space-between;
-  background-color: blue;
-  width: 100%;
-  padding: 5% 0% 5% 0%;
-  margin-bottom: 5%;
-  // position: fixed;
+/* smaller screens */
+@font-face {
+  font-family: "steelfish";
+  src: local("steelfish"),
+    url(../steelfishfont/steelfishrg.ttf) format("truetype");
 }
 
-.news-menu-container a {
-  color: white !important;
-  text-decoration: none;
+@media only screen and (min-width: 1000px) {
+  #nav {
+    padding-left: 15%;
+    margin-right: 15%;
+    background-color: white;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 95px !important;
+    width: 70%;
+    z-index: 200;
+    a {
+      font-weight: bold;
+      color: #2c3e50;
+
+      &.router-link-exact-active {
+        color: #42b983;
+      }
+    }
+  }
+
+  .news-menu-flex-header-items {
+    display: flex;
+    justify-content: center;
+    height: 50px;
+  }
+  .news-menu-header-titles {
+    // padding-left: 10%;
+    display: flex;
+    justify-content: center;
+  }
+  .news-menu-header-image-div {
+    padding-right: 2%;
+    width: 75px;
+  }
+
+  .news-menu-description {
+    font-family: "steelfish";
+    font-size: 20px;
+    font-size: 250%;
+  }
+  .news-menu-world-news {
+    font-weight: bold;
+    padding-right: 2%;
+  }
+  .news-menu-globe {
+    width: 75%;
+  }
+
+  .news-menu-bar {
+    display: flex;
+    justify-content: flex-start;
+
+    background-color: blue;
+    width: 100%;
+    // height: 75px;
+    padding: 1% 0% 1% 0%;
+
+    // position: fixed;
+  }
+
+  .news-menu-bar a {
+    color: white !important;
+    text-decoration: none;
+  }
+
+  .news-menu-home {
+    padding-left: 2%;
+    padding-right: 2%;
+  }
+
+  .news-menu-random {
+    padding-left: 2%;
+  }
+  .news-menu-categories {
+    margin-top: 18.2px;
+    background-color: white;
+    text-align: left;
+  }
+
+  .news-menu-possiblities {
+    text-align: center;
+    margin-top: 2%;
+    margin-bottom: 2%;
+  }
+  .news-menu-information {
+    padding-left: 5%;
+    margin-bottom: 5%;
+  }
+  .news-menu-query-country select,
+  .news-menu-query-subject select,
+  .news-menu-query-newsitem input {
+    width: 60%;
+    margin-left: 20%;
+    margin-right: 20%;
+  }
+
+  .news-menu-query-newsitem-input {
+    width: 59% !important;
+    margin-left: 20%;
+    margin-right: 20%;
+  }
+  .news-menu-close-categoriesdiv {
+    color: red;
+    font-weight: bold;
+    font-size: 150%;
+    text-align: right;
+    padding-right: 8%;
+  }
 }
 
-.news-menu-home {
-  padding-left: 5%;
-}
+@media only screen and (max-width: 500px) {
+  #nav {
+    background-color: white;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 175px !important;
+    width: 100vw;
+    z-index: 200;
+    a {
+      font-weight: bold;
+      color: #2c3e50;
 
-.news-menu-random {
-  padding-right: 5%;
-}
-.news-menu-categories {
-  margin-top: 18.2px;
-  background-color: white;
-  text-align: left;
-}
+      &.router-link-exact-active {
+        color: #42b983;
+      }
+    }
+  }
 
-.news-menu-possiblities {
-  text-align: center;
-  margin-top: 2%;
-  margin-bottom: 2%;
-}
-.news-menu-information {
-  padding-left: 5%;
-  margin-bottom: 5%;
-}
-.news-menu-query-country select,
-.news-menu-query-subject select,
-.news-menu-query-newsitem input {
-  width: 60%;
-  margin-left: 20%;
-  margin-right: 20%;
-}
+  .news-menu-flex-header-items {
+    display: flex;
+    justify-content: space-between;
+  }
+  .news-menu-header-titles {
+    padding-left: 10%;
+  }
+  .news-menu-header-image-div {
+    width: 20%;
+    padding-right: 2%;
+  }
 
-.news-menu-query-newsitem-input {
-  width: 59% !important;
-  margin-left: 20%;
-  margin-right: 20%;
-}
-.news-menu-close-categoriesdiv {
-  color: red;
-  font-weight: bold;
-  font-size: 150%;
-  text-align: right;
-  padding-right: 8%;
+  .news-menu-description {
+    font-family: "steelfish";
+    font-size: 20px;
+  }
+  .news-menu-world-news {
+    font-weight: bold;
+  }
+  .news-menu-globe {
+    width: 75%;
+  }
+
+  .news-menu-bar {
+    display: flex;
+    justify-content: space-between;
+    background-color: blue;
+    width: 100%;
+    padding: 5% 0% 5% 0%;
+    margin-bottom: 5%;
+    // position: fixed;
+  }
+
+  .news-menu-bar a {
+    color: white !important;
+    text-decoration: none;
+  }
+
+  .news-menu-home {
+    padding-left: 5%;
+  }
+
+  .news-menu-random {
+    padding-right: 5%;
+  }
+  .news-menu-categories {
+    margin-top: 18.2px;
+    background-color: white;
+    text-align: left;
+  }
+
+  .news-menu-possiblities {
+    text-align: center;
+    margin-top: 2%;
+    margin-bottom: 2%;
+  }
+  .news-menu-information {
+    padding-left: 5%;
+    margin-bottom: 5%;
+  }
+  .news-menu-query-country select,
+  .news-menu-query-subject select,
+  .news-menu-query-newsitem input {
+    width: 60%;
+    margin-left: 20%;
+    margin-right: 20%;
+  }
+
+  .news-menu-query-newsitem-input {
+    width: 59% !important;
+    margin-left: 20%;
+    margin-right: 20%;
+  }
+  .news-menu-close-categoriesdiv {
+    color: red;
+    font-weight: bold;
+    font-size: 150%;
+    text-align: right;
+    padding-right: 8%;
+  }
 }
 </style>

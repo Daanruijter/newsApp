@@ -1,13 +1,14 @@
-let express = require("express");
-const router = express.Router();
-console.log("WORLDNEWSURLSROUTE");
-const fetch = require("node-fetch");
+const expressServer = require("express");
+const router = expressServer.Router();
 
-router.get("/", (req, res) => {
-  console.log("get works");
+const fetchMethod = require("node-fetch");
 
-  fetch(
-    "https://newsapi.org/v2/top-headlines?country=us&apiKey=771f495b60b94bfabf9a9800d4996456",
+router.post("/", (req, res) => {
+  const url = req.body.fetchUrl;
+
+  //fetch the data from the NewsAPI based on the user query that comes from the front-end
+  fetchMethod(
+    url,
 
     {
       method: "GET",
@@ -24,7 +25,6 @@ router.get("/", (req, res) => {
     })
 
     .then((data) => {
-      console.log(data);
       res.send(data);
     })
     .catch((err) => {

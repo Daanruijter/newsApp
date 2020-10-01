@@ -3,7 +3,9 @@
     <div
       class="home-show-selected-category"
       v-if="this.fetchedCategory !== 'Default Country'"
-    >You selected {{ this.fetchedCategory }} news</div>
+    >
+      You selected {{ this.fetchedCategory }} news
+    </div>
 
     <div class="home-newsdata-loaded">
       <div>
@@ -17,13 +19,17 @@
           name="sortByNewsSource"
           class="home-sort-by-newssource-button"
           @click="sortByNewsSource"
-        >News source</button>
+        >
+          News source
+        </button>
 
         <button
           name="sortByNewsTitle"
           class="home-sort-by-newstitle-button"
           @click="sortByNewsTitle"
-        >News title</button>
+        >
+          News title
+        </button>
 
         <button name="reset" class="home-reset" @click="reset">Reset</button>
       </div>
@@ -34,7 +40,9 @@
         v-for="(newsItem, index) in this.newsDataToDisplay"
         :key="newsItem.title + index"
       >
-        <router-link :to="{ name: 'DetailsPage', params: { title: newsItem.title } }">
+        <router-link
+          :to="{ name: 'DetailsPage', params: { title: newsItem.title } }"
+        >
           <div
             v-if="
               newsItem.urlToImage &&
@@ -46,7 +54,9 @@
             @mouseover="isHovering = true"
             @mouseout="isHovering = false"
             :class="{ hovering: isHovering }"
-          >{{ newsItem.title }}</div>
+          >
+            {{ newsItem.title }}
+          </div>
         </router-link>
         <div class="home-newsitem-picture">
           <img
@@ -77,7 +87,9 @@
         v-for="(newsItem, index) in this.newsDataToDisplay"
         :key="newsItem.title"
       >
-        <router-link :to="{ name: 'DetailsPage', params: { title: newsItem.title } }">
+        <router-link
+          :to="{ name: 'DetailsPage', params: { title: newsItem.title } }"
+        >
           <div
             v-if="
               (!newsItem.urlToImage && index < 10) ||
@@ -88,7 +100,9 @@
             @mouseover="isHovering = true"
             @mouseout="isHovering = false"
             :class="{ hovering: isHovering }"
-          >{{ newsItem.title }}</div>
+          >
+            {{ newsItem.title }}
+          </div>
         </router-link>
         <hr v-if="!newsItem.urlToImage" />
       </div>
@@ -121,8 +135,8 @@ export default class Home extends Vue {
   router = new VueRouter({
     routes: [
       // dynamic segments start with a colon
-      { path: "/details /:id", component: DetailsPage }
-    ]
+      { path: "/details /:id", component: DetailsPage },
+    ],
   });
   pictureNotLoadedArray: Array<number> = [];
 
@@ -148,7 +162,7 @@ export default class Home extends Vue {
 
     const newsCategoryFetchObject = {
       fetchBase: "Default Country",
-      typeOfFetchBase: "fetchCountry"
+      typeOfFetchBase: "fetchCountry",
     };
 
     await news.fetchNewsQuery(newsCategoryFetchObject);
@@ -328,73 +342,149 @@ export default class Home extends Vue {
 </script>
 
 <style scoped>
-.home-show-selected-category {
-  background-color: darkblue;
-  color: white;
+/* bigger screens */
 
-  padding-top: 1%;
-  padding-bottom: 1%;
-  margin-bottom: 3%;
-}
+@media only screen and (min-width: 1000px) {
+  .home-show-selected-category {
+    background-color: darkblue;
+    color: white;
 
-.home-container {
-  margin-top: 175px;
-}
+    padding-top: 1%;
+    padding-bottom: 1%;
+    margin-bottom: 3%;
+  }
 
-.home-sort-the-data {
-  margin-top: 5%;
-  margin-bottom: 1%;
-  text-align: center;
-  font-weight: bold;
-}
+  .home-container {
+    margin-top: 141px;
+  }
 
-.home-newsitem-title {
-  font-weight: bold;
-  color: black;
-  margin-bottom: 5%;
-  margin-top: 8%;
-}
-.hovering {
-  color: blue;
-}
+  .home-sort-the-data {
+    margin-top: 5%;
+    margin-bottom: 1%;
+    text-align: center;
+    font-weight: bold;
+  }
 
-a {
-  text-decoration: none;
-}
+  .home-newsitem-title {
+    font-weight: bold;
+    color: black;
+    margin-bottom: 5%;
+    margin-top: 8%;
+  }
+  .hovering {
+    color: blue;
+  }
 
-button {
-  width: 28%;
-  margin-left: 2%;
-  margin-right: 2%;
-}
+  a {
+    text-decoration: none;
+  }
 
-.home-newsitem-picture {
-  display: grid;
-  grid-template-columns: 100%;
-}
+  button {
+    width: 28%;
+    margin-left: 2%;
+    margin-right: 2%;
+  }
 
-.home-newsitem-picture img {
-  grid-column-start: 1;
-  grid-column-end: 2;
-  width: 100%;
-}
+  .home-newsitem-picture {
+    display: grid;
+    grid-template-columns: 100%;
+  }
 
-.home-newsitems-no-picture {
-  font-weight: bold;
-  color: black;
-}
+  .home-newsitem-picture img {
+    grid-column-start: 1;
+    grid-column-end: 2;
+    width: 100%;
+  }
 
-.home-newsdata-not-loaded {
-  background-color: purple;
-  height: 100vh;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  padding-top: 50%;
-}
+  .home-newsitems-no-picture {
+    font-weight: bold;
+    color: black;
+  }
 
-.home-no-newsitems {
-  color: white;
-  font-weight: bold;
+  .home-newsdata-not-loaded {
+    background-color: purple;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-top: 50%;
+  }
+
+  .home-no-newsitems {
+    color: white;
+    font-weight: bold;
+  }
+}
+/* smaller screens */
+@media only screen and (max-width: 500px) {
+  .home-show-selected-category {
+    background-color: darkblue;
+    color: white;
+
+    padding-top: 1%;
+    padding-bottom: 1%;
+    margin-bottom: 3%;
+  }
+
+  .home-container {
+    margin-top: 175px;
+  }
+
+  .home-sort-the-data {
+    margin-top: 5%;
+    margin-bottom: 1%;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .home-newsitem-title {
+    font-weight: bold;
+    color: black;
+    margin-bottom: 5%;
+    margin-top: 8%;
+  }
+  .hovering {
+    color: blue;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  button {
+    width: 28%;
+    margin-left: 2%;
+    margin-right: 2%;
+  }
+
+  .home-newsitem-picture {
+    display: grid;
+    grid-template-columns: 100%;
+  }
+
+  .home-newsitem-picture img {
+    grid-column-start: 1;
+    grid-column-end: 2;
+    width: 100%;
+  }
+
+  .home-newsitems-no-picture {
+    font-weight: bold;
+    color: black;
+  }
+
+  .home-newsdata-not-loaded {
+    background-color: purple;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-top: 50%;
+  }
+
+  .home-no-newsitems {
+    color: white;
+    font-weight: bold;
+  }
 }
 </style>
