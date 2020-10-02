@@ -144,7 +144,7 @@ export default class DetailsPage extends Vue {
         fetchBase: localStorage.getItem("fetchBase")!,
 
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        typeOfFetchBase: localStorage.getItem("typeOfFetchBase")!
+        typeOfFetchBase: localStorage.getItem("typeOfFetchBase")!,
       };
 
       //fetch the data
@@ -241,7 +241,7 @@ export default class DetailsPage extends Vue {
 <style scoped>
 .detailspage-container {
   color: black;
-  margin-top: 175px;
+  margin-top: 1%;
 }
 .detailspage-title {
   font-weight: bold;
@@ -281,3 +281,7 @@ a {
   font-weight: bold;
 }
 </style>
+
+/* bigger screens */ @media only screen and (min-width: 1000px) {} /* medium
+screens */ @media only screen and (min-width: 701px) and (max-width: 999px) {}
+/* smaller screens */ @media only screen and (max-width: 700px) {}

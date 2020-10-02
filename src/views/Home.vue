@@ -353,7 +353,6 @@ export default class Home extends Vue {
 
 <style scoped>
 /* bigger screens */
-
 @media only screen and (min-width: 1000px) {
   .home-show-selected-category {
     background-color: darkblue;
@@ -493,6 +492,16 @@ export default class Home extends Vue {
 
 /* medium screens */
 @media only screen and (min-width: 701px) and (max-width: 999px) {
+  .home-container {
+    padding-left: 15%;
+    width: 70%;
+    margin-top: 1%;
+  }
+
+  .home-get-to-know {
+    text-align: left;
+  }
+
   .home-show-selected-category {
     background-color: darkblue;
     color: white;
@@ -528,7 +537,7 @@ export default class Home extends Vue {
   }
 
   button {
-    width: 28%;
+    width: 20%;
     margin-left: 2%;
     margin-right: 2%;
   }
@@ -575,9 +584,9 @@ export default class Home extends Vue {
     margin-bottom: 3%;
   }
 
-  /* .home-container {
-    margin-top: 175px;
-  } */
+  .home-container {
+    margin-top: 1%;
+  }
 
   .home-sort-the-data {
     margin-top: 5%;

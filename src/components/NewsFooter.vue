@@ -148,6 +148,7 @@ export default class NewsFooter extends Vue {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+// bigger screens
 @media only screen and (min-width: 1000px) {
   .newsfooter-container {
     background-color: black;
@@ -169,6 +170,52 @@ export default class NewsFooter extends Vue {
     padding: 0.3%;
 
     text-align: center;
+    margin-left: 1%;
+
+    color: white;
+  }
+
+  a {
+    text-decoration: none;
+    color: white;
+  }
+
+  .newsfooter-routes a {
+    font-size: 110%;
+    font-weight: bold;
+  }
+
+  .newsfooter-detailspage a {
+    font-weight: 100;
+    font-size: 95%;
+  }
+  .newsfooter-detailspage {
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    color: red;
+  }
+}
+
+// medium screens
+@media only screen and (min-width: 701px) and (max-width: 999px) {
+  .newsfooter-container {
+    background-color: black;
+    padding-top: 1%;
+    margin-left: 15%;
+    width: 70%;
+  }
+  .newsfooter-sitemap-header {
+    color: white;
+  }
+
+  .home {
+    color: white;
+  }
+
+  .title {
+    font-size: 100%;
+    text-align: left;
+    padding: 0.7%;
     margin-left: 1%;
 
     color: white;

@@ -264,18 +264,20 @@ export default class RandomPage extends Vue {
 </script>
 
 <style scoped>
-@media only screen and (min-width: 700px) {
+@media only screen and (min-width: 1000px) {
   .randompage-container {
     color: black;
-    margin-top: 175px;
+
     margin-left: 15%;
     width: 70%;
+    height: 100%;
+    margin-bottom: 1%;
   }
 
   .randompage-title {
     font-weight: bold;
     color: black;
-    margin-bottom: 5%;
+    margin-bottom: 2%;
   }
   a {
     text-decoration: none;
@@ -303,7 +305,7 @@ export default class RandomPage extends Vue {
 
   .randompage-read-more {
     font-weight: bold;
-    margin-bottom: 12%;
+    margin-bottom: 5%;
   }
 
   .randompage-small-header {
@@ -330,10 +332,15 @@ export default class RandomPage extends Vue {
   }
 }
 
-@media only screen and (max-width: 500px) {
+/* medium screens */
+@media only screen and (min-width: 701px) and (max-width: 999px) {
   .randompage-container {
     color: black;
-    margin-top: 175px;
+    margin-top: 1%;
+    margin-left: 15%;
+    width: 70%;
+    height: 100%;
+    margin-bottom: 1%;
   }
 
   .randompage-title {
@@ -367,7 +374,74 @@ export default class RandomPage extends Vue {
 
   .randompage-read-more {
     font-weight: bold;
-    margin-bottom: 12%;
+    margin-bottom: 2%;
+  }
+
+  .randompage-small-header {
+    font-weight: bold;
+  }
+
+  .randompage-button button {
+    margin-bottom: 5%;
+    font-size: 100%;
+  }
+
+  .randompage-newsdata-not-loaded {
+    background-color: purple;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-top: 50%;
+  }
+
+  .randompage-no-newsitems {
+    color: white;
+    font-weight: bold;
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  .randompage-container {
+    color: black;
+    margin-bottom: 1%;
+    margin-top: 1%;
+
+    height: 100%;
+  }
+
+  .randompage-title {
+    font-weight: bold;
+    color: black;
+    margin-bottom: 5%;
+  }
+  a {
+    text-decoration: none;
+    color: black;
+  }
+
+  .hovering a {
+    color: blue;
+  }
+  .randompage-picture {
+    display: grid;
+    grid-template-columns: 100%;
+  }
+
+  .randompage-picture img {
+    grid-column-start: 1;
+    grid-column-end: 2;
+    width: 100%;
+  }
+  .randompage-description,
+  .randompage-read-more,
+  .randompage-contents {
+    margin-bottom: 5%;
+  }
+
+  .randompage-read-more {
+    font-weight: bold;
+    margin-bottom: 5%;
   }
 
   .randompage-small-header {

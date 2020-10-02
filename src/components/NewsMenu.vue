@@ -273,7 +273,7 @@ export default class NewsMenu extends Vue {
     position: fixed;
     left: 0;
     top: 0;
-    height: 95px !important;
+    height: 124px;
     margin-left: 15%;
     width: 70%;
     z-index: 200;
@@ -290,7 +290,7 @@ export default class NewsMenu extends Vue {
   .news-menu-flex-header-items {
     display: flex;
     justify-content: center;
-    height: 50px;
+    height: 55px;
   }
   .news-menu-header-titles {
     // padding-left: 10%;
@@ -342,9 +342,11 @@ export default class NewsMenu extends Vue {
   }
   .news-menu-categories {
     width: 50%;
+    margin-left: 25%;
     padding-top: 18.2px;
-    background-color: white;
+
     text-align: left;
+    background-color: honeydew;
   }
 
   .news-menu-possiblities {
@@ -385,8 +387,8 @@ export default class NewsMenu extends Vue {
     position: fixed;
     left: 0;
     top: 0;
-
-    width: 100vw;
+    padding-left: 15%;
+    width: 70%;
     z-index: 200;
     a {
       font-weight: bold;
@@ -421,16 +423,16 @@ export default class NewsMenu extends Vue {
     font-weight: bold;
   }
   .news-menu-globe {
-    width: 45%;
+    width: 30%;
   }
 
   .news-menu-bar {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     background-color: blue;
     width: 100%;
-    padding: 3% 0% 3% 0%;
-    margin-bottom: 2%;
+    padding: 1% 0% 1% 0%;
+
     // position: fixed;
   }
 
@@ -440,16 +442,19 @@ export default class NewsMenu extends Vue {
   }
 
   .news-menu-home {
-    padding-left: 5%;
+    padding-left: 2%;
+    padding-right: 2%;
   }
 
   .news-menu-random {
-    padding-right: 5%;
+    padding-left: 2%;
   }
   .news-menu-categories {
+    width: 50%;
+    margin-left: 25%;
     padding-top: 18.2px;
-    background-color: white;
     text-align: left;
+    background-color: honeydew;
   }
 
   .news-menu-possiblities {
@@ -483,13 +488,26 @@ export default class NewsMenu extends Vue {
   }
 }
 
+// pretty small screens
+@media only screen and (min-width: 450px) and (max-width: 699px) {
+  .news-menu-categories {
+    width: 74%;
+    margin-left: 13%;
+    padding-top: 18.2px;
+    background-color: white;
+    text-align: left;
+    background-color: honeydew;
+  }
+}
+
+// smaller screens
 @media only screen and (max-width: 700px) {
   #nav {
     background-color: white;
     position: fixed;
     left: 0;
     top: 0;
-    height: 175px !important;
+    height: 100px !important;
     width: 100vw;
     z-index: 200;
     a {
@@ -505,6 +523,7 @@ export default class NewsMenu extends Vue {
   .news-menu-flex-header-items {
     display: flex;
     justify-content: center;
+    height: 60px;
   }
   .news-menu-header-titles {
     display: flex;
@@ -526,7 +545,7 @@ export default class NewsMenu extends Vue {
     font-weight: bold;
   }
   .news-menu-globe {
-    width: 75%;
+    height: 63px;
   }
 
   .news-menu-bar {
@@ -534,8 +553,9 @@ export default class NewsMenu extends Vue {
     justify-content: space-between;
     background-color: blue;
     width: 100%;
-    padding: 5% 0% 5% 0%;
-    margin-bottom: 5%;
+    padding: 16px 0% 16px 0%;
+    height: 18px;
+
     // position: fixed;
   }
 
@@ -553,7 +573,7 @@ export default class NewsMenu extends Vue {
   }
   .news-menu-categories {
     padding-top: 18.2px;
-    background-color: white;
+    background-color: honeydew;
     text-align: left;
   }
 

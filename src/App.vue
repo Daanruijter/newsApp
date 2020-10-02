@@ -36,16 +36,13 @@ export default class App extends Vue {}
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  height: 100vw;
 }
 
-.app-container {
-  display: grid;
-  grid-template-rows: 5% auto auto;
-  grid-template-columns: 100%;
-}
 .app-newsmenu {
   grid-row-start: 1;
   grid-row-end: 2;
+  height: 100%;
 }
 .app-main {
   width: 100%;
@@ -57,21 +54,27 @@ export default class App extends Vue {}
   grid-row-end: 4;
 }
 
-/* medium screens */
-@media only screen and (min-width: 701px) and (max-width: 999px) {
+.app-container {
+  display: grid;
+  grid-template-rows: 135px auto auto;
+  grid-template-columns: 100%;
+  height: 100%;
+}
+@media only screen and (min-width: 1000px) {
   .app-container {
     display: grid;
-    grid-template-rows: 3% auto auto;
+    grid-template-rows: 135px auto auto;
     grid-template-columns: 100%;
+    height: 100%;
   }
 }
 
-/* small screens */
 @media only screen and (max-width: 700px) {
   .app-container {
     display: grid;
-    grid-template-rows: 5% auto auto;
+    grid-template-rows: 139px auto auto;
     grid-template-columns: 100%;
+    height: 100%;
   }
 }
 </style>
