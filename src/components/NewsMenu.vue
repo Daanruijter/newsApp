@@ -269,13 +269,12 @@ export default class NewsMenu extends Vue {
 
 @media only screen and (min-width: 1000px) {
   #nav {
-    padding-left: 15%;
-    margin-right: 15%;
     background-color: white;
     position: fixed;
     left: 0;
     top: 0;
     height: 95px !important;
+    margin-left: 15%;
     width: 70%;
     z-index: 200;
     a {
@@ -342,7 +341,113 @@ export default class NewsMenu extends Vue {
     padding-left: 2%;
   }
   .news-menu-categories {
-    margin-top: 18.2px;
+    width: 50%;
+    padding-top: 18.2px;
+    background-color: white;
+    text-align: left;
+  }
+
+  .news-menu-possiblities {
+    text-align: center;
+    margin-top: 2%;
+    margin-bottom: 2%;
+  }
+  .news-menu-information {
+    padding-left: 5%;
+    margin-bottom: 5%;
+  }
+  .news-menu-query-country select,
+  .news-menu-query-subject select,
+  .news-menu-query-newsitem input {
+    width: 50%;
+    margin-left: 25%;
+    margin-right: 25%;
+  }
+
+  .news-menu-query-newsitem-input {
+    width: 49.3% !important;
+    margin-left: 25%;
+    margin-right: 25%;
+  }
+  .news-menu-close-categoriesdiv {
+    color: red;
+    font-weight: bold;
+    font-size: 150%;
+    text-align: right;
+    padding-right: 8%;
+  }
+}
+
+/* medium screens */
+@media only screen and (min-width: 701px) and (max-width: 999px) {
+  #nav {
+    background-color: white;
+    position: fixed;
+    left: 0;
+    top: 0;
+
+    width: 100vw;
+    z-index: 200;
+    a {
+      font-weight: bold;
+      color: #2c3e50;
+
+      &.router-link-exact-active {
+        color: #42b983;
+      }
+    }
+  }
+
+  .news-menu-flex-header-items {
+    display: flex;
+    justify-content: center;
+  }
+  .news-menu-header-titles {
+    display: flex;
+    align-items: center;
+  }
+
+  .news-menu-header-image-div {
+    width: 20%;
+    padding-right: 2%;
+  }
+
+  .news-menu-description {
+    font-family: "steelfish";
+    font-size: 30px;
+    padding-left: 1%;
+  }
+  .news-menu-world-news {
+    font-weight: bold;
+  }
+  .news-menu-globe {
+    width: 45%;
+  }
+
+  .news-menu-bar {
+    display: flex;
+    justify-content: space-between;
+    background-color: blue;
+    width: 100%;
+    padding: 3% 0% 3% 0%;
+    margin-bottom: 2%;
+    // position: fixed;
+  }
+
+  .news-menu-bar a {
+    color: white !important;
+    text-decoration: none;
+  }
+
+  .news-menu-home {
+    padding-left: 5%;
+  }
+
+  .news-menu-random {
+    padding-right: 5%;
+  }
+  .news-menu-categories {
+    padding-top: 18.2px;
     background-color: white;
     text-align: left;
   }
@@ -378,7 +483,7 @@ export default class NewsMenu extends Vue {
   }
 }
 
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 700px) {
   #nav {
     background-color: white;
     position: fixed;
@@ -399,10 +504,11 @@ export default class NewsMenu extends Vue {
 
   .news-menu-flex-header-items {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
   }
   .news-menu-header-titles {
-    padding-left: 10%;
+    display: flex;
+    align-items: center;
   }
   .news-menu-header-image-div {
     width: 20%;
@@ -411,7 +517,10 @@ export default class NewsMenu extends Vue {
 
   .news-menu-description {
     font-family: "steelfish";
-    font-size: 20px;
+    font-size: 25px;
+    padding-left: 1%;
+
+    text-align: center;
   }
   .news-menu-world-news {
     font-weight: bold;
@@ -443,7 +552,7 @@ export default class NewsMenu extends Vue {
     padding-right: 5%;
   }
   .news-menu-categories {
-    margin-top: 18.2px;
+    padding-top: 18.2px;
     background-color: white;
     text-align: left;
   }

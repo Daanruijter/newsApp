@@ -1,12 +1,18 @@
 <template>
   <div id="app">
-    <NewsMenu />
-
-    <main>
-      <router-view />
-    </main>
-
-    <NewsFooter />
+    <div class="app-container">
+      <div class="app-newsmenu">
+        <NewsMenu />
+      </div>
+      <div class="app-main">
+        <main>
+          <router-view />
+        </main>
+      </div>
+      <div class="app-newsfooter">
+        <NewsFooter />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -30,8 +36,42 @@ export default class App extends Vue {}
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
 
-  // margin-left: 15%;
-  // margin-right: 15%;
+.app-container {
+  display: grid;
+  grid-template-rows: 5% auto auto;
+  grid-template-columns: 100%;
+}
+.app-newsmenu {
+  grid-row-start: 1;
+  grid-row-end: 2;
+}
+.app-main {
+  width: 100%;
+  grid-row-start: 2;
+  grid-row-end: 3;
+}
+.app-newsfooter {
+  grid-row-start: 3;
+  grid-row-end: 4;
+}
+
+/* medium screens */
+@media only screen and (min-width: 701px) and (max-width: 999px) {
+  .app-container {
+    display: grid;
+    grid-template-rows: 3% auto auto;
+    grid-template-columns: 100%;
+  }
+}
+
+/* small screens */
+@media only screen and (max-width: 700px) {
+  .app-container {
+    display: grid;
+    grid-template-rows: 5% auto auto;
+    grid-template-columns: 100%;
+  }
 }
 </style>

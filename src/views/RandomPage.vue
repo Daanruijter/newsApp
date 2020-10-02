@@ -3,7 +3,11 @@
     <div v-if="this.randomNewsItem[0]" class="randompage-newsdata-loaded">
       {{ this.newsItemPublishedTime }} GMT
       <hr />
-      <div v-for="newsItem in this.randomNewsItem" :key="newsItem.title" class="randompage-data">
+      <div
+        v-for="newsItem in this.randomNewsItem"
+        :key="newsItem.title"
+        class="randompage-data"
+      >
         <div
           class="randompage-title"
           @mouseover="isHovering = true"
@@ -13,7 +17,9 @@
           <a :href="newsItem.url">{{ newsItem.title }}</a>
         </div>
 
-        <div v-if="newsItem.author">Written by:{{ " " }}{{ newsItem.author }}</div>
+        <div v-if="newsItem.author">
+          Written by:{{ " " }}{{ newsItem.author }}
+        </div>
         <br />
         <div class="randompage-description">
           <span class="randompage-small-header">Description</span>
@@ -34,7 +40,9 @@
           <a :href="newsItem.url">READ MORE</a>
         </div>
         <div class="randompage-button">
-          <button @click="changeRandomNewsItemOnButtonClick">Show another random news item</button>
+          <button @click="changeRandomNewsItemOnButtonClick">
+            Show another random news item
+          </button>
         </div>
         <div class="randompage-picture">
           <img v-bind:src="newsItem.urlToImage" />
@@ -73,7 +81,7 @@ export default class RandomPage extends Vue {
     "Leisure",
     "Entertainment",
     "Travel",
-    "Default News Category"
+    "Default News Category",
   ];
 
   //base to fetch news from a random country
@@ -131,12 +139,12 @@ export default class RandomPage extends Vue {
     "United Kingdom",
     "United States",
     "Venezuela",
-    "Default Country"
+    "Default Country",
   ];
 
   randomNewsCategoryFetchBaseArray = [
     this.randomCountryCategoriesArray,
-    this.randomNewsCategoriesArray
+    this.randomNewsCategoriesArray,
   ];
 
   async mounted() {
@@ -196,7 +204,7 @@ export default class RandomPage extends Vue {
 
     const fetchRandomNewsItemObject = {
       fetchBase: pickFetchBase,
-      typeOfFetchBase: pickType
+      typeOfFetchBase: pickType,
     };
 
     //fetch the newsData and put it in the vuex store
@@ -256,65 +264,133 @@ export default class RandomPage extends Vue {
 </script>
 
 <style scoped>
-.randompage-container {
-  color: black;
-  margin-top: 175px;
+@media only screen and (min-width: 700px) {
+  .randompage-container {
+    color: black;
+    margin-top: 175px;
+    margin-left: 15%;
+    width: 70%;
+  }
+
+  .randompage-title {
+    font-weight: bold;
+    color: black;
+    margin-bottom: 5%;
+  }
+  a {
+    text-decoration: none;
+    color: black;
+  }
+
+  .hovering a {
+    color: blue;
+  }
+  .randompage-picture {
+    display: grid;
+    grid-template-columns: 100%;
+  }
+
+  .randompage-picture img {
+    grid-column-start: 1;
+    grid-column-end: 2;
+    width: 100%;
+  }
+  .randompage-description,
+  .randompage-read-more,
+  .randompage-contents {
+    margin-bottom: 5%;
+  }
+
+  .randompage-read-more {
+    font-weight: bold;
+    margin-bottom: 12%;
+  }
+
+  .randompage-small-header {
+    font-weight: bold;
+  }
+
+  .randompage-button button {
+    margin-bottom: 5%;
+    font-size: 100%;
+  }
+
+  .randompage-newsdata-not-loaded {
+    background-color: purple;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-top: 50%;
+  }
+
+  .randompage-no-newsitems {
+    color: white;
+    font-weight: bold;
+  }
 }
 
-.randompage-title {
-  font-weight: bold;
-  color: black;
-  margin-bottom: 5%;
-}
-a {
-  text-decoration: none;
-  color: black;
-}
+@media only screen and (max-width: 500px) {
+  .randompage-container {
+    color: black;
+    margin-top: 175px;
+  }
 
-.hovering a {
-  color: blue;
-}
-.randompage-picture {
-  display: grid;
-  grid-template-columns: 100%;
-}
+  .randompage-title {
+    font-weight: bold;
+    color: black;
+    margin-bottom: 5%;
+  }
+  a {
+    text-decoration: none;
+    color: black;
+  }
 
-.randompage-picture img {
-  grid-column-start: 1;
-  grid-column-end: 2;
-  width: 100%;
-}
-.randompage-description,
-.randompage-read-more,
-.randompage-contents {
-  margin-bottom: 5%;
-}
+  .hovering a {
+    color: blue;
+  }
+  .randompage-picture {
+    display: grid;
+    grid-template-columns: 100%;
+  }
 
-.randompage-read-more {
-  font-weight: bold;
-  margin-bottom: 12%;
-}
+  .randompage-picture img {
+    grid-column-start: 1;
+    grid-column-end: 2;
+    width: 100%;
+  }
+  .randompage-description,
+  .randompage-read-more,
+  .randompage-contents {
+    margin-bottom: 5%;
+  }
 
-.randompage-small-header {
-  font-weight: bold;
-}
+  .randompage-read-more {
+    font-weight: bold;
+    margin-bottom: 12%;
+  }
 
-.randompage-button button {
-  margin-bottom: 5%;
-  font-size: 100%;
-}
+  .randompage-small-header {
+    font-weight: bold;
+  }
 
-.randompage-newsdata-not-loaded {
-  background-color: purple;
-  height: 100vh;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  padding-top: 50%;
-}
+  .randompage-button button {
+    margin-bottom: 5%;
+    font-size: 100%;
+  }
 
-.randompage-no-newsitems {
-  color: white;
-  font-weight: bold;
+  .randompage-newsdata-not-loaded {
+    background-color: purple;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-top: 50%;
+  }
+
+  .randompage-no-newsitems {
+    color: white;
+    font-weight: bold;
+  }
 }
 </style>

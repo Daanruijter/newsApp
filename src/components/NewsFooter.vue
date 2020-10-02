@@ -1,34 +1,40 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 <template>
   <div class="newsfooter-container">
-    <div class="newsfooter-sitemap-header">
-      <h2>Sitemap</h2>
-    </div>
-
-    <div v-for="route in routes" :key="route.name" class="newsfooter-routes">
-      <div @click="doStuffOnCLickInSitemap($event)" class="newsfooter-individual-routes">
-        <router-link v-if="route.name !== 'Details'" :to="route.path">
-          {{
-          route.name
-          }}
-        </router-link>
-        <router-link
-          v-if="route.name === 'Details' && newsData[0] !== undefined"
-          :to="{ name: 'DetailsPage', params: { title: newsData[0].title } }"
-        >{{ route.name }}</router-link>
+    <div>
+      <div class="newsfooter-sitemap-header">
+        <h2>Sitemap</h2>
       </div>
-      <div class="newsfooter-detailspage" v-if="route.name === 'Details'">
-        <div :key="item.title" v-for="(item, index) in newsData">
-          <router-link
-            class="newsfooter-links"
-            :to="{ name: 'DetailsPage', params: { title: item.title } }"
-          >
-            <div
-              @click="triggerDetailPageToReload(item.title)"
-              v-if="index < 10"
-              class="title"
-            >{{ item.title }}</div>
+
+      <div v-for="route in routes" :key="route.name" class="newsfooter-routes">
+        <div
+          @click="doStuffOnCLickInSitemap($event)"
+          class="newsfooter-individual-routes"
+        >
+          <router-link v-if="route.name !== 'Details'" :to="route.path">
+            {{ route.name }}
           </router-link>
+          <router-link
+            v-if="route.name === 'Details' && newsData[0] !== undefined"
+            :to="{ name: 'DetailsPage', params: { title: newsData[0].title } }"
+            >{{ route.name }}</router-link
+          >
+        </div>
+        <div class="newsfooter-detailspage" v-if="route.name === 'Details'">
+          <div :key="item.title" v-for="(item, index) in newsData">
+            <router-link
+              class="newsfooter-links"
+              :to="{ name: 'DetailsPage', params: { title: item.title } }"
+            >
+              <div
+                @click="triggerDetailPageToReload(item.title)"
+                v-if="index < 10"
+                class="title"
+              >
+                {{ item.title }}
+              </div>
+            </router-link>
+          </div>
         </div>
       </div>
     </div>
@@ -58,8 +64,8 @@ export default class NewsFooter extends Vue {
   router = new VueRouter({
     routes: [
       // dynamic segments start with a colon
-      { path: "/details /:id", component: DetailsPage }
-    ]
+      { path: "/details /:id", component: DetailsPage },
+    ],
   });
 
   mounted() {
@@ -142,34 +148,83 @@ export default class NewsFooter extends Vue {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-.newsfooter-container {
-  background-color: black;
-  padding-top: 2%;
-}
-.newsfooter-sitemap-header {
-  color: white;
+@media only screen and (min-width: 1000px) {
+  .newsfooter-container {
+    background-color: black;
+    padding-top: 1%;
+    margin-left: 15%;
+    width: 70%;
+  }
+  .newsfooter-sitemap-header {
+    color: white;
+  }
+
+  .home {
+    color: white;
+  }
+
+  .title {
+    font-size: 100%;
+    text-align: left;
+    padding: 0.3%;
+
+    text-align: center;
+    margin-left: 1%;
+
+    color: white;
+  }
+
+  a {
+    text-decoration: none;
+    color: white;
+  }
+
+  .newsfooter-routes a {
+    font-size: 110%;
+    font-weight: bold;
+  }
+
+  .newsfooter-detailspage a {
+    font-weight: 100;
+    font-size: 95%;
+  }
+  .newsfooter-detailspage {
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    color: red;
+  }
 }
 
-.home {
-  color: white;
-}
+@media only screen and (max-width: 700px) {
+  .newsfooter-container {
+    background-color: black;
+    padding-top: 2%;
+  }
+  .newsfooter-sitemap-header {
+    color: white;
+  }
 
-.title {
-  font-size: 75%;
-  text-align: left;
-  padding: 2%;
+  .home {
+    color: white;
+  }
 
-  color: white;
-}
+  .title {
+    font-size: 75%;
+    text-align: left;
+    padding: 2%;
 
-a {
-  text-decoration: none;
-  color: white;
-}
+    color: white;
+  }
 
-.newsfooter-detailspage {
-  margin-block-start: 0.83em;
-  margin-block-end: 0.83em;
-  color: red;
+  a {
+    text-decoration: none;
+    color: white;
+  }
+
+  .newsfooter-detailspage {
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    color: red;
+  }
 }
 </style>

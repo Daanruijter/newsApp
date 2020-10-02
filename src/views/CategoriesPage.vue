@@ -10,7 +10,7 @@ import { Vue, Component } from "vue-property-decorator";
 import store from "../store";
 
 store.watch(
-  state => state,
+  (state) => state,
   (value: {}, oldValue: {}) => {
     console.log("tab changed", value, oldValue);
   }
