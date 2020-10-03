@@ -3,7 +3,7 @@
     {{ this.newsItemPublishedTime }} GMT
     <hr />
     <div
-      v-for="newsItem in this.valuesForDetailComponent"
+      v-for="newsItem in this.valueForDetailComponent"
       :key="newsItem.title"
       class="detailspage-data"
     >
@@ -106,22 +106,26 @@ interface FetchBase {
 
 @Component
 export default class DetailsPage extends Vue {
-  async mounted() {
+  mounted() {
     console.log("DETAILSPAGE mounted");
-    await this.processDataForRandomComponent();
+
+    // this.processDataForDetailsComponent();
+
+    //if a user clicks an item below the header "details page" in the footer, make sure that the details page gets rerendered with the title where a user clicked on
+    bus.$on("triggerdetailspagereload", (title: string) => {
+      console.log(this.newsData);
+      this.newsItemTitle = title;
+      setTimeout(() => this.processDataForDetailsComponent(), 3000);
+
+      console.log(title);
+      console.log("triggerdeailspagetoreload");
+    });
 
     //if a user clicks on the details button in the footer, make sure that the details page gets rerendered with a default title
     bus.$on("loadFirstElementOfDetailsPage", (title: string) => {
       this.newsItemTitle = title;
-
-      this.processDataForRandomComponent();
-    });
-
-    //if a user clicks an item below the header "details page" in the footer, make sure that the details page gets rerendered with the title where a user clicked on
-    bus.$on("triggerdetailspagereload", (title: string) => {
-      this.newsItemTitle = title;
-
-      this.processDataForRandomComponent();
+      this.processDataForDetailsComponent();
+      console.log(title);
     });
   }
   isHovering = false;
@@ -132,10 +136,12 @@ export default class DetailsPage extends Vue {
   //get the newsitem where a user clicked on to go to its detail page from params (because there is no parent/child relation between the home and detailspage component)
   newsItemTitle = this.$route.params.title;
   newsItemPublishedTime = "";
-  valuesForDetailComponent: NewsItemType[] = [];
+  valueForDetailComponent: NewsItemType[] = [];
   threeRelevantExtraNewsItems: NewsItemType[] = [];
 
-  async processDataForRandomComponent() {
+  async processDataForDetailsComponent() {
+    console.log("processDATAFORTANDOMCOMP");
+
     //if the news items array is not populated, because of a page reload, fetch it again
     if (Object.keys(this.newsData).length === 0) {
       //get the right info for fetching the data
@@ -155,20 +161,14 @@ export default class DetailsPage extends Vue {
 
       //get the data in the component
       this.newsBase = newsCategoryFetchObject.fetchBase;
+
       if (newsCategoryFetchObject.typeOfFetchBase === "Default country") {
         [(this.newsBase = "United States")];
       }
     }
 
     //get the right detail object for a given newsitem
-    this.getValuesForDetailComponent;
-
-    //convert the publishedAt timestring to be readable
-    if (this.valuesForDetailComponent[0].publishedAt) {
-      this.newsItemPublishedTime = convertNewsItemPublishedTime(
-        this.valuesForDetailComponent[0].publishedAt
-      );
-    }
+    await this.getValuesForDetailComponent();
   }
 
   //get a random number for the index. Number must be higher than 10, because I don't want to display newsItems that already got displayed on the homepage.
@@ -179,7 +179,7 @@ export default class DetailsPage extends Vue {
   }
 
   //populate the newsdata data item by filtering it, saving the newsItem that matches the newsItem a user clicked on to go to its detail page
-  get getValuesForDetailComponent() {
+  getValuesForDetailComponent() {
     //initiate the variable "indexNotToShowInExtraNewsItems" to save the index from the item that gets displayed
     //use that to exclude it from the extra three items displayed
     let filterDisplayedItemOut = 0;
@@ -187,18 +187,21 @@ export default class DetailsPage extends Vue {
     //initiate the variable "indexToShowExtraNewsItems" to get the most recent three news extra items
 
     let indexToShowExtraNewsItems = 3;
-
+    console.log(this.newsData);
     //get the clicked news item from the array
-    const valuesForDetailComponentFiltered: NewsItemType[] = this.newsData.filter(
+    const valueForDetailComponentFiltered: NewsItemType[] = this.newsData.filter(
       (item: NewsItemType, index: number) => {
         // save the index of the clicked news item
-
+        console.log(this.newsItemPublishedTime.includes(item.title));
         if (this.newsItemTitle.includes(item.title)) {
           filterDisplayedItemOut = index;
         }
         return this.newsItemTitle.includes(item.title);
       }
     );
+
+    console.log(valueForDetailComponentFiltered);
+    console.log("valueForDetailComponentFiltered");
 
     //if the news item displayed is one of them, increase the variable "indexToShowExtraNewsItems" to filter three items out of the array by 1 to display three, not two items
     if (
@@ -220,6 +223,13 @@ export default class DetailsPage extends Vue {
     );
 
     //convert the publishedAt timestring to be readable
+    if (valueForDetailComponentFiltered[0].publishedAt) {
+      this.newsItemPublishedTime = convertNewsItemPublishedTime(
+        valueForDetailComponentFiltered[0].publishedAt
+      );
+    }
+
+    //convert the publishedAt timestring to be readable
     extraValuesForDetailComponent = extraValuesForDetailComponent.map(
       (item: NewsItemType) => {
         if (item.publishedAt) {
@@ -230,10 +240,10 @@ export default class DetailsPage extends Vue {
     );
 
     //populate the variables to display the data in the template
-    this.valuesForDetailComponent = valuesForDetailComponentFiltered;
+    this.valueForDetailComponent = valueForDetailComponentFiltered;
     this.threeRelevantExtraNewsItems = extraValuesForDetailComponent;
 
-    return valuesForDetailComponentFiltered;
+    return valueForDetailComponentFiltered;
   }
 }
 </script>

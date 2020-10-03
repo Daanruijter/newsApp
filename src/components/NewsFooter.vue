@@ -111,6 +111,7 @@ export default class NewsFooter extends Vue {
   //if a user clicks an item below the header "details page" in de footer, make sure that the details page gets rerendendered with the title where a user clicked on
 
   triggerDetailPageToReload(item: string) {
+    console.log("detailspagereloadtriggeractivatied");
     bus.$emit("triggerdetailspagereload", item);
   }
   //if a user clicks on the categories button, open the categories div in
@@ -118,20 +119,22 @@ export default class NewsFooter extends Vue {
     const routeText = (event.target as HTMLAnchorElement).text;
 
     //open the categories div if a user hits the categories button
-    if (routeText === "Categories") {
+    if (routeText.includes("Categories")) {
+      console.log("categoriesclickevent");
       bus.$emit("openCategoriesDivFromNewsFooter");
     }
     if (
-      routeText === "Home" ||
-      routeText === "Random" ||
-      routeText === "Details"
+      routeText.includes("Home") ||
+      routeText.includes("Random") ||
+      routeText.includes("Details")
     ) {
       bus.$emit("closeCategoriesDivFromNewsFooter");
     }
 
     //load the first item of the details page by triggering the load function in the DetailsPage component
-    if (routeText === "Details") {
+    if (routeText.includes("Details")) {
       const title = this.newsData[0].title;
+
       bus.$emit("loadFirstElementOfDetailsPage", title);
     }
 

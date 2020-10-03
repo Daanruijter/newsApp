@@ -165,6 +165,7 @@ export default class NewsMenu extends Vue {
       this.categoriesPageBoolean = false;
     });
     bus.$on("openCategoriesDivFromNewsFooter", () => {
+      console.log("event from NEWSFOOTER");
       this.categoriesPageBoolean = !this.categoriesPageBoolean;
     });
     bus.$on("closeCategoriesDivFromNewsFooter", () => {
