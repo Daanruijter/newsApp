@@ -106,26 +106,20 @@ interface FetchBase {
 
 @Component
 export default class DetailsPage extends Vue {
-  mounted() {
+  async mounted() {
     console.log("DETAILSPAGE mounted");
-
-    // this.processDataForDetailsComponent();
+    //on mounting, fetch the current newsItem array
+    this.processDataForDetailsComponent();
 
     //if a user clicks an item below the header "details page" in the footer, make sure that the details page gets rerendered with the title where a user clicked on
     bus.$on("triggerdetailspagereload", (title: string) => {
-      console.log(this.newsData);
-      this.newsItemTitle = title;
-      setTimeout(() => this.processDataForDetailsComponent(), 3000);
-
-      console.log(title);
-      console.log("triggerdeailspagetoreload");
+      this.processDataForDetailsComponent(title);
     });
 
     //if a user clicks on the details button in the footer, make sure that the details page gets rerendered with a default title
     bus.$on("loadFirstElementOfDetailsPage", (title: string) => {
-      this.newsItemTitle = title;
-      this.processDataForDetailsComponent();
-      console.log(title);
+      console.log("loadfirstelementofdetailspage");
+      this.processDataForDetailsComponent(title);
     });
   }
   isHovering = false;
@@ -139,36 +133,32 @@ export default class DetailsPage extends Vue {
   valueForDetailComponent: NewsItemType[] = [];
   threeRelevantExtraNewsItems: NewsItemType[] = [];
 
-  async processDataForDetailsComponent() {
+  async processDataForDetailsComponent(
+    title?: string
+  ): Promise<NewsItemType[]> {
+    const newsCategoryFetchObject = {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      fetchBase: localStorage.getItem("fetchBase")!,
+
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      typeOfFetchBase: localStorage.getItem("typeOfFetchBase")!,
+    };
+
     console.log("processDATAFORTANDOMCOMP");
+    //fetch the data
+    await news.fetchNewsQuery(newsCategoryFetchObject);
+    this.newsData = this.$store.getters[
+      "vuexModuleDecorators/newsDataModule"
+    ].queriedNewsItemsGetter;
+    const newsData = (this.newsData = this.$store.getters[
+      "vuexModuleDecorators/newsDataModule"
+    ].queriedNewsItemsGetter);
+    console.log(newsData);
 
-    //if the news items array is not populated, because of a page reload, fetch it again
-    if (Object.keys(this.newsData).length === 0) {
-      //get the right info for fetching the data
-      const newsCategoryFetchObject = {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        fetchBase: localStorage.getItem("fetchBase")!,
+    //process the data to display the clicked item and three extra relevant items
+    this.getValuesForDetailComponent(newsData, title);
 
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        typeOfFetchBase: localStorage.getItem("typeOfFetchBase")!,
-      };
-
-      //fetch the data
-      await news.fetchNewsQuery(newsCategoryFetchObject);
-      this.newsData = this.$store.getters[
-        "vuexModuleDecorators/newsDataModule"
-      ].queriedNewsItemsGetter;
-
-      //get the data in the component
-      this.newsBase = newsCategoryFetchObject.fetchBase;
-
-      if (newsCategoryFetchObject.typeOfFetchBase === "Default country") {
-        [(this.newsBase = "United States")];
-      }
-    }
-
-    //get the right detail object for a given newsitem
-    await this.getValuesForDetailComponent();
+    return newsData;
   }
 
   //get a random number for the index. Number must be higher than 10, because I don't want to display newsItems that already got displayed on the homepage.
@@ -179,7 +169,14 @@ export default class DetailsPage extends Vue {
   }
 
   //populate the newsdata data item by filtering it, saving the newsItem that matches the newsItem a user clicked on to go to its detail page
-  getValuesForDetailComponent() {
+  getValuesForDetailComponent(newsData: NewsItemType[], title?: string): null {
+    let titleToFilterItemOut = this.newsItemTitle;
+
+    if (title) {
+      titleToFilterItemOut = title;
+      console.log(titleToFilterItemOut);
+    }
+
     //initiate the variable "indexNotToShowInExtraNewsItems" to save the index from the item that gets displayed
     //use that to exclude it from the extra three items displayed
     let filterDisplayedItemOut = 0;
@@ -187,111 +184,125 @@ export default class DetailsPage extends Vue {
     //initiate the variable "indexToShowExtraNewsItems" to get the most recent three news extra items
 
     let indexToShowExtraNewsItems = 3;
-    console.log(this.newsData);
-    //get the clicked news item from the array
-    const valueForDetailComponentFiltered: NewsItemType[] = this.newsData.filter(
-      (item: NewsItemType, index: number) => {
-        // save the index of the clicked news item
-        console.log(this.newsItemPublishedTime.includes(item.title));
-        if (this.newsItemTitle.includes(item.title)) {
-          filterDisplayedItemOut = index;
+    console.log(newsData);
+    if (newsData.length !== 0) {
+      //get the clicked news item from the array
+      const valueForDetailComponentFiltered: NewsItemType[] = newsData.filter(
+        (item: NewsItemType, index: number) => {
+          // save the index of the clicked news item
+          // console.log(this.newsItemPublishedTime.includes(item.title));
+
+          console.log(item.title);
+          console.log(titleToFilterItemOut);
+
+          if (titleToFilterItemOut.includes(item.title)) {
+            filterDisplayedItemOut = index;
+          }
+          return titleToFilterItemOut.includes(item.title);
         }
-        return this.newsItemTitle.includes(item.title);
+      );
+
+      console.log(valueForDetailComponentFiltered);
+      console.log("valueForDetailComponentFiltered");
+
+      //if the news item displayed is one of them, increase the variable "indexToShowExtraNewsItems" to filter three items out of the array by 1 to display three, not two items
+      if (
+        filterDisplayedItemOut == 0 ||
+        filterDisplayedItemOut == 1 ||
+        filterDisplayedItemOut == 2
+      ) {
+        indexToShowExtraNewsItems += 1;
       }
-    );
 
-    console.log(valueForDetailComponentFiltered);
-    console.log("valueForDetailComponentFiltered");
+      //filter the newsitems array to get three other most recent items
+      let extraValuesForDetailComponent: NewsItemType[] = newsData.filter(
+        (item: NewsItemType, index: number) => {
+          // }
+          return (
+            index !== filterDisplayedItemOut &&
+            index < indexToShowExtraNewsItems
+          );
+        }
+      );
 
-    //if the news item displayed is one of them, increase the variable "indexToShowExtraNewsItems" to filter three items out of the array by 1 to display three, not two items
-    if (
-      filterDisplayedItemOut == 0 ||
-      filterDisplayedItemOut == 1 ||
-      filterDisplayedItemOut == 2
-    ) {
-      indexToShowExtraNewsItems += 1;
-    }
-
-    //filter the newsitems array to get three other most recent items
-    let extraValuesForDetailComponent: NewsItemType[] = this.newsData.filter(
-      (item: NewsItemType, index: number) => {
-        // }
-        return (
-          index !== filterDisplayedItemOut && index < indexToShowExtraNewsItems
+      //convert the publishedAt timestring to be readable
+      if (
+        valueForDetailComponentFiltered.length !== 0 &&
+        valueForDetailComponentFiltered[0].publishedAt
+      ) {
+        this.newsItemPublishedTime = convertNewsItemPublishedTime(
+          valueForDetailComponentFiltered[0].publishedAt
         );
       }
-    );
 
-    //convert the publishedAt timestring to be readable
-    if (valueForDetailComponentFiltered[0].publishedAt) {
-      this.newsItemPublishedTime = convertNewsItemPublishedTime(
-        valueForDetailComponentFiltered[0].publishedAt
-      );
-    }
-
-    //convert the publishedAt timestring to be readable
-    extraValuesForDetailComponent = extraValuesForDetailComponent.map(
-      (item: NewsItemType) => {
-        if (item.publishedAt) {
-          item.publishedAt = convertNewsItemPublishedTime(item.publishedAt);
+      //convert the publishedAt timestring to be readable
+      extraValuesForDetailComponent = extraValuesForDetailComponent.map(
+        (item: NewsItemType) => {
+          if (item.publishedAt) {
+            item.publishedAt = convertNewsItemPublishedTime(item.publishedAt);
+          }
+          return item;
         }
-        return item;
-      }
-    );
+      );
 
-    //populate the variables to display the data in the template
-    this.valueForDetailComponent = valueForDetailComponentFiltered;
-    this.threeRelevantExtraNewsItems = extraValuesForDetailComponent;
-
-    return valueForDetailComponentFiltered;
+      //populate the variables to display the data in the template
+      this.valueForDetailComponent = valueForDetailComponentFiltered;
+      this.threeRelevantExtraNewsItems = extraValuesForDetailComponent;
+    }
+    return null;
   }
 }
 </script>
 
 <style scoped>
-.detailspage-container {
-  color: black;
-  margin-top: 1%;
-}
-.detailspage-title {
-  font-weight: bold;
-  color: black;
-  margin-bottom: 5%;
-}
+/* bigger screens */
+@media only screen and (min-width: 1000px) {
+  .detailspage-container {
+    color: black;
 
-a {
-  text-decoration: none;
-  color: black;
-}
+    padding-top: 1%;
+    margin-left: 15%;
+    width: 70%;
+  }
+  .detailspage-title {
+    font-weight: bold;
+    color: black;
+    margin-bottom: 5%;
+  }
 
-.hovering a {
-  color: blue;
-}
-.detailspage-picture {
-  display: grid;
-  grid-template-columns: 100%;
-}
+  a {
+    text-decoration: none;
+    color: black;
+  }
 
-.detailspage-picture img {
-  grid-column-start: 1;
-  grid-column-end: 2;
-  width: 100%;
-}
-.detailspage-description,
-.detailspage-read-more,
-.detailspage-contents {
-  margin-bottom: 5%;
-}
+  .hovering a {
+    color: blue;
+  }
+  .detailspage-picture {
+    display: grid;
+    grid-template-columns: 100%;
+  }
 
-.detailspage-read-more {
-  font-weight: bold;
-}
+  .detailspage-picture img {
+    grid-column-start: 1;
+    grid-column-end: 2;
+    width: 100%;
+  }
+  .detailspage-description,
+  .detailspage-read-more,
+  .detailspage-contents {
+    margin-bottom: 5%;
+  }
 
-.detailspage-small-header {
-  font-weight: bold;
+  .detailspage-read-more {
+    font-weight: bold;
+  }
+
+  .detailspage-small-header {
+    font-weight: bold;
+  }
 }
 </style>
 
-/* bigger screens */ @media only screen and (min-width: 1000px) {} /* medium
-screens */ @media only screen and (min-width: 701px) and (max-width: 999px) {}
-/* smaller screens */ @media only screen and (max-width: 700px) {}
+/* medium screens */ @media only screen and (min-width: 701px) and (max-width:
+999px) {} /* smaller screens */ @media only screen and (max-width: 700px) {}

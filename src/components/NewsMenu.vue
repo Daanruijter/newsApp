@@ -181,6 +181,7 @@ export default class NewsMenu extends Vue {
 
     await news.fetchNewsQuery(countryFetchObject);
     bus.$emit("loadDefaultNewsItemsAfterClickOnHomeButton");
+    bus.$emit("triggerDataToFetchInFooter");
 
     //if a user clicks on home, reset the categories settings to their defaults
     this.countrySelected = "Default Country";
