@@ -1,7 +1,8 @@
 <template>
   <div class="detailspage-container">
+    <hr class="detailspage-hr-adapt-size" />
     {{ this.newsItemPublishedTime }} GMT
-    <hr />
+    <hr class="detailspage-hr-adapt-size" />
     <div
       v-for="newsItem in this.valueForDetailComponent"
       :key="newsItem.title"
@@ -16,7 +17,12 @@
         <a :href="newsItem.url">{{ newsItem.title }}</a>
       </div>
 
-      <div>Written by:{{ " " }}{{ newsItem.author }}</div>
+      <div>
+        <i>
+          Written by:{{ " " }}{{ newsItem.author }}{{ ", source: "
+          }}{{ newsItem.source.name }}</i
+        >
+      </div>
       <br />
       <div class="detailspage-description-wrapper">
         <span class="detailspage-small-header">Description</span>
@@ -40,13 +46,15 @@
       <div class="detailspage-other-news-bar">
         <h2>More{{ " " }}{{ this.newsBase }}{{ " news" }}</h2>
       </div>
+      <hr class="detailspage-hr-adapt-size" />
       <div
         v-for="newsItem in this.threeRelevantExtraNewsItems"
         :key="newsItem.title"
         class="detailspage-data"
       >
         <div>{{ newsItem.publishedAt }} GMT</div>
-        <br />
+        <hr class="detailspage-hr-adapt-size" />
+
         <div
           class="detailspage-title"
           @mouseover="isHovering = true"
@@ -56,7 +64,12 @@
           <a :href="newsItem.url">{{ newsItem.title }}</a>
         </div>
 
-        <div>Written by:{{ " " }}{{ newsItem.author }}</div>
+        <div>
+          <i>
+            Written by:{{ " " }}{{ newsItem.author }}{{ ", source: "
+            }}{{ newsItem.source.name }}</i
+          >
+        </div>
         <br />
         <div class="detailspage-description-wrapper">
           <span class="detailspage-small-header">Description</span>
@@ -130,6 +143,13 @@ export default class DetailsPage extends Vue {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       typeOfFetchBase: localStorage.getItem("typeOfFetchBase")!,
     };
+
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.newsBase = localStorage.getItem("fetchBase")!;
+
+    if (this.newsBase === "Default Country") {
+      this.newsBase = "United States";
+    }
 
     console.log("processDATAFORTANDOMCOMP");
     //fetch the data
@@ -247,7 +267,6 @@ export default class DetailsPage extends Vue {
   .detailspage-container {
     color: black;
 
-    padding-top: 1%;
     margin-left: 15%;
     width: 70%;
   }
@@ -265,16 +284,12 @@ export default class DetailsPage extends Vue {
     margin-top: 2%;
     margin-right: 15%;
     margin-bottom: 2%;
-    color: blue !important;
   }
   .detailspage-title {
     font-weight: bold;
     color: black;
     margin-bottom: 2%;
     font-size: 125%;
-    max-width: 70%;
-    margin-left: 15%;
-    margin-right: 15%;
   }
 
   a {
@@ -381,6 +396,14 @@ export default class DetailsPage extends Vue {
 
   .hovering a {
     color: blue;
+  }
+
+  .detailspage-other-news-bar {
+    background-color: blue;
+
+    margin: 2% 0% 2% 0%;
+
+    color: white;
   }
   .detailspage-picture {
     display: grid;

@@ -70,13 +70,15 @@ class NewsModule extends VuexModule {
   @Mutation
   addQueriedNewsDataToState(data: NewsItemType[]) {
     data = data.map((item: NewsItemType) => {
+      //remove the sourcename from the title
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       if (
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        !item.title.includes(item.source.name!) &&
+        item.title.includes(item.source.name!) &&
         item.source.name !== null
       ) {
-        item.title = item.title + " - " + item.source.name;
+        const replaceBase = " - " + item.source.name;
+        item.title = item.title.replace(replaceBase, "");
       }
       //add the fetched newsData array to localstorage to be able to get it after page reloads or when coming back from external pages
       localStorage.setItem("newsData", JSON.stringify(data));

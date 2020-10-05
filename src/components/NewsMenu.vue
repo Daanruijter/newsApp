@@ -295,7 +295,6 @@ export default class NewsMenu extends Vue {
     height: 55px;
   }
   .news-menu-header-titles {
-    // padding-left: 10%;
     display: flex;
     justify-content: center;
   }
@@ -323,10 +322,8 @@ export default class NewsMenu extends Vue {
 
     background-color: blue;
     width: 100%;
-    // height: 75px;
-    padding: 1% 0% 1% 0%;
 
-    // position: fixed;
+    padding: 1% 0% 1% 0%;
   }
 
   .news-menu-bar a {
@@ -344,8 +341,8 @@ export default class NewsMenu extends Vue {
   }
   .news-menu-categories {
     width: 50%;
-    margin-left: 25%;
-    padding-top: 18.2px;
+
+    padding: 18.2px 25% 0 25%;
 
     text-align: left;
     background-color: honeydew;
@@ -453,7 +450,8 @@ export default class NewsMenu extends Vue {
   }
   .news-menu-categories {
     width: 50%;
-    margin-left: 25%;
+    padding-left: 25%;
+    padding-right: 25%;
     padding-top: 18.2px;
     text-align: left;
     background-color: honeydew;
@@ -487,18 +485,6 @@ export default class NewsMenu extends Vue {
     font-size: 150%;
     text-align: right;
     padding-right: 8%;
-  }
-}
-
-// pretty small screens
-@media only screen and (min-width: 450px) and (max-width: 699px) {
-  .news-menu-categories {
-    width: 74%;
-    margin-left: 13%;
-    padding-top: 18.2px;
-    background-color: white;
-    text-align: left;
-    background-color: honeydew;
   }
 }
 
@@ -607,6 +593,30 @@ export default class NewsMenu extends Vue {
     font-size: 150%;
     text-align: right;
     padding-right: 8%;
+  }
+}
+
+//adapt categories div layout
+@media only screen and (min-width: 450px) and (max-width: 575px) {
+  .news-menu-categories {
+    padding-left: 13%;
+    padding-right: 13%;
+    padding-top: 18.2px;
+    background-color: white;
+    text-align: left;
+    background-color: honeydew;
+  }
+}
+
+//adapt categories div layout
+@media only screen and (min-width: 576px) and (max-width: 700px) {
+  .news-menu-categories {
+    padding-left: 18%;
+    padding-right: 18%;
+    padding-top: 18.2px;
+    background-color: white;
+    text-align: left;
+    background-color: honeydew;
   }
 }
 </style>

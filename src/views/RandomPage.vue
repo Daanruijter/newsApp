@@ -1,8 +1,10 @@
 <template>
   <div class="randompage-container">
     <div v-if="this.randomNewsItem[0]" class="randompage-newsdata-loaded">
+      <hr class="randompage-hr-adapt-size" />
       {{ this.newsItemPublishedTime }} GMT
-      <hr />
+      <hr class="randompage-hr-adapt-size" />
+
       <div
         v-for="newsItem in this.randomNewsItem"
         :key="newsItem.title"
@@ -18,27 +20,28 @@
         </div>
 
         <div v-if="newsItem.author">
-          Written by:{{ " " }}{{ newsItem.author }}
+          <i>
+            Written by:{{ " " }}{{ newsItem.author }}{{ ", source: "
+            }}{{ newsItem.source.name }}
+          </i>
         </div>
         <br />
-        <div class="randompage-description">
+
+        <div class="randompage-description-wrapper">
           <span class="randompage-small-header">Description</span>
           <br />
-          {{ newsItem.description }}
+          <div class="randompage-description">
+            {{ newsItem.description }}
+          </div>
         </div>
-        <div class="randompage-contents">
+        <div class="randompage-contents-wrapper">
           <span class="randompage-small-header">Contents</span>
           <br />
-          {{ newsItem.content }}
+          <div class="randompage-contents">
+            {{ newsItem.content }}
+          </div>
         </div>
-        <div
-          class="randompage-read-more"
-          @mouseover="hoveringReadMore = true"
-          @mouseout="hoveringReadMore = false"
-          :class="{ hovering: hoveringReadMore }"
-        >
-          <a :href="newsItem.url">READ MORE</a>
-        </div>
+
         <div class="randompage-button">
           <button @click="changeRandomNewsItemOnButtonClick">
             Show another random news item
@@ -268,6 +271,7 @@ export default class RandomPage extends Vue {
 </script>
 
 <style scoped>
+/* bigger screens */
 @media only screen and (min-width: 1000px) {
   .randompage-container {
     color: black;
@@ -282,12 +286,20 @@ export default class RandomPage extends Vue {
     font-weight: bold;
     color: black;
     margin-bottom: 2%;
+    font-size: 125%;
   }
+
   a {
     text-decoration: none;
     color: black;
   }
 
+  .randompage-hr-adapt-size {
+    margin-left: 15%;
+    margin-top: 2%;
+    margin-right: 15%;
+    margin-bottom: 2%;
+  }
   .hovering a {
     color: blue;
   }
@@ -299,7 +311,9 @@ export default class RandomPage extends Vue {
   .randompage-picture img {
     grid-column-start: 1;
     grid-column-end: 2;
-    width: 100%;
+    margin-left: 35%;
+    margin-right: 35%;
+    width: 35%;
   }
   .randompage-description,
   .randompage-read-more,
@@ -320,7 +334,13 @@ export default class RandomPage extends Vue {
     margin-bottom: 5%;
     font-size: 100%;
   }
-
+  .randompage-description,
+  .randompage-contents {
+    margin-bottom: 2%;
+    margin-left: 15%;
+    margin-right: 15%;
+    text-align: left;
+  }
   .randompage-newsdata-not-loaded {
     background-color: purple;
     height: 100vh;
@@ -340,7 +360,7 @@ export default class RandomPage extends Vue {
 @media only screen and (min-width: 701px) and (max-width: 999px) {
   .randompage-container {
     color: black;
-    margin-top: 1%;
+
     margin-left: 15%;
     width: 70%;
     height: 100%;
@@ -350,8 +370,10 @@ export default class RandomPage extends Vue {
   .randompage-title {
     font-weight: bold;
     color: black;
-    margin-bottom: 5%;
+    margin-bottom: 2%;
+    font-size: 125%;
   }
+
   a {
     text-decoration: none;
     color: black;
@@ -368,6 +390,7 @@ export default class RandomPage extends Vue {
   .randompage-picture img {
     grid-column-start: 1;
     grid-column-end: 2;
+
     width: 100%;
   }
   .randompage-description,
@@ -378,7 +401,7 @@ export default class RandomPage extends Vue {
 
   .randompage-read-more {
     font-weight: bold;
-    margin-bottom: 2%;
+    margin-bottom: 5%;
   }
 
   .randompage-small-header {
@@ -389,7 +412,12 @@ export default class RandomPage extends Vue {
     margin-bottom: 5%;
     font-size: 100%;
   }
+  .randompage-description,
+  .randompage-contents {
+    margin-bottom: 2%;
 
+    text-align: left;
+  }
   .randompage-newsdata-not-loaded {
     background-color: purple;
     height: 100vh;
@@ -404,7 +432,7 @@ export default class RandomPage extends Vue {
     font-weight: bold;
   }
 }
-
+/* smaller screens */
 @media only screen and (max-width: 700px) {
   .randompage-container {
     color: black;

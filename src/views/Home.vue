@@ -608,13 +608,6 @@ export default class Home extends Vue {
   a {
     text-decoration: none;
   }
-
-  button {
-    width: 28%;
-    margin-left: 2%;
-    margin-right: 2%;
-  }
-
   .home-newsitem-picture {
     display: grid;
     grid-template-columns: 100%;
@@ -643,6 +636,23 @@ export default class Home extends Vue {
   .home-no-newsitems {
     color: white;
     font-weight: bold;
+  }
+}
+
+@media only screen and (min-width: 376px) and (max-width: 700px) {
+  button {
+    width: 28%;
+    margin-left: 2%;
+    margin-right: 2%;
+  }
+}
+
+@media only screen and (max-width: 375px) {
+  button {
+    width: 29%;
+    margin-left: 1%;
+    margin-right: 1%;
+    font-size: 75%;
   }
 }
 </style>
