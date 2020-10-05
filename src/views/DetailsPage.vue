@@ -18,23 +18,16 @@
 
       <div>Written by:{{ " " }}{{ newsItem.author }}</div>
       <br />
-      <div class="detailspage-description">
+      <div class="detailspage-description-wrapper">
         <span class="detailspage-small-header">Description</span>
         <br />
-        {{ newsItem.description }}
+
+        <div class="detailspage-description">{{ newsItem.description }}</div>
       </div>
-      <div class="detailspage-contents">
+      <div class="detailspage-contents-wrapper">
         <span class="detailspage-small-header">Contents</span>
         <br />
-        {{ newsItem.content }}
-      </div>
-      <div
-        class="detailspage-read-more"
-        @mouseover="hoveringReadMore = true"
-        @mouseout="hoveringReadMore = false"
-        :class="{ hovering: hoveringReadMore }"
-      >
-        <a :href="newsItem.url">READ MORE</a>
+        <div class="detailspage-contents">{{ newsItem.content }}</div>
       </div>
 
       <div class="detailspage-picture">
@@ -44,8 +37,9 @@
     <!-- three other relevant items -->
 
     <div class="detailspage-other-relevant-items">
-      <h2>More{{ " " }}{{ this.newsBase }}{{ " news" }}</h2>
-      <hr />
+      <div class="detailspage-other-news-bar">
+        <h2>More{{ " " }}{{ this.newsBase }}{{ " news" }}</h2>
+      </div>
       <div
         v-for="newsItem in this.threeRelevantExtraNewsItems"
         :key="newsItem.title"
@@ -64,29 +58,22 @@
 
         <div>Written by:{{ " " }}{{ newsItem.author }}</div>
         <br />
-        <div class="detailspage-description">
+        <div class="detailspage-description-wrapper">
           <span class="detailspage-small-header">Description</span>
           <br />
-          {{ newsItem.description }}
+
+          <div class="detailspage-description">{{ newsItem.description }}</div>
         </div>
-        <div class="detailspage-contents">
+        <div class="detailspage-contents-wrapper">
           <span class="detailspage-small-header">Contents</span>
           <br />
-          {{ newsItem.content }}
-        </div>
-        <div
-          class="detailspage-read-more"
-          @mouseover="hoveringReadMore = true"
-          @mouseout="hoveringReadMore = false"
-          :class="{ hovering: hoveringReadMore }"
-        >
-          <a :href="newsItem.url">READ MORE</a>
+          <div class="detailspage-contents">{{ newsItem.content }}</div>
         </div>
 
         <div class="detailspage-picture">
           <img v-bind:src="newsItem.urlToImage" />
         </div>
-        <hr />
+        <hr class="detailspage-hr-adapt-size" />
       </div>
     </div>
   </div>
@@ -264,6 +251,123 @@ export default class DetailsPage extends Vue {
     margin-left: 15%;
     width: 70%;
   }
+
+  .detailspage-other-news-bar {
+    background-color: blue;
+
+    margin: 2% 15% 2% 15%;
+
+    color: white;
+  }
+
+  .detailspage-hr-adapt-size {
+    margin-left: 15%;
+    margin-top: 2%;
+    margin-right: 15%;
+    margin-bottom: 2%;
+    color: blue !important;
+  }
+  .detailspage-title {
+    font-weight: bold;
+    color: black;
+    margin-bottom: 2%;
+    font-size: 125%;
+    max-width: 70%;
+    margin-left: 15%;
+    margin-right: 15%;
+  }
+
+  a {
+    text-decoration: none;
+    color: black;
+  }
+
+  .hovering a {
+    color: blue;
+  }
+  .detailspage-picture {
+    display: grid;
+    grid-template-columns: 100%;
+  }
+
+  .detailspage-picture img {
+    grid-column-start: 1;
+    grid-column-end: 2;
+    margin-left: 35%;
+    margin-right: 35%;
+    width: 35%;
+  }
+
+  .detailspage-description,
+  .detailspage-contents {
+    margin-bottom: 2%;
+    margin-left: 15%;
+    margin-right: 15%;
+    text-align: left;
+  }
+
+  .detailspage-read-more {
+    font-weight: bold;
+  }
+
+  .detailspage-small-header {
+    font-weight: bold;
+  }
+}
+/* medium screens */
+@media only screen and (min-width: 701px) and (max-width: 999px) {
+  .detailspage-container {
+    color: black;
+
+    padding-top: 1%;
+    margin-left: 15%;
+    width: 70%;
+  }
+  .detailspage-title {
+    font-weight: bold;
+    color: black;
+    margin-bottom: 5%;
+  }
+
+  a {
+    text-decoration: none;
+    color: black;
+  }
+
+  .hovering a {
+    color: blue;
+  }
+  .detailspage-picture {
+    display: grid;
+    grid-template-columns: 100%;
+  }
+
+  .detailspage-picture img {
+    grid-column-start: 1;
+    grid-column-end: 2;
+    width: 100%;
+  }
+  .detailspage-description,
+  .detailspage-read-more,
+  .detailspage-contents {
+    margin-bottom: 5%;
+  }
+
+  .detailspage-read-more {
+    font-weight: bold;
+  }
+
+  .detailspage-small-header {
+    font-weight: bold;
+  }
+}
+/* smaller screens */
+@media only screen and (max-width: 700px) {
+  .detailspage-container {
+    color: black;
+
+    padding-top: 1%;
+  }
   .detailspage-title {
     font-weight: bold;
     color: black;
@@ -304,5 +408,4 @@ export default class DetailsPage extends Vue {
 }
 </style>
 
-/* medium screens */ @media only screen and (min-width: 701px) and (max-width:
-999px) {} /* smaller screens */ @media only screen and (max-width: 700px) {}
+{} /* smaller screens */ @media only screen and (max-width: 700px) {}

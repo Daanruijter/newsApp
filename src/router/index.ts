@@ -31,6 +31,7 @@ const routes: Array<RouteConfig> = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/DetailsPage.vue"),
   },
+
   // {
   //   path: "/",
   //   name: "index",
@@ -40,6 +41,10 @@ const routes: Array<RouteConfig> = [
 
 const router = new VueRouter({
   routes,
+  //scroll to top if you open another path
+  scrollBehavior(to, from, savedPosition) {
+    return { x: 0, y: 0 };
+  },
 });
 
 export default router;

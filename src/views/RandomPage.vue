@@ -239,6 +239,13 @@ export default class RandomPage extends Vue {
       }
     );
     this.randomNewsItem = filterToGetRandomNewsItem;
+
+    //save the random news item to pick it up on reload or comeing back from an external page
+    localStorage.setItem(
+      "randomArticle",
+      JSON.stringify(filterToGetRandomNewsItem)
+    );
+
     console.log(this.newsItemPublishedTime);
     this.newsItemPublishedTime = convertNewsItemPublishedTime(
       this.randomNewsItem[0].publishedAt
@@ -256,9 +263,6 @@ export default class RandomPage extends Vue {
 
     //filter the data to display one random item
     this.filterArrayByRandomIndex();
-
-    //save the random news item to pick it up on reload or comeing back from an external page
-    localStorage.setItem("randomArticle", JSON.stringify(this.randomNewsItem));
   }
 }
 </script>
