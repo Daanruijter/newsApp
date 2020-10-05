@@ -1,3 +1,4 @@
+//interface for the array of newsitems that gets fetched from the API
 export interface NewsItemType {
   source: Source;
   author: string;
@@ -14,12 +15,12 @@ export interface Source {
 }
 
 //interface for fetch function
-
 export interface FetchNews {
   fetchBase: string;
   typeOfFetchBase: string;
 }
 
+//interface for fetch function
 export interface FetchBase {
   fetchBase?: string;
   typeOfFetchBase?: string;
@@ -34,41 +35,20 @@ import {
 } from "vuex-module-decorators";
 import store from "@/store";
 
-//to use locally saved newsdata//
-// import testData from "@/testData";
-
 @Module({ namespaced: true, name: "newsDataModule", store, dynamic: true })
 class NewsModule extends VuexModule {
   //state
-  news: NewsItemType[] = [];
+
   queriedNewsItems: NewsItemType[] = [];
-  categoriesClickEventBoolean = false;
   fetchBaseObject: FetchBase = {};
-
-  //getters
-  get newsDataGetter(): NewsItemType[] {
-    const newsDataViaGetter = this.news;
-
-    return newsDataViaGetter;
-  }
 
   //getter to load the data in components
   get queriedNewsItemsGetter(): NewsItemType[] {
     return this.queriedNewsItems;
   }
 
-  //getter to get the fetchBaseObject in components after each data fetching
-  get fetchDateObject(): FetchBase {
-    return this.fetchBaseObject;
-  }
-
   @Mutation
-  addNewsDataToState(data: NewsItemType[]) {
-    this.news = data;
-  }
-
-  @Mutation
-  addQueriedNewsDataToState(data: NewsItemType[]) {
+  addQueriedNewsDataToState(data: NewsItemType[]): void {
     data = data.map((item: NewsItemType) => {
       //remove the sourcename from the title
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -84,17 +64,12 @@ class NewsModule extends VuexModule {
       localStorage.setItem("newsData", JSON.stringify(data));
       return item;
     });
-
+    //populate the data variable
     this.queriedNewsItems = data;
   }
 
   @Mutation
-  addBooleanOfCategoriesPageEvent(data: boolean) {
-    this.categoriesClickEventBoolean = data;
-  }
-
-  @Mutation
-  addFetchBaseToState(fetchBaseObject: FetchBase) {
+  addFetchBaseToState(fetchBaseObject: FetchBase): void {
     this.fetchBaseObject = fetchBaseObject;
   }
 
@@ -308,6 +283,7 @@ class NewsModule extends VuexModule {
       fetchUrl = `https://newsapi.org/v2/everything?q=${inputToFetch}&apiKey=771f495b60b94bfabf9a9800d4996456`;
     }
 
+    //variable that holds the url to be fetched and sent to the backend
     const bodyWithUrls = { fetchUrl };
 
     //based on the mode, make a call to my restAPI
@@ -343,7 +319,7 @@ class NewsModule extends VuexModule {
     //     console.log(data);
     //     data = data.articles;
 
-    //DATA to play around with to avoid making to many requests//
+    //DATA to play around with to avoid making too many requests from the API (500 max a day!)//
     const data = [
       {
         source: {
@@ -688,7 +664,7 @@ class NewsModule extends VuexModule {
       },
     ];
 
-    //making sure that the data are always sorted on date: most recent news displayed first
+    //making sure that the data are always sorted on date: most recent news must be displayed first and so have the highest indexes in the array
     function sortOnPublishedDate(): void {
       function comparePublishData(a: NewsItemType, b: NewsItemType): number {
         let returnComparisonNumber = 2;
@@ -715,14 +691,14 @@ class NewsModule extends VuexModule {
     }
     sortOnPublishedDate();
 
+    //call the mutator
     this.context.commit("addQueriedNewsDataToState", data);
 
+    //call the mutator
     this.context.commit("addFetchBaseToState", fetchBaseObject);
     // });
     url = "";
   }
 }
-
-// https://newsapi.org/v2/everything?q=bitcoin&apiKey=771f495b60b94bfabf9a9800d4996456
 
 export default getModule(NewsModule, store);

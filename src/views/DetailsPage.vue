@@ -133,6 +133,7 @@ export default class DetailsPage extends Vue {
   valueForDetailComponent: NewsItemType[] = [];
   threeRelevantExtraNewsItems: NewsItemType[] = [];
 
+  //fetch the newsitems and call the this.getValuesForDetailComponent method to display the data on the page
   async processDataForDetailsComponent(
     title?: string
   ): Promise<NewsItemType[]> {
@@ -168,7 +169,7 @@ export default class DetailsPage extends Vue {
     return newsData;
   }
 
-  //get a random number for the index. Number must be higher than 10, because I don't want to display newsItems that already got displayed on the homepage.
+  //get a random number for the index. Number must be higher than 10, because I don't want to display news items that already got displayed on the homepage.
   //The random number must also not be higher than the length of the array of newsitems
   randomIntFromInterval(min: number, max: number): number {
     // min and max included
@@ -186,25 +187,25 @@ export default class DetailsPage extends Vue {
 
     //initiate the variable "indexNotToShowInExtraNewsItems" to save the index from the item that gets displayed
     //use that to exclude it from the extra three items displayed
-    let filterDisplayedItemOut = 0;
+    // let filterDisplayedItemOut = 0;
 
     //initiate the variable "indexToShowExtraNewsItems" to get the most recent three news extra items
 
-    let indexToShowExtraNewsItems = 3;
+    // let indexToShowExtraNewsItems = 3;
     console.log(newsData);
     if (newsData.length !== 0) {
       //get the clicked news item from the array
       const valueForDetailComponentFiltered: NewsItemType[] = newsData.filter(
-        (item: NewsItemType, index: number) => {
+        (item: NewsItemType) => {
           // save the index of the clicked news item
           // console.log(this.newsItemPublishedTime.includes(item.title));
 
           console.log(item.title);
           console.log(titleToFilterItemOut);
 
-          if (titleToFilterItemOut.includes(item.title)) {
-            filterDisplayedItemOut = index;
-          }
+          // if (titleToFilterItemOut.includes(item.title)) {
+          //   filterDisplayedItemOut = index;
+          // }
           return titleToFilterItemOut.includes(item.title);
         }
       );
@@ -212,23 +213,21 @@ export default class DetailsPage extends Vue {
       console.log(valueForDetailComponentFiltered);
       console.log("valueForDetailComponentFiltered");
 
-      //if the news item displayed is one of them, increase the variable "indexToShowExtraNewsItems" to filter three items out of the array by 1 to display three, not two items
-      if (
-        filterDisplayedItemOut == 0 ||
-        filterDisplayedItemOut == 1 ||
-        filterDisplayedItemOut == 2
-      ) {
-        indexToShowExtraNewsItems += 1;
-      }
+      // //if the news item displayed is one of them, increase the variable "indexToShowExtraNewsItems" to filter three items out of the array by 1 to display three, not two items
+      // if (
+      //   filterDisplayedItemOut == 0 ||
+      //   filterDisplayedItemOut == 1 ||
+      //   filterDisplayedItemOut == 2
+      // ) {
+      //   indexToShowExtraNewsItems += 1;
+      //   console.log(indexToShowExtraNewsItems);
+      // }
 
-      //filter the newsitems array to get three other most recent items
+      //filter the newsitems array to get three other most recent items that are not shown on the homepage (so they should have indices 10,11 and 12 )
       let extraValuesForDetailComponent: NewsItemType[] = newsData.filter(
         (item: NewsItemType, index: number) => {
           // }
-          return (
-            index !== filterDisplayedItemOut &&
-            index < indexToShowExtraNewsItems
-          );
+          return index === 10 || index === 11 || index === 12;
         }
       );
 

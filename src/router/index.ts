@@ -4,11 +4,23 @@ import Home from "../views/Home.vue";
 
 Vue.use(VueRouter);
 
+interface ScrollResult {
+  x: number;
+  y: number;
+}
+
 const routes: Array<RouteConfig> = [
   {
     path: "/",
     name: "Home",
     component: Home,
+  },
+  {
+    path: "/Categories",
+    name: "Categories",
+
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/Home.vue"),
   },
 
   {
@@ -30,7 +42,7 @@ const routes: Array<RouteConfig> = [
 const router = new VueRouter({
   routes,
   //scroll to top if you open another path
-  scrollBehavior() {
+  scrollBehavior(): ScrollResult {
     return { x: 0, y: 0 };
   },
 });

@@ -1,3 +1,5 @@
+//tried to generate a sitemap with this middleware. Didn't work...
+
 /* eslint @typescript-eslint/no-var-requires: "off" */
 const express = require("express");
 const app = express();
