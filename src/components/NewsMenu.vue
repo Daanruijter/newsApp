@@ -262,13 +262,35 @@ export default class NewsMenu extends Vue {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-/* smaller screens */
+// general rules
 @font-face {
   font-family: "steelfish";
   src: local("steelfish"),
     url(../steelfishfont/steelfishrg.ttf) format("truetype");
 }
 
+.news-menu-header-titles {
+  display: flex;
+  align-items: center;
+}
+
+.news-menu-bar a {
+  color: white !important;
+  text-decoration: none;
+}
+
+.news-menu-possiblities {
+  text-align: center;
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+
+.news-menu-information {
+  padding-left: 5%;
+  margin-bottom: 5%;
+}
+
+/* smaller screens */
 @media only screen and (min-width: 1000px) {
   #nav {
     background-color: white;
@@ -294,10 +316,7 @@ export default class NewsMenu extends Vue {
     justify-content: center;
     height: 55px;
   }
-  .news-menu-header-titles {
-    display: flex;
-    justify-content: center;
-  }
+
   .news-menu-header-image-div {
     padding-right: 2%;
     width: 75px;
@@ -308,10 +327,12 @@ export default class NewsMenu extends Vue {
     font-size: 20px;
     font-size: 250%;
   }
+
   .news-menu-world-news {
     font-weight: bold;
     padding-right: 2%;
   }
+
   .news-menu-globe {
     width: 75%;
   }
@@ -319,16 +340,9 @@ export default class NewsMenu extends Vue {
   .news-menu-bar {
     display: flex;
     justify-content: flex-start;
-
     background-color: blue;
     width: 100%;
-
     padding: 1% 0% 1% 0%;
-  }
-
-  .news-menu-bar a {
-    color: white !important;
-    text-decoration: none;
   }
 
   .news-menu-home {
@@ -339,24 +353,14 @@ export default class NewsMenu extends Vue {
   .news-menu-random {
     padding-left: 2%;
   }
+
   .news-menu-categories {
     width: 50%;
-
     padding: 18.2px 25% 0 25%;
-
     text-align: left;
     background-color: honeydew;
   }
 
-  .news-menu-possiblities {
-    text-align: center;
-    margin-top: 2%;
-    margin-bottom: 2%;
-  }
-  .news-menu-information {
-    padding-left: 5%;
-    margin-bottom: 5%;
-  }
   .news-menu-query-country select,
   .news-menu-query-subject select,
   .news-menu-query-newsitem input {
@@ -370,6 +374,7 @@ export default class NewsMenu extends Vue {
     margin-left: 25%;
     margin-right: 25%;
   }
+
   .news-menu-close-categoriesdiv {
     color: red;
     font-weight: bold;
@@ -392,7 +397,6 @@ export default class NewsMenu extends Vue {
     a {
       font-weight: bold;
       color: #2c3e50;
-
       &.router-link-exact-active {
         color: #42b983;
       }
@@ -402,10 +406,6 @@ export default class NewsMenu extends Vue {
   .news-menu-flex-header-items {
     display: flex;
     justify-content: center;
-  }
-  .news-menu-header-titles {
-    display: flex;
-    align-items: center;
   }
 
   .news-menu-header-image-div {
@@ -418,9 +418,11 @@ export default class NewsMenu extends Vue {
     font-size: 30px;
     padding-left: 1%;
   }
+
   .news-menu-world-news {
     font-weight: bold;
   }
+
   .news-menu-globe {
     width: 30%;
   }
@@ -431,13 +433,6 @@ export default class NewsMenu extends Vue {
     background-color: blue;
     width: 100%;
     padding: 1% 0% 1% 0%;
-
-    // position: fixed;
-  }
-
-  .news-menu-bar a {
-    color: white !important;
-    text-decoration: none;
   }
 
   .news-menu-home {
@@ -448,6 +443,7 @@ export default class NewsMenu extends Vue {
   .news-menu-random {
     padding-left: 2%;
   }
+
   .news-menu-categories {
     width: 50%;
     padding-left: 25%;
@@ -457,15 +453,6 @@ export default class NewsMenu extends Vue {
     background-color: honeydew;
   }
 
-  .news-menu-possiblities {
-    text-align: center;
-    margin-top: 2%;
-    margin-bottom: 2%;
-  }
-  .news-menu-information {
-    padding-left: 5%;
-    margin-bottom: 5%;
-  }
   .news-menu-query-country select,
   .news-menu-query-subject select,
   .news-menu-query-newsitem input {
@@ -479,6 +466,7 @@ export default class NewsMenu extends Vue {
     margin-left: 20%;
     margin-right: 20%;
   }
+
   .news-menu-close-categoriesdiv {
     color: red;
     font-weight: bold;
@@ -501,7 +489,6 @@ export default class NewsMenu extends Vue {
     a {
       font-weight: bold;
       color: #2c3e50;
-
       &.router-link-exact-active {
         color: #42b983;
       }
@@ -513,10 +500,7 @@ export default class NewsMenu extends Vue {
     justify-content: center;
     height: 60px;
   }
-  .news-menu-header-titles {
-    display: flex;
-    align-items: center;
-  }
+
   .news-menu-header-image-div {
     width: 20%;
     padding-right: 2%;
@@ -526,12 +510,13 @@ export default class NewsMenu extends Vue {
     font-family: "steelfish";
     font-size: 25px;
     padding-left: 1%;
-
     text-align: center;
   }
+
   .news-menu-world-news {
     font-weight: bold;
   }
+
   .news-menu-globe {
     height: 63px;
   }
@@ -543,13 +528,6 @@ export default class NewsMenu extends Vue {
     width: 100%;
     padding: 16px 0% 16px 0%;
     height: 18px;
-
-    // position: fixed;
-  }
-
-  .news-menu-bar a {
-    color: white !important;
-    text-decoration: none;
   }
 
   .news-menu-home {
@@ -565,15 +543,6 @@ export default class NewsMenu extends Vue {
     text-align: left;
   }
 
-  .news-menu-possiblities {
-    text-align: center;
-    margin-top: 2%;
-    margin-bottom: 2%;
-  }
-  .news-menu-information {
-    padding-left: 5%;
-    margin-bottom: 5%;
-  }
   .news-menu-query-country select,
   .news-menu-query-subject select,
   .news-menu-query-newsitem input {
@@ -587,6 +556,7 @@ export default class NewsMenu extends Vue {
     margin-left: 20%;
     margin-right: 20%;
   }
+
   .news-menu-close-categoriesdiv {
     color: red;
     font-weight: bold;

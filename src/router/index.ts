@@ -10,13 +10,7 @@ const routes: Array<RouteConfig> = [
     name: "Home",
     component: Home,
   },
-  {
-    path: "/",
-    name: "CategoriesPage",
 
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/CategoriesPage.vue"),
-  },
   {
     path: "/Random",
     name: "RandomPage",
@@ -31,18 +25,12 @@ const routes: Array<RouteConfig> = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/DetailsPage.vue"),
   },
-
-  // {
-  //   path: "/",
-  //   name: "index",
-  //   component: Home,
-  // },
 ];
 
 const router = new VueRouter({
   routes,
   //scroll to top if you open another path
-  scrollBehavior(to, from, savedPosition) {
+  scrollBehavior() {
     return { x: 0, y: 0 };
   },
 });

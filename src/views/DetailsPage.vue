@@ -262,20 +262,40 @@ export default class DetailsPage extends Vue {
 </script>
 
 <style scoped>
+/* general rules */
+a {
+  text-decoration: none;
+  color: black;
+}
+
+.hovering a {
+  color: blue;
+}
+
+.detailspage-picture {
+  display: grid;
+  grid-template-columns: 100%;
+}
+
+.detailspage-read-more {
+  font-weight: bold;
+}
+
+.detailspage-small-header {
+  font-weight: bold;
+}
+
 /* bigger screens */
 @media only screen and (min-width: 1000px) {
   .detailspage-container {
     color: black;
-
     margin-left: 15%;
     width: 70%;
   }
 
   .detailspage-other-news-bar {
     background-color: blue;
-
     margin: 2% 15% 2% 15%;
-
     color: white;
   }
 
@@ -285,24 +305,12 @@ export default class DetailsPage extends Vue {
     margin-right: 15%;
     margin-bottom: 2%;
   }
+
   .detailspage-title {
     font-weight: bold;
     color: black;
     margin-bottom: 2%;
     font-size: 125%;
-  }
-
-  a {
-    text-decoration: none;
-    color: black;
-  }
-
-  .hovering a {
-    color: blue;
-  }
-  .detailspage-picture {
-    display: grid;
-    grid-template-columns: 100%;
   }
 
   .detailspage-picture img {
@@ -320,41 +328,20 @@ export default class DetailsPage extends Vue {
     margin-right: 15%;
     text-align: left;
   }
-
-  .detailspage-read-more {
-    font-weight: bold;
-  }
-
-  .detailspage-small-header {
-    font-weight: bold;
-  }
 }
 /* medium screens */
 @media only screen and (min-width: 701px) and (max-width: 999px) {
   .detailspage-container {
     color: black;
-
     padding-top: 1%;
     margin-left: 15%;
     width: 70%;
   }
+
   .detailspage-title {
     font-weight: bold;
     color: black;
     margin-bottom: 5%;
-  }
-
-  a {
-    text-decoration: none;
-    color: black;
-  }
-
-  .hovering a {
-    color: blue;
-  }
-  .detailspage-picture {
-    display: grid;
-    grid-template-columns: 100%;
   }
 
   .detailspage-picture img {
@@ -362,52 +349,30 @@ export default class DetailsPage extends Vue {
     grid-column-end: 2;
     width: 100%;
   }
+
   .detailspage-description,
   .detailspage-read-more,
   .detailspage-contents {
     margin-bottom: 5%;
-  }
-
-  .detailspage-read-more {
-    font-weight: bold;
-  }
-
-  .detailspage-small-header {
-    font-weight: bold;
   }
 }
 /* smaller screens */
 @media only screen and (max-width: 700px) {
   .detailspage-container {
     color: black;
-
     padding-top: 1%;
   }
+
   .detailspage-title {
     font-weight: bold;
     color: black;
     margin-bottom: 5%;
   }
 
-  a {
-    text-decoration: none;
-    color: black;
-  }
-
-  .hovering a {
-    color: blue;
-  }
-
   .detailspage-other-news-bar {
     background-color: blue;
-
     margin: 2% 0% 2% 0%;
-
     color: white;
-  }
-  .detailspage-picture {
-    display: grid;
-    grid-template-columns: 100%;
   }
 
   .detailspage-picture img {
@@ -415,20 +380,11 @@ export default class DetailsPage extends Vue {
     grid-column-end: 2;
     width: 100%;
   }
+
   .detailspage-description,
   .detailspage-read-more,
   .detailspage-contents {
     margin-bottom: 5%;
   }
-
-  .detailspage-read-more {
-    font-weight: bold;
-  }
-
-  .detailspage-small-header {
-    font-weight: bold;
-  }
 }
 </style>
-
-{} /* smaller screens */ @media only screen and (max-width: 700px) {}

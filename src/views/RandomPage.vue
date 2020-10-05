@@ -271,11 +271,35 @@ export default class RandomPage extends Vue {
 </script>
 
 <style scoped>
+/* general rules */
+.hovering a {
+  color: blue;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+.randompage-picture {
+  display: grid;
+  grid-template-columns: 100%;
+}
+
+.randompage-button button {
+  margin-bottom: 5%;
+  font-size: 100%;
+}
+
+.randompage-no-newsitems {
+  color: white;
+  font-weight: bold;
+}
+
 /* bigger screens */
 @media only screen and (min-width: 1000px) {
   .randompage-container {
     color: black;
-
     margin-left: 15%;
     width: 70%;
     height: 100%;
@@ -289,23 +313,11 @@ export default class RandomPage extends Vue {
     font-size: 125%;
   }
 
-  a {
-    text-decoration: none;
-    color: black;
-  }
-
   .randompage-hr-adapt-size {
     margin-left: 15%;
     margin-top: 2%;
     margin-right: 15%;
     margin-bottom: 2%;
-  }
-  .hovering a {
-    color: blue;
-  }
-  .randompage-picture {
-    display: grid;
-    grid-template-columns: 100%;
   }
 
   .randompage-picture img {
@@ -330,10 +342,6 @@ export default class RandomPage extends Vue {
     font-weight: bold;
   }
 
-  .randompage-button button {
-    margin-bottom: 5%;
-    font-size: 100%;
-  }
   .randompage-description,
   .randompage-contents {
     margin-bottom: 2%;
@@ -341,6 +349,7 @@ export default class RandomPage extends Vue {
     margin-right: 15%;
     text-align: left;
   }
+
   .randompage-newsdata-not-loaded {
     background-color: purple;
     height: 100vh;
@@ -349,18 +358,12 @@ export default class RandomPage extends Vue {
     justify-content: center;
     padding-top: 50%;
   }
-
-  .randompage-no-newsitems {
-    color: white;
-    font-weight: bold;
-  }
 }
 
 /* medium screens */
 @media only screen and (min-width: 701px) and (max-width: 999px) {
   .randompage-container {
     color: black;
-
     margin-left: 15%;
     width: 70%;
     height: 100%;
@@ -374,25 +377,12 @@ export default class RandomPage extends Vue {
     font-size: 125%;
   }
 
-  a {
-    text-decoration: none;
-    color: black;
-  }
-
-  .hovering a {
-    color: blue;
-  }
-  .randompage-picture {
-    display: grid;
-    grid-template-columns: 100%;
-  }
-
   .randompage-picture img {
     grid-column-start: 1;
     grid-column-end: 2;
-
     width: 100%;
   }
+
   .randompage-description,
   .randompage-read-more,
   .randompage-contents {
@@ -408,16 +398,12 @@ export default class RandomPage extends Vue {
     font-weight: bold;
   }
 
-  .randompage-button button {
-    margin-bottom: 5%;
-    font-size: 100%;
-  }
   .randompage-description,
   .randompage-contents {
     margin-bottom: 2%;
-
     text-align: left;
   }
+
   .randompage-newsdata-not-loaded {
     background-color: purple;
     height: 100vh;
@@ -425,11 +411,6 @@ export default class RandomPage extends Vue {
     display: flex;
     justify-content: center;
     padding-top: 50%;
-  }
-
-  .randompage-no-newsitems {
-    color: white;
-    font-weight: bold;
   }
 }
 /* smaller screens */
@@ -438,7 +419,6 @@ export default class RandomPage extends Vue {
     color: black;
     margin-bottom: 1%;
     margin-top: 1%;
-
     height: 100%;
   }
 
@@ -447,24 +427,13 @@ export default class RandomPage extends Vue {
     color: black;
     margin-bottom: 5%;
   }
-  a {
-    text-decoration: none;
-    color: black;
-  }
-
-  .hovering a {
-    color: blue;
-  }
-  .randompage-picture {
-    display: grid;
-    grid-template-columns: 100%;
-  }
 
   .randompage-picture img {
     grid-column-start: 1;
     grid-column-end: 2;
     width: 100%;
   }
+
   .randompage-description,
   .randompage-read-more,
   .randompage-contents {
@@ -480,11 +449,6 @@ export default class RandomPage extends Vue {
     font-weight: bold;
   }
 
-  .randompage-button button {
-    margin-bottom: 5%;
-    font-size: 100%;
-  }
-
   .randompage-newsdata-not-loaded {
     background-color: purple;
     height: 100vh;
@@ -492,11 +456,6 @@ export default class RandomPage extends Vue {
     display: flex;
     justify-content: center;
     padding-top: 50%;
-  }
-
-  .randompage-no-newsitems {
-    color: white;
-    font-weight: bold;
   }
 }
 </style>

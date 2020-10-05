@@ -60,14 +60,6 @@ export default class App extends Vue {}
   grid-template-columns: 100%;
   height: 100%;
 }
-@media only screen and (min-width: 1000px) {
-  .app-container {
-    display: grid;
-    grid-template-rows: 135px auto auto;
-    grid-template-columns: 100%;
-    height: 100%;
-  }
-}
 
 @media only screen and (max-width: 700px) {
   .app-container {

@@ -151,6 +151,17 @@ export default class NewsFooter extends Vue {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+//general rules
+.newsfooter-sitemap-header,
+.home {
+  color: white;
+}
+
+a {
+  text-decoration: none;
+  color: white;
+}
+
 // bigger screens
 @media only screen and (min-width: 1000px) {
   .newsfooter-container {
@@ -159,27 +170,13 @@ export default class NewsFooter extends Vue {
     margin-left: 15%;
     width: 70%;
   }
-  .newsfooter-sitemap-header {
-    color: white;
-  }
-
-  .home {
-    color: white;
-  }
 
   .title {
     font-size: 100%;
     text-align: left;
     padding: 0.3%;
-
     text-align: center;
     margin-left: 1%;
-
-    color: white;
-  }
-
-  a {
-    text-decoration: none;
     color: white;
   }
 
@@ -207,25 +204,12 @@ export default class NewsFooter extends Vue {
     margin-left: 15%;
     width: 70%;
   }
-  .newsfooter-sitemap-header {
-    color: white;
-  }
-
-  .home {
-    color: white;
-  }
 
   .title {
     font-size: 100%;
     text-align: left;
     padding: 0.7%;
     margin-left: 1%;
-
-    color: white;
-  }
-
-  a {
-    text-decoration: none;
     color: white;
   }
 
@@ -250,24 +234,11 @@ export default class NewsFooter extends Vue {
     background-color: black;
     padding-top: 2%;
   }
-  .newsfooter-sitemap-header {
-    color: white;
-  }
-
-  .home {
-    color: white;
-  }
 
   .title {
     font-size: 75%;
     text-align: left;
     padding: 2%;
-
-    color: white;
-  }
-
-  a {
-    text-decoration: none;
     color: white;
   }
 

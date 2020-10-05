@@ -352,12 +352,30 @@ export default class Home extends Vue {
 </script>
 
 <style scoped>
+/* general rules */
+.hovering {
+  color: blue;
+}
+
+a {
+  text-decoration: none;
+}
+
+.home-no-newsitems {
+  color: white;
+  font-weight: bold;
+}
+
+.home-newsitems-no-picture {
+  font-weight: bold;
+  color: black;
+}
+
 /* bigger screens */
 @media only screen and (min-width: 1000px) {
   .home-show-selected-category {
     background-color: darkblue;
     color: white;
-
     padding-top: 1%;
     padding-bottom: 1%;
     margin-bottom: 3%;
@@ -368,12 +386,12 @@ export default class Home extends Vue {
     grid-template-rows: 50% 50%;
     grid-template-columns: 65% 35%;
   }
+
   .home-newsitems-with-picture {
     text-align: left;
     width: 40%;
     padding-top: 1%;
     padding-bottom: 1%;
-
     padding-right: 5%;
   }
 
@@ -416,13 +434,6 @@ export default class Home extends Vue {
     margin-top: 8%;
     height: 60px;
   }
-  .hovering {
-    color: blue;
-  }
-
-  a {
-    text-decoration: none;
-  }
 
   button {
     width: auto;
@@ -445,22 +456,10 @@ export default class Home extends Vue {
     display: none;
   }
 
-  /* .home-newsitem-picture {
-    display: grid;
-    grid-template-columns: 100%;
-  }
- */
   .home-newsitem-picture img {
-    /* grid-column-start: 1;
-    grid-column-end: 2; */
     width: 100%;
     height: 275px;
     max-height: 275px;
-  }
-
-  .home-newsitems-no-picture {
-    font-weight: bold;
-    color: black;
   }
 
   .home-newsdata-not-loaded {
@@ -471,11 +470,6 @@ export default class Home extends Vue {
     justify-content: center;
     padding-top: 50%;
   }
-
-  .home-no-newsitems {
-    color: white;
-    font-weight: bold;
-  }
 }
 
 /* pretty large screens */
@@ -485,7 +479,6 @@ export default class Home extends Vue {
     width: 49%;
     padding-top: 1%;
     padding-bottom: 1%;
-
     padding-right: 1%;
   }
 }
@@ -505,15 +498,10 @@ export default class Home extends Vue {
   .home-show-selected-category {
     background-color: darkblue;
     color: white;
-
     padding-top: 1%;
     padding-bottom: 1%;
     margin-bottom: 3%;
   }
-
-  /* .home-container {
-    margin-top: 175px;
-  } */
 
   .home-sort-the-data {
     margin-top: 5%;
@@ -527,13 +515,6 @@ export default class Home extends Vue {
     color: black;
     margin-bottom: 5%;
     margin-top: 8%;
-  }
-  .hovering {
-    color: blue;
-  }
-
-  a {
-    text-decoration: none;
   }
 
   button {
@@ -553,11 +534,6 @@ export default class Home extends Vue {
     width: 100%;
   }
 
-  .home-newsitems-no-picture {
-    font-weight: bold;
-    color: black;
-  }
-
   .home-newsdata-not-loaded {
     background-color: purple;
     height: 100vh;
@@ -566,11 +542,6 @@ export default class Home extends Vue {
     justify-content: center;
     padding-top: 50%;
   }
-
-  .home-no-newsitems {
-    color: white;
-    font-weight: bold;
-  }
 }
 
 /* smaller screens */
@@ -578,7 +549,6 @@ export default class Home extends Vue {
   .home-show-selected-category {
     background-color: darkblue;
     color: white;
-
     padding-top: 1%;
     padding-bottom: 1%;
     margin-bottom: 3%;
@@ -601,13 +571,7 @@ export default class Home extends Vue {
     margin-bottom: 5%;
     margin-top: 8%;
   }
-  .hovering {
-    color: blue;
-  }
 
-  a {
-    text-decoration: none;
-  }
   .home-newsitem-picture {
     display: grid;
     grid-template-columns: 100%;
@@ -619,11 +583,6 @@ export default class Home extends Vue {
     width: 100%;
   }
 
-  .home-newsitems-no-picture {
-    font-weight: bold;
-    color: black;
-  }
-
   .home-newsdata-not-loaded {
     background-color: purple;
     height: 100vh;
@@ -632,13 +591,9 @@ export default class Home extends Vue {
     justify-content: center;
     padding-top: 50%;
   }
-
-  .home-no-newsitems {
-    color: white;
-    font-weight: bold;
-  }
 }
 
+/* change button sizes when the screen sizes alter */
 @media only screen and (min-width: 376px) and (max-width: 700px) {
   button {
     width: 28%;
@@ -647,6 +602,7 @@ export default class Home extends Vue {
   }
 }
 
+/* change button sizes when the screen sizes alter */
 @media only screen and (max-width: 375px) {
   button {
     width: 29%;
