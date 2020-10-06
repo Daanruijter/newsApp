@@ -3,7 +3,10 @@
     <hr />
     <div class="news-menu-flex-header-items">
       <div class="news-menu-header-titles">
-        <div class="news-menu-description news-menu-world-news">WORLD NEWS</div>
+        <div class="news-menu-description news-menu-world-news">
+          WORLD NEWS{{ this.space }}
+        </div>
+        &nbsp;
         <div class="news-menu-description news-menu-everyday-headlines">
           Your everyday headlines
         </div>
@@ -27,8 +30,7 @@
     </div>
     <div class="news-menu-categories" v-if="categoriesPageBoolean">
       <div class="news-menu-information">
-        Get the most recent news per country, column or search for the news
-        about a subject.
+        Get the most recent news per category
       </div>
 
       <div class="news-menu-query-country">
@@ -152,6 +154,7 @@ export default class NewsMenu extends Vue {
   inputValue = "";
   countrySelected = "Default Country";
   newsCategorySelected = "Default News Category";
+  space = "\u00a0";
 
   mounted() {
     console.log("NEWSMENU mounted");
@@ -286,8 +289,9 @@ export default class NewsMenu extends Vue {
 }
 
 .news-menu-information {
-  padding-left: 5%;
+  text-align: center;
   margin-bottom: 5%;
+  font-weight: bold;
 }
 
 /* smaller screens */
@@ -330,7 +334,6 @@ export default class NewsMenu extends Vue {
 
   .news-menu-world-news {
     font-weight: bold;
-    padding-right: 2%;
   }
 
   .news-menu-globe {
@@ -416,7 +419,6 @@ export default class NewsMenu extends Vue {
   .news-menu-description {
     font-family: "steelfish";
     font-size: 30px;
-    padding-left: 1%;
   }
 
   .news-menu-world-news {
@@ -509,7 +511,6 @@ export default class NewsMenu extends Vue {
   .news-menu-description {
     font-family: "steelfish";
     font-size: 25px;
-    padding-left: 1%;
     text-align: center;
   }
 

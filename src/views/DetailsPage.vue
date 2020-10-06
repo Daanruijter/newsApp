@@ -350,9 +350,9 @@ a {
   }
 
   .detailspage-description,
-  .detailspage-read-more,
   .detailspage-contents {
     margin-bottom: 5%;
+    text-align: left;
   }
 }
 /* smaller screens */
@@ -381,9 +381,9 @@ a {
   }
 
   .detailspage-description,
-  .detailspage-read-more,
   .detailspage-contents {
     margin-bottom: 5%;
+    text-align: left;
   }
 }
 </style>

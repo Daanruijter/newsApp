@@ -20,20 +20,22 @@
             >{{ route.name }}</router-link
           >
         </div>
-        <div class="newsfooter-detailspage" v-if="route.name === 'Details'">
-          <div :key="item.title" v-for="(item, index) in newsData">
-            <router-link
-              class="newsfooter-links"
-              :to="{ name: 'DetailsPage', params: { title: item.title } }"
-            >
-              <div
-                @click="triggerDetailPageToReload(item.title)"
-                v-if="index < 10"
-                class="title"
+        <div class="newsfooter-detilspage-flexer">
+          <div class="newsfooter-detailspage" v-if="route.name === 'Details'">
+            <div :key="item.title" v-for="(item, index) in newsData">
+              <router-link
+                class="newsfooter-links"
+                :to="{ name: 'DetailsPage', params: { title: item.title } }"
               >
-                {{ item.title }}
-              </div>
-            </router-link>
+                <div
+                  @click="triggerDetailPageToReload(item.title)"
+                  v-if="index < 10"
+                  class="title"
+                >
+                  {{ item.title }}
+                </div>
+              </router-link>
+            </div>
           </div>
         </div>
       </div>
@@ -169,14 +171,19 @@ a {
     padding-top: 1%;
     margin-left: 15%;
     width: 70%;
+    margin-bottom: 2%;
+  }
+
+  .newsfooter-detilspage-flexer {
+    display: flex;
+    justify-content: center;
   }
 
   .title {
     font-size: 100%;
     text-align: left;
-    padding: 0.3%;
-    text-align: center;
-    margin-left: 1%;
+    padding-top: 0.7%;
+    padding-bottom: 0.7%;
     color: white;
   }
 
@@ -203,6 +210,7 @@ a {
     padding-top: 1%;
     margin-left: 15%;
     width: 70%;
+    margin-bottom: 2%;
   }
 
   .title {
@@ -221,6 +229,7 @@ a {
   .newsfooter-detailspage a {
     font-weight: 100;
     font-size: 95%;
+    text-align: left;
   }
   .newsfooter-detailspage {
     margin-block-start: 0.83em;
@@ -233,10 +242,21 @@ a {
   .newsfooter-container {
     background-color: black;
     padding-top: 2%;
+    margin-bottom: 2%;
+  }
+
+  .newsfooter-routes a {
+    font-size: 110%;
+    font-weight: bold;
+  }
+
+  .newsfooter-detailspage a {
+    font-weight: 100;
+    font-size: 100%;
+    text-align: left;
   }
 
   .title {
-    font-size: 75%;
     text-align: left;
     padding: 2%;
     color: white;

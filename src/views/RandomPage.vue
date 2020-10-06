@@ -435,9 +435,9 @@ a {
   }
 
   .randompage-description,
-  .randompage-read-more,
   .randompage-contents {
     margin-bottom: 5%;
+    text-align: left;
   }
 
   .randompage-read-more {
