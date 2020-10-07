@@ -54,17 +54,28 @@ export default class App extends Vue {}
   grid-row-end: 4;
 }
 
-.app-container {
-  display: grid;
-  grid-template-rows: 135px auto auto;
-  grid-template-columns: 100%;
-  height: 100%;
+@media only screen and (min-width: 1000px) {
+  .app-container {
+    display: grid;
+    grid-template-rows: 124px auto auto;
+    grid-template-columns: 100%;
+    height: 100%;
+  }
+}
+
+@media only screen and (min-width: 701px) and (max-width: 999px) {
+  .app-container {
+    display: grid;
+    grid-template-rows: 16.1vh auto auto;
+    grid-template-columns: 100%;
+    height: 100%;
+  }
 }
 
 @media only screen and (max-width: 700px) {
   .app-container {
     display: grid;
-    grid-template-rows: 139px auto auto;
+    grid-template-rows: 16.6vh auto auto;
     grid-template-columns: 100%;
     height: 100%;
   }

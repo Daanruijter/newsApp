@@ -307,7 +307,7 @@ class NewsModule extends VuexModule {
     //     data = data.articles;
 
     //DATA to play around with to avoid making too many requests from the API (500 max a day!)//
-    const data = [
+    let data = [
       {
         source: {
           id: null,
@@ -650,6 +650,8 @@ class NewsModule extends VuexModule {
         content: null,
       },
     ];
+
+    data = [];
 
     //making sure that the data are always sorted on date: most recent news must be displayed first and so have the highest indexes in the array
     function sortOnPublishedDate(): void {

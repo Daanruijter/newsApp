@@ -21,8 +21,11 @@
       <div @click="loadDefaultNewsItems" class="news-menu-home">
         <router-link to="/">HOME</router-link>
       </div>
-      <div @click="setCategoriesBoolean">
-        <router-link to="/">CATEGORIES</router-link>
+      <div
+        :class="{ categoriesClosed: !categoriesPageBoolean }"
+        @click="setCategoriesBoolean"
+      >
+        <router-link to="/categories">CATEGORIES</router-link>
       </div>
       <div @click="this.makeCategoriesDivClosed" class="news-menu-random">
         <router-link to="/random">RANDOM</router-link>
@@ -266,6 +269,10 @@ export default class NewsMenu extends Vue {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 // general rules
+#nav .router-link-exact-active {
+  color: #42b983 !important;
+}
+
 @font-face {
   font-family: "steelfish";
   src: local("steelfish"),
@@ -294,14 +301,14 @@ export default class NewsMenu extends Vue {
   font-weight: bold;
 }
 
-/* smaller screens */
+/* bigger screens */
 @media only screen and (min-width: 1000px) {
   #nav {
     background-color: white;
     position: fixed;
     left: 0;
     top: 0;
-    height: 124px;
+    height: 131px;
     margin-left: 15%;
     width: 70%;
     z-index: 200;
@@ -318,7 +325,7 @@ export default class NewsMenu extends Vue {
   .news-menu-flex-header-items {
     display: flex;
     justify-content: center;
-    height: 55px;
+    height: 57px;
   }
 
   .news-menu-header-image-div {
@@ -328,8 +335,7 @@ export default class NewsMenu extends Vue {
 
   .news-menu-description {
     font-family: "steelfish";
-    font-size: 20px;
-    font-size: 250%;
+    font-size: 35px;
   }
 
   .news-menu-world-news {
@@ -337,7 +343,7 @@ export default class NewsMenu extends Vue {
   }
 
   .news-menu-globe {
-    width: 75%;
+    width: 56px;
   }
 
   .news-menu-bar {
@@ -345,7 +351,7 @@ export default class NewsMenu extends Vue {
     justify-content: flex-start;
     background-color: blue;
     width: 100%;
-    padding: 1% 0% 1% 0%;
+    padding: 10px 0% 10px 0%;
   }
 
   .news-menu-home {
@@ -395,6 +401,7 @@ export default class NewsMenu extends Vue {
     left: 0;
     top: 0;
     padding-left: 15%;
+    height: 131px !important;
     width: 70%;
     z-index: 200;
     a {
@@ -409,6 +416,7 @@ export default class NewsMenu extends Vue {
   .news-menu-flex-header-items {
     display: flex;
     justify-content: center;
+    height: 57px;
   }
 
   .news-menu-header-image-div {
@@ -426,7 +434,7 @@ export default class NewsMenu extends Vue {
   }
 
   .news-menu-globe {
-    width: 30%;
+    width: 56px;
   }
 
   .news-menu-bar {
@@ -434,7 +442,7 @@ export default class NewsMenu extends Vue {
     justify-content: flex-start;
     background-color: blue;
     width: 100%;
-    padding: 1% 0% 1% 0%;
+    padding: 10px 0% 10px 0%;
   }
 
   .news-menu-home {
@@ -485,7 +493,7 @@ export default class NewsMenu extends Vue {
     position: fixed;
     left: 0;
     top: 0;
-    height: 100px !important;
+    height: 138px !important;
     width: 100vw;
     z-index: 200;
     a {
@@ -500,7 +508,7 @@ export default class NewsMenu extends Vue {
   .news-menu-flex-header-items {
     display: flex;
     justify-content: center;
-    height: 60px;
+    height: 64px;
   }
 
   .news-menu-header-image-div {
@@ -527,8 +535,7 @@ export default class NewsMenu extends Vue {
     justify-content: space-between;
     background-color: blue;
     width: 100%;
-    padding: 16px 0% 16px 0%;
-    height: 18px;
+    padding: 10px 0% 10px 0%;
   }
 
   .news-menu-home {

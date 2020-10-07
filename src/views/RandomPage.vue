@@ -406,11 +406,11 @@ a {
 
   .randompage-newsdata-not-loaded {
     background-color: purple;
-    height: 100vh;
+    height: 80vh;
     width: 100%;
     display: flex;
     justify-content: center;
-    padding-top: 50%;
+    align-items: center;
   }
 }
 /* smaller screens */
@@ -451,11 +451,11 @@ a {
 
   .randompage-newsdata-not-loaded {
     background-color: purple;
-    height: 100vh;
+    height: 80vh;
     width: 100%;
     display: flex;
     justify-content: center;
-    padding-top: 50%;
+    align-items: center;
   }
 }
 </style>
