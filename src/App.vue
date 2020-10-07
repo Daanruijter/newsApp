@@ -49,15 +49,11 @@ export default class App extends Vue {}
   grid-row-start: 2;
   grid-row-end: 3;
 }
-.app-newsfooter {
-  grid-row-start: 3;
-  grid-row-end: 4;
-}
 
 @media only screen and (min-width: 1000px) {
   .app-container {
     display: grid;
-    grid-template-rows: 124px auto auto;
+    grid-template-rows: 16vh auto;
     grid-template-columns: 100%;
     height: 100%;
   }
@@ -66,7 +62,7 @@ export default class App extends Vue {}
 @media only screen and (min-width: 701px) and (max-width: 999px) {
   .app-container {
     display: grid;
-    grid-template-rows: 16.1vh auto auto;
+    grid-template-rows: 16.1vh auto;
     grid-template-columns: 100%;
     height: 100%;
   }
@@ -75,7 +71,7 @@ export default class App extends Vue {}
 @media only screen and (max-width: 700px) {
   .app-container {
     display: grid;
-    grid-template-rows: 17vh auto auto;
+    grid-template-rows: 17vh auto;
     grid-template-columns: 100%;
     height: 100%;
   }

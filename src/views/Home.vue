@@ -87,32 +87,23 @@
         <div
           @click="makeCategoriesDivClosed"
           class="home-newsitems-no-picture"
-          v-for="(newsItem, index) in this.newsDataToDisplay"
+          v-for="(newsItem, index) in this.newsDataToDisplayWithNoPictures"
           :key="newsItem.title"
         >
           <router-link
             :to="{ name: 'DetailsPage', params: { title: newsItem.title } }"
           >
             <div
-              v-if="
-                !newsItem.urlToImage ||
-                  index === pictureNotLoadedArray[0] ||
-                  index === pictureNotLoadedArray[1]
-              "
               class="home-newsitem-title"
-              @mouseover="isHovering = true"
-              @mouseout="isHovering = false"
-              :class="{ hovering: isHovering }"
+              @mouseover="mouseEnter(index)"
+              @mouseout="mouseLeave(index)"
+              :class="{ hovering: newsItem.homePageLinksHovered }"
             >
               {{ newsItem.title }}
             </div>
           </router-link>
           <hr v-if="!newsItem.urlToImage" />
         </div>
-      </div>
-
-      <div v-if="!newsDataToDisplay" class="home-newsdata-not-loaded">
-        <div class="home-no-newsitems">No news items to show</div>
       </div>
     </div>
     <div v-if="!this.newsDataToDisplay[0]" class="home-newsdata-not-loaded">
@@ -138,6 +129,7 @@ export default class Home extends Vue {
   indexOfHoveredLink: number | null = null;
   newsData: NewsItemType[] = [];
   newsDataToDisplay: NewsItemType[] = [];
+  newsDataToDisplayWithNoPictures: NewsItemType[] = [];
   noImage = false;
   fetchedCategory: null | string = "";
   router = new VueRouter({
@@ -200,6 +192,7 @@ export default class Home extends Vue {
     bus.$on("loadDefaultNewsItemsAfterClickOnHomeButton", () => {
       this.setData();
     });
+    this.newsDataToDisplayWithNoPictures = [];
     this.checkIfThereIsANewsItemWithoutAPicture();
   }
 
@@ -245,8 +238,16 @@ export default class Home extends Vue {
         filteredArray[i].urlToImage === null
       ) {
         this.noImage = true;
+
+        // filteredArray.splice(i, 1);
+        // console.log(filteredArray.splice(i, 1));
+        const pusher = filteredArray.splice(i, 1);
+        console.log(pusher);
+        this.newsDataToDisplayWithNoPictures.push(pusher[0]);
+        console.log(this.newsDataToDisplayWithNoPictures);
       }
     }
+    this.newsDataToDisplay = filteredArray;
   }
 
   makeCategoriesDivClosed(): void {

@@ -1,6 +1,9 @@
 <template>
   <div class="randompage-container">
-    <div v-if="this.randomNewsItem[0]" class="randompage-newsdata-loaded">
+    <div
+      v-if="this.newsData[0] || this.randomNewsItem[0]"
+      class="randompage-newsdata-loaded"
+    >
       <hr class="randompage-hr-adapt-size" />
       {{ this.newsItemPublishedTime }} GMT
       <hr class="randompage-hr-adapt-size" />
@@ -152,7 +155,7 @@ export default class RandomPage extends Vue {
 
   async mounted() {
     console.log("RANDOMPAGE mounted");
-
+    // this.prepareDataForDisplay();
     //on reload, load the article that was there before the reload
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     this.randomNewsItem = JSON.parse(localStorage.getItem("randomArticle"!)!);
@@ -243,7 +246,7 @@ export default class RandomPage extends Vue {
     );
     this.randomNewsItem = filterToGetRandomNewsItem;
 
-    //save the random news item to pick it up on reload or comeing back from an external page
+    //save the random news item to pick it up on reload or coming back from an external page
     localStorage.setItem(
       "randomArticle",
       JSON.stringify(filterToGetRandomNewsItem)
