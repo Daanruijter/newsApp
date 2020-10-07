@@ -48,14 +48,13 @@
             <div
               v-if="
                 newsItem.urlToImage &&
-                  index < 10 &&
                   index !== pictureNotLoadedArray[0] &&
                   index !== pictureNotLoadedArray[1]
               "
               class="home-newsitem-title"
-              @mouseover="isHovering = true"
-              @mouseout="isHovering = false"
-              :class="{ hovering: isHovering }"
+              @mouseover="mouseEnter(index)"
+              @mouseout="mouseLeave(index)"
+              :class="{ hovering: newsItem.homePageLinksHovered }"
             >
               {{ newsItem.title }}
             </div>
@@ -65,7 +64,6 @@
               @error="pictureNotLoaded(index)"
               v-if="
                 newsItem.urlToImage &&
-                  index < 10 &&
                   index !== pictureNotLoadedArray[0] &&
                   index !== pictureNotLoadedArray[1]
               "
@@ -75,7 +73,6 @@
           <hr
             v-if="
               newsItem.urlToImage &&
-                index < 10 &&
                 index !== pictureNotLoadedArray[0] &&
                 index !== pictureNotLoadedArray[1]
             "
@@ -95,7 +92,7 @@
         >
           <div
             v-if="
-              (!newsItem.urlToImage && index < 10) ||
+              !newsItem.urlToImage ||
                 index === pictureNotLoadedArray[0] ||
                 index === pictureNotLoadedArray[1]
             "
@@ -131,6 +128,7 @@ import { bus } from "../main";
 @Component({ components: { DetailsPage } })
 export default class Home extends Vue {
   isHovering = false;
+  indexOfHoveredLink: number | null = null;
   newsData: NewsItemType[] = [];
   newsDataToDisplay: NewsItemType[] = [];
   noImage = false;
@@ -146,9 +144,6 @@ export default class Home extends Vue {
   //if a picture cannot load, filter it out of the newsItemTodisplay Array by filtering the item(s) out of that array in the news module
   pictureNotLoaded(index: number): void {
     let i: number;
-
-    // const tenFirstNewsItemsIfPicture: NewsItemType[] = this.newsDataToDisplay;
-    // const pictureNotLoadedArray: string[] = [];
 
     for (i = 0; i < this.newsDataToDisplay.length; i++) {
       if (i === index) {
@@ -180,42 +175,43 @@ export default class Home extends Vue {
     bus.$on("selectedCountry", (selectedCountry: string) => {
       this.fetchedCategory = selectedCountry;
       this.setData();
-      // this.addNewsSource();
       this.hideSelectedCategoryDiv();
     });
     bus.$on("selectedNewsCategory", (selectedNewsCategory: string) => {
       this.fetchedCategory = selectedNewsCategory;
       this.setData();
-      // this.addNewsSource();
       this.hideSelectedCategoryDiv();
     });
 
     //send input and onchange event to other components
     bus.$on("useInputValueToFetchData", (inputFetchValue: string) => {
       this.fetchedCategory = inputFetchValue;
-
       this.setData();
-      // this.addNewsSource();
       this.hideSelectedCategoryDiv();
     });
 
     bus.$on("loadDefaultNewsItemsAfterClickOnHomeButton", () => {
       this.setData();
-      // this.addNewsSource();
     });
-
     this.checkIfThereIsANewsItemWithoutAPicture();
-    // this.addNewsSource();
   }
 
   //set the data to the current values in the news module
   setData(): void {
-    this.newsDataToDisplay = this.$store.getters[
+    const filterNewsDataBase = this.$store.getters[
       "vuexModuleDecorators/newsDataModule"
     ].queriedNewsItemsGetter;
-    this.newsData = this.$store.getters[
-      "vuexModuleDecorators/newsDataModule"
-    ].queriedNewsItemsGetter;
+    this.newsDataToDisplay = filterNewsDataBase.filter(
+      (item: NewsItemType, index: number) => {
+        return index < 10;
+      }
+    );
+    this.newsData = filterNewsDataBase.filter(
+      (item: NewsItemType, index: number) => {
+        return index < 10;
+      }
+    );
+    console.log(this.newsDataToDisplay);
   }
 
   //hide selected category div after a few seconds
@@ -249,27 +245,6 @@ export default class Home extends Vue {
   makeCategoriesDivClosed(): void {
     bus.$emit("makeCategoriesDivClosedEventForDetailsPage");
   }
-
-  // //add the news source if it's not shown
-  // addNewsSource(): void {
-  //   let newsDataFiltered = this.newsDataToDisplay.filter(
-  //     (item: NewsItemType, index: number) => {
-  //       return index < 10;
-  //     }
-  //   );
-  //   newsDataFiltered = newsDataFiltered.map((item: NewsItemType) => {
-  //     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  //     if (
-  //       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  //       !item.title.includes(item.source.name!) &&
-  //       item.source.name !== null
-  //     ) {
-  //       item.title = item.title + " - " + item.source.name;
-  //     }
-  //     return item;
-  //   });
-  //   this.newsDataToDisplay = newsDataFiltered;
-  // }
 
   //sort the news array bij news source name
   sortByNewsTitle(): void {
@@ -348,17 +323,41 @@ export default class Home extends Vue {
   reset(): void {
     this.newsDataToDisplay = this.newsData;
   }
+
+  mouseEnter(index: number | null): void {
+    this.indexOfHoveredLink = index;
+
+    if (index !== null) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const item = this.newsDataToDisplay[index]!;
+
+      item.homePageLinksHovered = !item.homePageLinksHovered;
+
+      this.$set(this.newsDataToDisplay, index, item);
+    }
+  }
+  mouseLeave(index: number | null): void {
+    if (index !== null) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const item = this.newsData[index]!;
+
+      item.homePageLinksHovered = !item.homePageLinksHovered;
+
+      this.$set(this.newsDataToDisplay, index, item);
+    }
+  }
 }
 </script>
 
 <style scoped>
 /* general rules */
-.hovering {
-  color: blue;
-}
 
 a {
   text-decoration: none;
+}
+
+.hovering {
+  color: blue !important;
 }
 
 .home-no-newsitems {

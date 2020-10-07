@@ -31,6 +31,9 @@
                   @click="triggerDetailPageToReload(item.title)"
                   v-if="index < 10"
                   class="title"
+                  @mouseover="mouseEnter(index)"
+                  @mouseout="mouseLeave(index)"
+                  :class="{ hovering: item.linksNewsFooterHovered }"
                 >
                   {{ item.title }}
                 </div>
@@ -69,6 +72,7 @@ export default class NewsFooter extends Vue {
       { path: "/details /:id", component: DetailsPage },
     ],
   });
+  indexOfHoveredLink: number | null = null;
 
   mounted() {
     console.log("newsfooter mounted");
@@ -140,13 +144,33 @@ export default class NewsFooter extends Vue {
       bus.$emit("loadFirstElementOfDetailsPage", title);
     }
 
-    //trigger the addNewsItem function on the random component
     if (routeText === "Random") {
       bus.$emit(
         "triggerRandomPageLogic" //hier titel doorgeven//..
       );
     }
-    //trigger the addNewsItem function on the random component
+  }
+  mouseEnter(index: number | null): void {
+    this.indexOfHoveredLink = index;
+
+    if (index !== null) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const item = this.newsData[index]!;
+
+      item.linksNewsFooterHovered = !item.linksNewsFooterHovered;
+
+      this.$set(this.newsData, index, item);
+    }
+  }
+  mouseLeave(index: number | null): void {
+    if (index !== null) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const item = this.newsData[index]!;
+
+      item.linksNewsFooterHovered = !item.linksNewsFooterHovered;
+
+      this.$set(this.newsData, index, item);
+    }
   }
 }
 </script>
@@ -162,6 +186,10 @@ export default class NewsFooter extends Vue {
 a {
   text-decoration: none;
   color: white;
+}
+
+.hovering {
+  color: blue !important;
 }
 
 // bigger screens

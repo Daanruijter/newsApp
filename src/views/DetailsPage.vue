@@ -10,9 +10,9 @@
     >
       <div
         class="detailspage-title"
-        @mouseover="isHovering = true"
-        @mouseout="isHovering = false"
-        :class="{ hovering: isHovering }"
+        @mouseover="isHoveringFirstItem = true"
+        @mouseout="isHoveringFirstItem = false"
+        :class="{ hovering: isHoveringFirstItem }"
       >
         <a :href="newsItem.url">{{ newsItem.title }}</a>
       </div>
@@ -48,7 +48,7 @@
       </div>
       <hr class="detailspage-hr-adapt-size" />
       <div
-        v-for="newsItem in this.threeRelevantExtraNewsItems"
+        v-for="(newsItem, index) in this.threeRelevantExtraNewsItems"
         :key="newsItem.title"
         class="detailspage-data"
       >
@@ -57,9 +57,9 @@
 
         <div
           class="detailspage-title"
-          @mouseover="isHovering = true"
-          @mouseout="isHovering = false"
-          :class="{ hovering: isHovering }"
+          @mouseover="mouseEnter(index)"
+          @mouseout="mouseLeave(index)"
+          :class="{ hovering: newsItem.extraThreeItemsDetailsPageHovered }"
         >
           <a :href="newsItem.url">{{ newsItem.title }}</a>
         </div>
@@ -104,6 +104,11 @@ interface FetchBase {
   typeOfFetchBase: string;
 }
 
+export interface Source {
+  id?: null;
+  name: string;
+}
+
 @Component
 export default class DetailsPage extends Vue {
   async mounted() {
@@ -122,8 +127,8 @@ export default class DetailsPage extends Vue {
       this.processDataForDetailsComponent(title);
     });
   }
-  isHovering = false;
-  hoveringReadMore = false;
+  isHoveringFirstItem = false;
+  indexOfHoveredExtraItem: number | null = null;
   newsData = [];
   newsBase = "";
 
@@ -182,30 +187,12 @@ export default class DetailsPage extends Vue {
 
     if (title) {
       titleToFilterItemOut = title;
-      console.log(titleToFilterItemOut);
     }
 
-    //initiate the variable "indexNotToShowInExtraNewsItems" to save the index from the item that gets displayed
-    //use that to exclude it from the extra three items displayed
-    // let filterDisplayedItemOut = 0;
-
-    //initiate the variable "indexToShowExtraNewsItems" to get the most recent three news extra items
-
-    // let indexToShowExtraNewsItems = 3;
-    console.log(newsData);
     if (newsData.length !== 0) {
       //get the clicked news item from the array
       const valueForDetailComponentFiltered: NewsItemType[] = newsData.filter(
         (item: NewsItemType) => {
-          // save the index of the clicked news item
-          // console.log(this.newsItemPublishedTime.includes(item.title));
-
-          console.log(item.title);
-          console.log(titleToFilterItemOut);
-
-          // if (titleToFilterItemOut.includes(item.title)) {
-          //   filterDisplayedItemOut = index;
-          // }
           return titleToFilterItemOut.includes(item.title);
         }
       );
@@ -213,20 +200,9 @@ export default class DetailsPage extends Vue {
       console.log(valueForDetailComponentFiltered);
       console.log("valueForDetailComponentFiltered");
 
-      // //if the news item displayed is one of them, increase the variable "indexToShowExtraNewsItems" to filter three items out of the array by 1 to display three, not two items
-      // if (
-      //   filterDisplayedItemOut == 0 ||
-      //   filterDisplayedItemOut == 1 ||
-      //   filterDisplayedItemOut == 2
-      // ) {
-      //   indexToShowExtraNewsItems += 1;
-      //   console.log(indexToShowExtraNewsItems);
-      // }
-
       //filter the newsitems array to get three other most recent items that are not shown on the homepage (so they should have indices 10,11 and 12 )
       let extraValuesForDetailComponent: NewsItemType[] = newsData.filter(
         (item: NewsItemType, index: number) => {
-          // }
           return index === 10 || index === 11 || index === 12;
         }
       );
@@ -256,6 +232,28 @@ export default class DetailsPage extends Vue {
       this.threeRelevantExtraNewsItems = extraValuesForDetailComponent;
     }
     return null;
+  }
+  mouseEnter(index: number | null): void {
+    this.indexOfHoveredExtraItem = index;
+
+    if (index !== null) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const item = this.threeRelevantExtraNewsItems[index]!;
+
+      item.extraThreeItemsDetailsPageHovered = !item.extraThreeItemsDetailsPageHovered;
+
+      this.$set(this.threeRelevantExtraNewsItems, index, item);
+    }
+  }
+  mouseLeave(index: number | null): void {
+    if (index !== null) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const item = this.threeRelevantExtraNewsItems[index]!;
+
+      item.extraThreeItemsDetailsPageHovered = !item.extraThreeItemsDetailsPageHovered;
+
+      this.$set(this.threeRelevantExtraNewsItems, index, item);
+    }
   }
 }
 </script>

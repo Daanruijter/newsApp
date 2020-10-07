@@ -1,19 +1,3 @@
-//interface for the array of newsitems that gets fetched from the API
-export interface NewsItemType {
-  source: Source;
-  author: string;
-  title: string;
-  description: string;
-  url: string;
-  urlToImage: string;
-  publishedAt: string;
-  content: string;
-}
-export interface Source {
-  id?: null;
-  name: string;
-}
-
 //interface for fetch function
 export interface FetchNews {
   fetchBase: string;
@@ -34,6 +18,9 @@ import {
   Action,
 } from "vuex-module-decorators";
 import store from "@/store";
+import NewsItemType from "../../interfacesforapp";
+// import FetchNews from "../../interfacesforapp";
+// import FetchBase from "../../interfacesforapp";
 
 @Module({ namespaced: true, name: "newsDataModule", store, dynamic: true })
 class NewsModule extends VuexModule {
