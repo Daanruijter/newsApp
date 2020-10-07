@@ -1,65 +1,19 @@
 <template>
   <div class="detailspage-container">
-    <hr class="detailspage-hr-adapt-size" />
-    {{ this.newsItemPublishedTime }} GMT
-    <hr class="detailspage-hr-adapt-size" />
-    <div
-      v-for="newsItem in this.valueForDetailComponent"
-      :key="newsItem.title"
-      class="detailspage-data"
-    >
-      <div
-        class="detailspage-title"
-        @mouseover="isHoveringFirstItem = true"
-        @mouseout="isHoveringFirstItem = false"
-        :class="{ hovering: isHoveringFirstItem }"
-      >
-        <a :href="newsItem.url">{{ newsItem.title }}</a>
-      </div>
-
-      <div>
-        <i>
-          Written by:{{ " " }}{{ newsItem.author }}{{ ", source: "
-          }}{{ newsItem.source.name }}</i
-        >
-      </div>
-      <br />
-      <div class="detailspage-description-wrapper">
-        <span class="detailspage-small-header">Description</span>
-        <br />
-
-        <div class="detailspage-description">{{ newsItem.description }}</div>
-      </div>
-      <div class="detailspage-contents-wrapper">
-        <span class="detailspage-small-header">Contents</span>
-        <br />
-        <div class="detailspage-contents">{{ newsItem.content }}</div>
-      </div>
-
-      <div class="detailspage-picture">
-        <img v-bind:src="newsItem.urlToImage" />
-      </div>
-    </div>
-    <!-- three other relevant items -->
-
-    <div class="detailspage-other-relevant-items">
-      <div class="detailspage-other-news-bar">
-        <h2>More{{ " " }}{{ this.newsBase }}{{ " news" }}</h2>
-      </div>
+    <div v-if="this.newsData[0]" class="detailspage-newsdata-loaded">
+      <hr class="detailspage-hr-adapt-size" />
+      {{ this.newsItemPublishedTime }} GMT
       <hr class="detailspage-hr-adapt-size" />
       <div
-        v-for="(newsItem, index) in this.threeRelevantExtraNewsItems"
+        v-for="newsItem in this.valueForDetailComponent"
         :key="newsItem.title"
         class="detailspage-data"
       >
-        <div>{{ newsItem.publishedAt }} GMT</div>
-        <hr class="detailspage-hr-adapt-size" />
-
         <div
           class="detailspage-title"
-          @mouseover="mouseEnter(index)"
-          @mouseout="mouseLeave(index)"
-          :class="{ hovering: newsItem.extraThreeItemsDetailsPageHovered }"
+          @mouseover="isHoveringFirstItem = true"
+          @mouseout="isHoveringFirstItem = false"
+          :class="{ hovering: isHoveringFirstItem }"
         >
           <a :href="newsItem.url">{{ newsItem.title }}</a>
         </div>
@@ -86,8 +40,61 @@
         <div class="detailspage-picture">
           <img v-bind:src="newsItem.urlToImage" />
         </div>
-        <hr class="detailspage-hr-adapt-size" />
       </div>
+      <!-- three other relevant items -->
+
+      <div class="detailspage-other-relevant-items">
+        <div class="detailspage-other-news-bar">
+          <h2>More{{ " " }}{{ this.newsBase }}{{ " news" }}</h2>
+        </div>
+        <hr class="detailspage-hr-adapt-size" />
+        <div
+          v-for="(newsItem, index) in this.threeRelevantExtraNewsItems"
+          :key="newsItem.title"
+          class="detailspage-data"
+        >
+          <div>{{ newsItem.publishedAt }} GMT</div>
+          <hr class="detailspage-hr-adapt-size" />
+
+          <div
+            class="detailspage-title"
+            @mouseover="mouseEnter(index)"
+            @mouseout="mouseLeave(index)"
+            :class="{ hovering: newsItem.extraThreeItemsDetailsPageHovered }"
+          >
+            <a :href="newsItem.url">{{ newsItem.title }}</a>
+          </div>
+
+          <div>
+            <i>
+              Written by:{{ " " }}{{ newsItem.author }}{{ ", source: "
+              }}{{ newsItem.source.name }}</i
+            >
+          </div>
+          <br />
+          <div class="detailspage-description-wrapper">
+            <span class="detailspage-small-header">Description</span>
+            <br />
+
+            <div class="detailspage-description">
+              {{ newsItem.description }}
+            </div>
+          </div>
+          <div class="detailspage-contents-wrapper">
+            <span class="detailspage-small-header">Contents</span>
+            <br />
+            <div class="detailspage-contents">{{ newsItem.content }}</div>
+          </div>
+
+          <div class="detailspage-picture">
+            <img v-bind:src="newsItem.urlToImage" />
+          </div>
+          <hr class="detailspage-hr-adapt-size" />
+        </div>
+      </div>
+    </div>
+    <div v-if="!this.newsData[0]" class="detailspage-newsdata-not-loaded">
+      <div class="detailspage-no-newsitems">No news items to show</div>
     </div>
   </div>
 </template>
@@ -282,6 +289,11 @@ a {
   font-weight: bold;
 }
 
+.detailspage-no-newsitems {
+  color: white;
+  font-weight: bold;
+}
+
 /* bigger screens */
 @media only screen and (min-width: 1000px) {
   .detailspage-container {
@@ -325,6 +337,15 @@ a {
     margin-right: 15%;
     text-align: left;
   }
+
+  .detailspage-newsdata-not-loaded {
+    background-color: purple;
+    height: 83vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 /* medium screens */
 @media only screen and (min-width: 701px) and (max-width: 999px) {
@@ -351,6 +372,15 @@ a {
   .detailspage-contents {
     margin-bottom: 5%;
     text-align: left;
+  }
+
+  .detailspage-newsdata-not-loaded {
+    background-color: purple;
+    height: 83vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 /* smaller screens */
@@ -382,6 +412,15 @@ a {
   .detailspage-contents {
     margin-bottom: 5%;
     text-align: left;
+  }
+
+  .detailspage-newsdata-not-loaded {
+    background-color: purple;
+    height: 83vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 </style>

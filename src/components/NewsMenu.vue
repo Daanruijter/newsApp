@@ -307,6 +307,7 @@ export default class NewsMenu extends Vue {
     background-color: white;
     position: fixed;
     left: 0;
+    right: 0;
     top: 0;
     height: 131px;
     margin-left: 15%;
@@ -398,7 +399,8 @@ export default class NewsMenu extends Vue {
   #nav {
     background-color: white;
     position: fixed;
-    left: 0;
+    left: 8px;
+    right: 8px;
     top: 0;
     padding-left: 15%;
     height: 131px !important;
@@ -491,10 +493,11 @@ export default class NewsMenu extends Vue {
   #nav {
     background-color: white;
     position: fixed;
-    left: 0;
+    left: 8px;
+    right: 8px;
     top: 0;
     height: 138px !important;
-    width: 100vw;
+    // width: 100vw;
     z-index: 200;
     a {
       font-weight: bold;

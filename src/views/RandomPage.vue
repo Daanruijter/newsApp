@@ -352,11 +352,11 @@ a {
 
   .randompage-newsdata-not-loaded {
     background-color: purple;
-    height: 100vh;
+    height: 83vh;
     width: 100%;
     display: flex;
     justify-content: center;
-    padding-top: 50%;
+    align-items: center;
   }
 }
 
@@ -406,7 +406,7 @@ a {
 
   .randompage-newsdata-not-loaded {
     background-color: purple;
-    height: 80vh;
+    height: 83vh;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -418,7 +418,6 @@ a {
   .randompage-container {
     color: black;
     margin-bottom: 1%;
-    margin-top: 1%;
     height: 100%;
   }
 
@@ -451,7 +450,7 @@ a {
 
   .randompage-newsdata-not-loaded {
     background-color: purple;
-    height: 80vh;
+    height: 83vh;
     width: 100%;
     display: flex;
     justify-content: center;

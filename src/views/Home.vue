@@ -1,114 +1,121 @@
 <template>
   <div class="home-container">
-    <div
-      class="home-show-selected-category"
-      v-if="this.fetchedCategory !== 'Default Country'"
-    >
-      You selected {{ this.fetchedCategory }} news
-    </div>
-
-    <div class="home-newsdata-loaded">
-      <div class="home-headers">
-        <div class="home-get-to-know">
-          Get to know what's currently happening in the world. Tap on a title to
-          know more.
-        </div>
-
-        <div class="home-sort-the-data">Sort the data by:</div>
-        <div class="home-buttons">
-          <button
-            name="sortByNewsSource"
-            class="home-sort-by-newssource-button"
-            @click="sortByNewsSource"
-          >
-            News source
-          </button>
-
-          <button
-            name="sortByNewsTitle"
-            class="home-sort-by-newstitle-button"
-            @click="sortByNewsTitle"
-          >
-            News title
-          </button>
-
-          <button name="reset" class="home-reset" @click="reset">Reset</button>
-        </div>
+    <div v-if="this.newsDataToDisplay[0]" class="home-newsdata-loaded">
+      <div
+        class="home-show-selected-category"
+        v-if="this.fetchedCategory !== 'Default Country'"
+      >
+        You selected {{ this.fetchedCategory }} news
       </div>
-      <div class="home-newsitems-flexer">
+
+      <div class="home-newsdata-loaded">
+        <div class="home-headers">
+          <div class="home-get-to-know">
+            Get to know what's currently happening in the world. Tap on a title
+            to know more.
+          </div>
+
+          <div class="home-sort-the-data">Sort the data by:</div>
+          <div class="home-buttons">
+            <button
+              name="sortByNewsSource"
+              class="home-sort-by-newssource-button"
+              @click="sortByNewsSource"
+            >
+              News source
+            </button>
+
+            <button
+              name="sortByNewsTitle"
+              class="home-sort-by-newstitle-button"
+              @click="sortByNewsTitle"
+            >
+              News title
+            </button>
+
+            <button name="reset" class="home-reset" @click="reset">
+              Reset
+            </button>
+          </div>
+        </div>
+        <div class="home-newsitems-flexer">
+          <div
+            @click="makeCategoriesDivClosed"
+            class="home-newsitems-with-picture"
+            v-for="(newsItem, index) in this.newsDataToDisplay"
+            :key="newsItem.title + index"
+          >
+            <router-link
+              :to="{ name: 'DetailsPage', params: { title: newsItem.title } }"
+            >
+              <div
+                v-if="
+                  newsItem.urlToImage &&
+                    index !== pictureNotLoadedArray[0] &&
+                    index !== pictureNotLoadedArray[1]
+                "
+                class="home-newsitem-title"
+                @mouseover="mouseEnter(index)"
+                @mouseout="mouseLeave(index)"
+                :class="{ hovering: newsItem.homePageLinksHovered }"
+              >
+                {{ newsItem.title }}
+              </div>
+            </router-link>
+            <div class="home-newsitem-picture">
+              <img
+                @error="pictureNotLoaded(index)"
+                v-if="
+                  newsItem.urlToImage &&
+                    index !== pictureNotLoadedArray[0] &&
+                    index !== pictureNotLoadedArray[1]
+                "
+                v-bind:src="newsItem.urlToImage"
+              />
+            </div>
+            <hr
+              v-if="
+                newsItem.urlToImage &&
+                  index !== pictureNotLoadedArray[0] &&
+                  index !== pictureNotLoadedArray[1]
+              "
+            />
+          </div>
+        </div>
+        <!-- if there is no picture, put those news items under the header Other News -->
+        <h2 v-if="noImage || pictureNotLoadedArray.length !== 0">Other news</h2>
         <div
           @click="makeCategoriesDivClosed"
-          class="home-newsitems-with-picture"
+          class="home-newsitems-no-picture"
           v-for="(newsItem, index) in this.newsDataToDisplay"
-          :key="newsItem.title + index"
+          :key="newsItem.title"
         >
           <router-link
             :to="{ name: 'DetailsPage', params: { title: newsItem.title } }"
           >
             <div
               v-if="
-                newsItem.urlToImage &&
-                  index !== pictureNotLoadedArray[0] &&
-                  index !== pictureNotLoadedArray[1]
+                !newsItem.urlToImage ||
+                  index === pictureNotLoadedArray[0] ||
+                  index === pictureNotLoadedArray[1]
               "
               class="home-newsitem-title"
-              @mouseover="mouseEnter(index)"
-              @mouseout="mouseLeave(index)"
-              :class="{ hovering: newsItem.homePageLinksHovered }"
+              @mouseover="isHovering = true"
+              @mouseout="isHovering = false"
+              :class="{ hovering: isHovering }"
             >
               {{ newsItem.title }}
             </div>
           </router-link>
-          <div class="home-newsitem-picture">
-            <img
-              @error="pictureNotLoaded(index)"
-              v-if="
-                newsItem.urlToImage &&
-                  index !== pictureNotLoadedArray[0] &&
-                  index !== pictureNotLoadedArray[1]
-              "
-              v-bind:src="newsItem.urlToImage"
-            />
-          </div>
-          <hr
-            v-if="
-              newsItem.urlToImage &&
-                index !== pictureNotLoadedArray[0] &&
-                index !== pictureNotLoadedArray[1]
-            "
-          />
+          <hr v-if="!newsItem.urlToImage" />
         </div>
       </div>
-      <!-- if there is no picture, put those news items under the header Other News -->
-      <h2 v-if="noImage || pictureNotLoadedArray.length !== 0">Other news</h2>
-      <div
-        @click="makeCategoriesDivClosed"
-        class="home-newsitems-no-picture"
-        v-for="(newsItem, index) in this.newsDataToDisplay"
-        :key="newsItem.title"
-      >
-        <router-link
-          :to="{ name: 'DetailsPage', params: { title: newsItem.title } }"
-        >
-          <div
-            v-if="
-              !newsItem.urlToImage ||
-                index === pictureNotLoadedArray[0] ||
-                index === pictureNotLoadedArray[1]
-            "
-            class="home-newsitem-title"
-            @mouseover="isHovering = true"
-            @mouseout="isHovering = false"
-            :class="{ hovering: isHovering }"
-          >
-            {{ newsItem.title }}
-          </div>
-        </router-link>
-        <hr v-if="!newsItem.urlToImage" />
+
+      <div v-if="!newsDataToDisplay" class="home-newsdata-not-loaded">
+        <div class="home-no-newsitems">No news items to show</div>
       </div>
     </div>
-
-    <div v-if="!newsDataToDisplay" class="home-newsdata-not-loaded">
+    <div v-if="!this.newsDataToDisplay[0]" class="home-newsdata-not-loaded">
       <div class="home-no-newsitems">No news items to show</div>
     </div>
   </div>
@@ -370,6 +377,11 @@ a {
   color: black;
 }
 
+.home-no-newsitems {
+  color: white;
+  font-weight: bold;
+}
+
 /* bigger screens */
 @media only screen and (min-width: 1000px) {
   .home-show-selected-category {
@@ -463,11 +475,11 @@ a {
 
   .home-newsdata-not-loaded {
     background-color: purple;
-    height: 100vh;
+    height: 83vh;
     width: 100%;
     display: flex;
     justify-content: center;
-    padding-top: 50%;
+    align-items: center;
   }
 }
 
@@ -487,7 +499,6 @@ a {
   .home-container {
     padding-left: 15%;
     width: 70%;
-    margin-top: 1%;
   }
 
   .home-get-to-know {
@@ -535,11 +546,11 @@ a {
 
   .home-newsdata-not-loaded {
     background-color: purple;
-    height: 100vh;
+    height: 83vh;
     width: 100%;
     display: flex;
     justify-content: center;
-    padding-top: 50%;
+    align-items: center;
   }
 }
 
@@ -551,10 +562,6 @@ a {
     padding-top: 1%;
     padding-bottom: 1%;
     margin-bottom: 3%;
-  }
-
-  .home-container {
-    margin-top: 1%;
   }
 
   .home-sort-the-data {
@@ -584,11 +591,11 @@ a {
 
   .home-newsdata-not-loaded {
     background-color: purple;
-    height: 100vh;
+    height: 83vh;
     width: 100%;
     display: flex;
     justify-content: center;
-    padding-top: 50%;
+    align-items: center;
   }
 }
 
@@ -611,3 +618,6 @@ a {
   }
 }
 </style>
+
+.randompage-newsdata-not-loaded { background-color: purple; height: 83vh; width:
+100%; display: flex; justify-content: center; align-items: center; }

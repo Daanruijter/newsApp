@@ -75,7 +75,7 @@ export default class App extends Vue {}
 @media only screen and (max-width: 700px) {
   .app-container {
     display: grid;
-    grid-template-rows: 16.6vh auto auto;
+    grid-template-rows: 17vh auto auto;
     grid-template-columns: 100%;
     height: 100%;
   }
