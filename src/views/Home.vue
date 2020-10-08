@@ -49,14 +49,10 @@
               :to="{ name: 'DetailsPage', params: { title: newsItem.title } }"
             >
               <div
-                v-if="
-                  newsItem.urlToImage &&
-                    index !== pictureNotLoadedArray[0] &&
-                    index !== pictureNotLoadedArray[1]
-                "
+                v-if="newsItem.urlToImage"
                 class="home-newsitem-title"
-                @mouseover="mouseEnter(index)"
-                @mouseout="mouseLeave(index)"
+                @mouseover="mouseEnter(index, pictureString)"
+                @mouseout="mouseLeave(index, pictureString)"
                 :class="{ hovering: newsItem.homePageLinksHovered }"
               >
                 {{ newsItem.title }}
@@ -65,25 +61,17 @@
             <div class="home-newsitem-picture">
               <img
                 @error="pictureNotLoaded(index)"
-                v-if="
-                  newsItem.urlToImage &&
-                    index !== pictureNotLoadedArray[0] &&
-                    index !== pictureNotLoadedArray[1]
-                "
+                v-if="newsItem.urlToImage"
                 v-bind:src="newsItem.urlToImage"
               />
             </div>
-            <hr
-              v-if="
-                newsItem.urlToImage &&
-                  index !== pictureNotLoadedArray[0] &&
-                  index !== pictureNotLoadedArray[1]
-              "
-            />
+            <hr v-if="newsItem.urlToImage" />
           </div>
         </div>
         <!-- if there is no picture, put those news items under the header Other News -->
-        <h2 v-if="noImage || pictureNotLoadedArray.length !== 0">Other news</h2>
+        <h2 v-if="this.newsDataToDisplayWithNoPictures.length !== 0">
+          Other news
+        </h2>
         <div
           @click="makeCategoriesDivClosed"
           class="home-newsitems-no-picture"
@@ -95,8 +83,8 @@
           >
             <div
               class="home-newsitem-title"
-              @mouseover="mouseEnter(index)"
-              @mouseout="mouseLeave(index)"
+              @mouseover="mouseEnter(index, noPictureString)"
+              @mouseout="mouseLeave(index, noPictureString)"
               :class="{ hovering: newsItem.homePageLinksHovered }"
             >
               {{ newsItem.title }}
@@ -138,6 +126,8 @@ export default class Home extends Vue {
       { path: "/details /:id", component: DetailsPage },
     ],
   });
+  pictureString = "picture";
+  noPictureString = "nopicture";
   pictureNotLoadedArray: Array<number> = [];
 
   //if a picture cannot load, filter it out of the newsItemTodisplay Array by filtering the item(s) out of that array in the news module
@@ -147,6 +137,9 @@ export default class Home extends Vue {
     for (i = 0; i < this.newsDataToDisplay.length; i++) {
       if (i === index) {
         this.pictureNotLoadedArray.push(index);
+
+        const removedItem = this.newsDataToDisplay.splice(index, 1);
+        this.newsDataToDisplayWithNoPictures.push(removedItem[0]);
       }
     }
   }
@@ -174,11 +167,13 @@ export default class Home extends Vue {
     bus.$on("selectedCountry", (selectedCountry: string) => {
       this.fetchedCategory = selectedCountry;
       this.setData();
+      this.checkIfThereIsANewsItemWithoutAPicture();
       this.hideSelectedCategoryDiv();
     });
     bus.$on("selectedNewsCategory", (selectedNewsCategory: string) => {
       this.fetchedCategory = selectedNewsCategory;
       this.setData();
+      this.checkIfThereIsANewsItemWithoutAPicture();
       this.hideSelectedCategoryDiv();
     });
 
@@ -186,13 +181,15 @@ export default class Home extends Vue {
     bus.$on("useInputValueToFetchData", (inputFetchValue: string) => {
       this.fetchedCategory = inputFetchValue;
       this.setData();
+      this.checkIfThereIsANewsItemWithoutAPicture();
       this.hideSelectedCategoryDiv();
     });
 
     bus.$on("loadDefaultNewsItemsAfterClickOnHomeButton", () => {
       this.setData();
+      this.checkIfThereIsANewsItemWithoutAPicture();
     });
-    this.newsDataToDisplayWithNoPictures = [];
+
     this.checkIfThereIsANewsItemWithoutAPicture();
   }
 
@@ -224,7 +221,7 @@ export default class Home extends Vue {
   //hide "other news" if there is no news item without a picture.
   //If so, set the data variable noImage to true and display the Other News header
   checkIfThereIsANewsItemWithoutAPicture(): void {
-    let filteredArray: NewsItemType[] = this.newsData;
+    let filteredArray: NewsItemType[] = this.newsDataToDisplay;
     filteredArray = filteredArray.filter(
       (item: NewsItemType, index: number) => {
         return index < 10;
@@ -237,17 +234,25 @@ export default class Home extends Vue {
         filteredArray[i].urlToImage === "" ||
         filteredArray[i].urlToImage === null
       ) {
-        this.noImage = true;
+        // this.noImage = true;
 
         // filteredArray.splice(i, 1);
         // console.log(filteredArray.splice(i, 1));
-        const pusher = filteredArray.splice(i, 1);
-        console.log(pusher);
-        this.newsDataToDisplayWithNoPictures.push(pusher[0]);
+        const removedItem = filteredArray.splice(i, 1);
+        this.newsDataToDisplayWithNoPictures = [];
+        this.newsDataToDisplayWithNoPictures.push(removedItem[0]);
         console.log(this.newsDataToDisplayWithNoPictures);
+        console.log(this.newsDataToDisplay);
       }
     }
+
+    if (this.newsData.length - filteredArray.length === 0) {
+      this.newsDataToDisplayWithNoPictures = [];
+    }
+
     this.newsDataToDisplay = filteredArray;
+
+    console.log(this.newsDataToDisplay);
   }
 
   makeCategoriesDivClosed(): void {
@@ -332,26 +337,56 @@ export default class Home extends Vue {
     this.newsDataToDisplay = this.newsData;
   }
 
-  mouseEnter(index: number | null): void {
+  mouseEnter(
+    index: number | null,
+    pictureOrNoPictureArrayIndicator: string
+  ): void {
     this.indexOfHoveredLink = index;
 
-    if (index !== null) {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const item = this.newsDataToDisplay[index]!;
+    if (pictureOrNoPictureArrayIndicator === "picture") {
+      if (index !== null) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const item = this.newsDataToDisplay[index]!;
 
-      item.homePageLinksHovered = !item.homePageLinksHovered;
+        item.homePageLinksHovered = !item.homePageLinksHovered;
 
-      this.$set(this.newsDataToDisplay, index, item);
+        this.$set(this.newsDataToDisplay, index, item);
+      }
+    }
+    if (pictureOrNoPictureArrayIndicator === "nopicture") {
+      if (index !== null) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const item = this.newsDataToDisplayWithNoPictures[index]!;
+
+        item.homePageLinksHovered = !item.homePageLinksHovered;
+
+        this.$set(this.newsDataToDisplayWithNoPictures, index, item);
+      }
     }
   }
-  mouseLeave(index: number | null): void {
-    if (index !== null) {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const item = this.newsData[index]!;
+  mouseLeave(
+    index: number | null,
+    pictureOrNoPictureArrayIndicator: string
+  ): void {
+    if (pictureOrNoPictureArrayIndicator === "picture") {
+      if (index !== null) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const item = this.newsDataToDisplay[index]!;
 
-      item.homePageLinksHovered = !item.homePageLinksHovered;
+        item.homePageLinksHovered = !item.homePageLinksHovered;
 
-      this.$set(this.newsDataToDisplay, index, item);
+        this.$set(this.newsDataToDisplay, index, item);
+      }
+    }
+    if (pictureOrNoPictureArrayIndicator === "nopicture") {
+      if (index !== null) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const item = this.newsDataToDisplayWithNoPictures[index]!;
+
+        item.homePageLinksHovered = !item.homePageLinksHovered;
+
+        this.$set(this.newsDataToDisplayWithNoPictures, index, item);
+      }
     }
   }
 }

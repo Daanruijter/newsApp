@@ -156,14 +156,6 @@ export default class RandomPage extends Vue {
   async mounted() {
     console.log("RANDOMPAGE mounted");
     // this.prepareDataForDisplay();
-    //on reload, load the article that was there before the reload
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    this.randomNewsItem = JSON.parse(localStorage.getItem("randomArticle"!)!);
-
-    //get the publish date of the news item
-    this.newsItemPublishedTime = convertNewsItemPublishedTime(
-      this.randomNewsItem[0].publishedAt
-    );
 
     //if a user clicks on the random page button in the navbar, fetch the data and load it in the random component
     await bus.$on("makeCategoriesDivClosedEventForRandomPage", () => {
@@ -176,6 +168,17 @@ export default class RandomPage extends Vue {
       //fetch the data and load it in the random component
       this.prepareDataForDisplay();
     });
+
+    if (this.randomNewsItem.length !== 0) {
+      //on reload, load the article that was there before the reload
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      this.randomNewsItem = JSON.parse(localStorage.getItem("randomArticle"!)!);
+
+      //get the publish date of the news item
+      this.newsItemPublishedTime = convertNewsItemPublishedTime(
+        this.randomNewsItem[0].publishedAt
+      );
+    }
   }
 
   //function fetches from the API randomly:
