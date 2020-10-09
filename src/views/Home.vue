@@ -56,8 +56,8 @@
                 :class="{ hovering: newsItem.homePageLinksHovered }"
               >
                 {{ newsItem.title }}
-              </div>
-            </router-link>
+              </div> </router-link
+            >Source: {{ newsItem.source.name }}
             <div class="home-newsitem-picture">
               <img
                 @error="pictureNotLoaded(index)"
@@ -69,9 +69,12 @@
           </div>
         </div>
         <!-- if there is no picture, put those news items under the header Other News -->
-        <h2 v-if="this.newsDataToDisplayWithNoPictures.length !== 0">
-          Other news
-        </h2>
+        <div
+          class="home-other-news"
+          v-if="this.newsDataToDisplayWithNoPictures.length !== 0"
+        >
+          <h2>Other news</h2>
+        </div>
         <div
           @click="makeCategoriesDivClosed"
           class="home-newsitems-no-picture"
@@ -87,7 +90,7 @@
               @mouseout="mouseLeave(index, noPictureString)"
               :class="{ hovering: newsItem.homePageLinksHovered }"
             >
-              {{ newsItem.title }}
+              {{ newsItem.title }}, Source: {{ newsItem.source.name }}
             </div>
           </router-link>
           <hr v-if="!newsItem.urlToImage" />
@@ -118,6 +121,7 @@ export default class Home extends Vue {
   newsData: NewsItemType[] = [];
   newsDataToDisplay: NewsItemType[] = [];
   newsDataToDisplayWithNoPictures: NewsItemType[] = [];
+  newsDataToDisplayWithNoPicturesUnsorted: NewsItemType[] = [];
   noImage = false;
   fetchedCategory: null | string = "";
   router = new VueRouter({
@@ -140,6 +144,8 @@ export default class Home extends Vue {
 
         const removedItem = this.newsDataToDisplay.splice(index, 1);
         this.newsDataToDisplayWithNoPictures.push(removedItem[0]);
+        //to have a variable that is not sorted
+        this.newsDataToDisplayWithNoPicturesUnsorted.push(removedItem[0]);
       }
     }
   }
@@ -227,7 +233,9 @@ export default class Home extends Vue {
         return index < 10;
       }
     );
-
+    //clear the array
+    this.newsDataToDisplayWithNoPictures = [];
+    this.newsDataToDisplayWithNoPicturesUnsorted = [];
     let i = 0;
     for (i = 0; i < filteredArray.length; i++) {
       if (
@@ -239,18 +247,27 @@ export default class Home extends Vue {
         // filteredArray.splice(i, 1);
         // console.log(filteredArray.splice(i, 1));
         const removedItem = filteredArray.splice(i, 1);
-        this.newsDataToDisplayWithNoPictures = [];
+
         this.newsDataToDisplayWithNoPictures.push(removedItem[0]);
+
+        //to have a variable that is not sorted
+        this.newsDataToDisplayWithNoPicturesUnsorted.push(removedItem[0]);
         console.log(this.newsDataToDisplayWithNoPictures);
         console.log(this.newsDataToDisplay);
       }
     }
 
-    if (this.newsData.length - filteredArray.length === 0) {
-      this.newsDataToDisplayWithNoPictures = [];
-    }
+    // if (
+    //   this.$store.getters["vuexModuleDecorators/newsDataModule"]
+    //     .queriedNewsItemsGetter.length -
+    //     filteredArray.length ===
+    //   0
+    // ) {
+    //   this.newsDataToDisplayWithNoPictures = [];
+    // }
 
     this.newsDataToDisplay = filteredArray;
+    this.newsData = filteredArray;
 
     console.log(this.newsDataToDisplay);
   }
@@ -291,6 +308,12 @@ export default class Home extends Vue {
     );
     const sorted: NewsItemType[] = newsDataToSort.sort(compareTitles);
     this.newsDataToDisplay = sorted;
+
+    //Sorting the array of items without pictures
+    const sortedWithoutPictures: NewsItemType[] = this.newsDataToDisplayWithNoPictures.sort(
+      compareTitles
+    );
+    this.newsDataToDisplayWithNoPictures = sortedWithoutPictures;
   }
 
   sortByNewsSource(): void {
@@ -330,11 +353,18 @@ export default class Home extends Vue {
     const sorted: NewsItemType[] = newsDataToSort.sort(compareSourceNames);
 
     this.newsDataToDisplay = sorted;
+
+    //Sorting the array of items without pictures
+    const sortedWithoutPictures: NewsItemType[] = this.newsDataToDisplayWithNoPictures.sort(
+      compareSourceNames
+    );
+    this.newsDataToDisplayWithNoPictures = sortedWithoutPictures;
   }
 
   //reset the sorted news items to the list that it was
   reset(): void {
     this.newsDataToDisplay = this.newsData;
+    this.newsDataToDisplayWithNoPictures = this.newsDataToDisplayWithNoPicturesUnsorted;
   }
 
   mouseEnter(
@@ -403,9 +433,17 @@ a {
   color: blue !important;
 }
 
+.home-buttons {
+  margin-bottom: 2%;
+}
+
 .home-no-newsitems {
   color: white;
   font-weight: bold;
+}
+
+.home-newsitem-picture {
+  margin-top: 2%;
 }
 
 .home-newsitems-no-picture {
@@ -418,8 +456,19 @@ a {
   font-weight: bold;
 }
 
+.home-other-news {
+  background-color: blue;
+  color: white;
+}
+
 /* bigger screens */
 @media only screen and (min-width: 1000px) {
+  .home-container {
+    padding-left: 15%;
+    width: 70%;
+    margin-top: 131px;
+  }
+
   .home-show-selected-category {
     background-color: darkblue;
     color: white;
@@ -458,11 +507,6 @@ a {
     text-align: left;
   }
 
-  .home-container {
-    padding-left: 15%;
-    width: 70%;
-  }
-
   .home-sort-the-data {
     margin-bottom: 1%;
     text-align: left;
@@ -477,8 +521,6 @@ a {
   .home-newsitem-title {
     font-weight: bold;
     color: black;
-    margin-bottom: 5%;
-    margin-top: 8%;
     height: 60px;
   }
 
@@ -535,6 +577,7 @@ a {
   .home-container {
     padding-left: 15%;
     width: 70%;
+    margin-top: 131px;
   }
 
   .home-get-to-know {
@@ -559,8 +602,6 @@ a {
   .home-newsitem-title {
     font-weight: bold;
     color: black;
-    margin-bottom: 5%;
-    margin-top: 8%;
   }
 
   button {
@@ -592,6 +633,10 @@ a {
 
 /* smaller screens */
 @media only screen and (max-width: 700px) {
+  .home-container {
+    margin-top: 138px;
+  }
+
   .home-show-selected-category {
     background-color: darkblue;
     color: white;
@@ -610,8 +655,7 @@ a {
   .home-newsitem-title {
     font-weight: bold;
     color: black;
-    margin-bottom: 5%;
-    margin-top: 8%;
+    text-align: left;
   }
 
   .home-newsitem-picture {

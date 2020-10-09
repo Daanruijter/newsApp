@@ -39,41 +39,46 @@ export default class App extends Vue {}
   height: 100vw;
 }
 
-.app-newsmenu {
-  grid-row-start: 1;
-  grid-row-end: 2;
-  height: 100%;
-}
-.app-main {
-  width: 100%;
-  grid-row-start: 2;
-  grid-row-end: 3;
+.app-container {
+  display: flex;
+  flex-direction: column;
 }
 
-@media only screen and (min-width: 1000px) {
-  .app-container {
-    display: grid;
-    grid-template-rows: 16vh auto;
-    grid-template-columns: 100%;
-    height: 100%;
-  }
-}
+// .app-newsmenu {
+//   grid-row-start: 1;
+//   grid-row-end: 2;
+//   height: 100%;
+// }
+// .app-main {
+//   width: 100%;
+//   grid-row-start: 2;
+//   grid-row-end: 3;
+// }
 
-@media only screen and (min-width: 701px) and (max-width: 999px) {
-  .app-container {
-    display: grid;
-    grid-template-rows: 16.1vh auto;
-    grid-template-columns: 100%;
-    height: 100%;
-  }
-}
+// @media only screen and (min-width: 1000px) {
+//   .app-container {
+//     display: grid;
+//     grid-template-rows: 16vh auto;
+//     grid-template-columns: 100%;
+//     height: 100%;
+//   }
+// }
 
-@media only screen and (max-width: 700px) {
-  .app-container {
-    display: grid;
-    grid-template-rows: 17vh auto;
-    grid-template-columns: 100%;
-    height: 100%;
-  }
-}
+// @media only screen and (min-width: 701px) and (max-width: 999px) {
+//   .app-container {
+//     display: grid;
+//     grid-template-rows: 16.1vh auto;
+//     grid-template-columns: 100%;
+//     height: 100%;
+//   }
+// }
+
+// @media only screen and (max-width: 700px) {
+//   .app-container {
+//     display: grid;
+//     grid-template-rows: 17vh auto;
+//     grid-template-columns: 100%;
+//     height: 100%;
+//   }
+// }
 </style>

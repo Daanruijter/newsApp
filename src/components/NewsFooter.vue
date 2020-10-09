@@ -144,10 +144,8 @@ export default class NewsFooter extends Vue {
       bus.$emit("loadFirstElementOfDetailsPage", title);
     }
 
-    if (routeText === "Random") {
-      bus.$emit(
-        "triggerRandomPageLogic" //hier titel doorgeven//..
-      );
+    if (routeText.includes("Random")) {
+      bus.$emit("triggerRandomPageLogic");
     }
   }
   mouseEnter(index: number | null): void {

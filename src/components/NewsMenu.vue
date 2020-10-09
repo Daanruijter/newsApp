@@ -309,7 +309,7 @@ export default class NewsMenu extends Vue {
     left: 0;
     right: 0;
     top: 0;
-    height: 131px;
+    max-height: 131px;
     margin-left: 15%;
     width: 70%;
     z-index: 200;
@@ -403,7 +403,7 @@ export default class NewsMenu extends Vue {
     right: 8px;
     top: 0;
     padding-left: 15%;
-    height: 131px !important;
+    max-height: 131px !important;
     width: 70%;
     z-index: 200;
     a {
@@ -496,8 +496,7 @@ export default class NewsMenu extends Vue {
     left: 8px;
     right: 8px;
     top: 0;
-    height: 138px !important;
-    // width: 100vw;
+    max-height: 138px !important;
     z-index: 200;
     a {
       font-weight: bold;

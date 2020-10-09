@@ -300,6 +300,7 @@ a {
     color: black;
     margin-left: 15%;
     width: 70%;
+    margin-top: 131px;
   }
 
   .detailspage-other-news-bar {
@@ -354,12 +355,18 @@ a {
     padding-top: 1%;
     margin-left: 15%;
     width: 70%;
+    margin-top: 131px;
   }
 
   .detailspage-title {
     font-weight: bold;
     color: black;
     margin-bottom: 5%;
+  }
+
+  .detailspage-other-news-bar {
+    background-color: blue;
+    color: white;
   }
 
   .detailspage-picture img {
@@ -388,6 +395,7 @@ a {
   .detailspage-container {
     color: black;
     padding-top: 1%;
+    margin-top: 138px;
   }
 
   .detailspage-title {

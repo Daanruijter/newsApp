@@ -192,14 +192,14 @@ export default class RandomPage extends Vue {
     const pickCountryOrNewsCategoriesArray = this
       .randomNewsCategoryFetchBaseArray[randomNumberZeroOrOne];
 
-    const pickCountryOrNewsCategorieFromItsArrayLength =
+    const pickCountryOrNewsCategoryFromItsArrayLength =
       pickCountryOrNewsCategoriesArray.length;
 
     const pickFetchBase =
       pickCountryOrNewsCategoriesArray[
         this.randomIntFromInterval(
           0,
-          pickCountryOrNewsCategorieFromItsArrayLength
+          pickCountryOrNewsCategoryFromItsArrayLength
         )
       ];
 
@@ -310,6 +310,7 @@ a {
     width: 70%;
     height: 100%;
     margin-bottom: 1%;
+    margin-top: 131px;
   }
 
   .randompage-title {
@@ -374,6 +375,7 @@ a {
     width: 70%;
     height: 100%;
     margin-bottom: 1%;
+    margin-top: 131px;
   }
 
   .randompage-title {
@@ -425,6 +427,7 @@ a {
     color: black;
     margin-bottom: 1%;
     height: 100%;
+    margin-top: 138px;
   }
 
   .randompage-title {
