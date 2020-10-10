@@ -388,8 +388,8 @@ class NewsModule extends VuexModule {
         description:
           "It was just over a year ago when former GigaOm Analyst JP Morgenthal published an in-depth Key Criteria/Market Landscape report, titled “Robotic…",
         url: "https://gigaom.com/2020/09/04/rpa-redux/",
-        urlToImage: "",
-        // "https://storage.googleapis.com/stateless-gigaom-com/2018/11/bigstock-Application-Architecture-and-A-200604649-1024x512.jpg",
+        urlToImage:
+          "https://storage.googleapis.com/stateless-gigaom-com/2018/11/bigstock-Application-Architecture-and-A-200604649-1024x512.jpg",
         publishedAt: "2020-09-04T22:00:20Z",
         content:
           "It was just over a year ago when former GigaOm Analyst JP Morgenthal published an in-depth Key Criteria/Market Landscape report, titled Robotic Process Automation in Digital Transformation. In it, JP… [+3151 chars]",
@@ -406,8 +406,8 @@ class NewsModule extends VuexModule {
           "JP Morgan expects Apple's Sept. 15 event to drive upside for AAPL due to an Apple Watch launch, and a possible iPhone announcement.Credit: Andrew O'Hara, AppleInsiderIn a note to investors seen by AppleInsider, JP Morgan analyst Samik Chatterjee reiterates th…",
         url:
           "https://appleinsider.com/articles/20/09/09/jp-morgan-expects-apple-watch-to-drive-sept-15-event-with-possible-iphone-announcement",
-        urlToImage: "",
-        // "https://photos5.appleinsider.com/gallery/37570-70614-49025332043_6065cefdf2_k(1)-xl.jpg",
+        urlToImage:
+          "https://photos5.appleinsider.com/gallery/37570-70614-49025332043_6065cefdf2_k(1)-xl.jpg",
         publishedAt: "2020-09-09T15:39:28Z",
         content:
           "JP Morgan expects Apple's Sept. 15 event to drive upside for AAPL due to an Apple Watch launch, and a possible iPhone announcement.\r\nIn a note to investors seen by AppleInsider, JP Morgan analyst Sam… [+1905 chars]",
@@ -667,8 +667,8 @@ class NewsModule extends VuexModule {
             "本港新型冠狀病毒疫情有反彈迹象，港大微生物學系講座教授袁國勇今早（8日）在商台節目提醒，不應待疫情爆發嚴重才增加防疫措施，市民現已應開始進入嚴密戒備狀態，盡早斬斷隱性傳播鏈。",
           url:
             "https://news.mingpao.com/ins/%e6%b8%af%e8%81%9e/article/20201008/s00001/1602127604456/%e6%96%b0%e5%86%a0%e8%82%ba%e7%82%8e-%e8%a2%81%e5%9c%8b%e5%8b%87%e7%b1%b2%e5%b7%bf%e6%b0%91%e9%80%b2%e5%85%a5%e5%9a%b4%e5%af%86%e6%88%92%e5%82%99%e7%8b%80%e6%85%8b",
-          urlToImage: "",
-          // "https://fs.mingpao.com/ins/20201008/s00001/3e374ec3e02a184a56508ed5fc7c7b79.jpg",
+          urlToImage:
+            "https://fs.mingpao.com/ins/20201008/s00001/3e374ec3e02a184a56508ed5fc7c7b79.jpg",
           publishedAt: "2020-10-08T04:19:17Z",
           content: null,
         },

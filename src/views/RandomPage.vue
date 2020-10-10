@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */ /* eslint-disable
+@typescript-eslint/no-non-null-assertion */ /* eslint-disable
+@typescript-eslint/no-non-null-assertion */
 <template>
   <div class="randompage-container">
     <div
@@ -44,7 +47,6 @@
             {{ newsItem.content }}
           </div>
         </div>
-
         <div class="randompage-button">
           <button @click="changeRandomNewsItemOnButtonClick">
             Show another random news item
@@ -55,8 +57,71 @@
         </div>
       </div>
     </div>
-    <div v-if="!this.randomNewsItem[0]" class="randompage-newsdata-not-loaded">
-      <div class="randompage-no-newsitems">No news items to show</div>
+    <!-- The previous news item -->
+    <div class="random-page-previous-item-container">
+      <div v-if="previousNewsItem[0]" class="randompage-previous-item-bar">
+        Previous news item
+      </div>
+      <div class="randompage-button" v-if="this.previousNewsItem">
+        <button
+          v-if="this.showAnotherNewsItemButtonClicked"
+          @click="showPreviousNewsItem"
+        >
+          Show previous news item
+        </button>
+      </div>
+      <div v-if="this.previousDate">
+        <hr class="randompage-hr-adapt-size" />
+        {{ this.previousDate }} GMT
+        <hr class="randompage-hr-adapt-size" />
+      </div>
+      <div
+        v-for="newsItem in this.previousNewsItem"
+        :key="newsItem.title"
+        class="randompage-data"
+      >
+        <div
+          class="randompage-title"
+          @mouseover="isHovering = true"
+          @mouseout="isHovering = false"
+          :class="{ hovering: isHovering }"
+        >
+          <a :href="newsItem.url">{{ newsItem.title }}</a>
+        </div>
+
+        <div v-if="newsItem.author">
+          <i>
+            Written by:{{ " " }}{{ newsItem.author }}{{ ", source: "
+            }}{{ newsItem.source.name }}
+          </i>
+        </div>
+        <br />
+
+        <div class="randompage-description-wrapper">
+          <span class="randompage-small-header">Description</span>
+          <br />
+          <div class="randompage-description">
+            {{ newsItem.description }}
+          </div>
+        </div>
+        <div class="randompage-contents-wrapper">
+          <span class="randompage-small-header">Contents</span>
+          <br />
+          <div class="randompage-contents">
+            {{ newsItem.content }}
+          </div>
+        </div>
+        <div class="randompage-picture">
+          <img v-bind:src="newsItem.urlToImage" />
+        </div>
+      </div>
+
+      <div
+        v-if="!this.randomNewsItem[0]"
+        class="randompage-newsdata-not-loaded"
+      >
+        <div class="randompage-no-newsitems">No news items to show</div>
+      </div>
     </div>
   </div>
 </template>
@@ -66,7 +131,7 @@ import { Vue, Component } from "vue-property-decorator";
 import news from "../store/modules/news";
 import NewsItemType from "../interfacesforapp";
 import { convertNewsItemPublishedTime } from "../methodsForGeneralUse";
-import { bus } from "../main";
+// import { bus } from "../main";
 
 @Component
 export default class RandomPage extends Vue {
@@ -76,6 +141,9 @@ export default class RandomPage extends Vue {
   newsItemPublishedTime = "";
   isHovering = false;
   hoveringReadMore = false;
+  previousNewsItem: NewsItemType[] = [];
+  previousDate = "";
+  showAnotherNewsItemButtonClicked = false;
 
   //base to fetch news from a random news category
   randomNewsCategoriesArray = [
@@ -154,33 +222,19 @@ export default class RandomPage extends Vue {
   ];
 
   async mounted() {
-    console.log("RANDOMPAGE mounted");
-    // this.prepareDataForDisplay();
+    this.prepareDataForDisplay();
 
-    //if a user clicks on the random page button in the navbar, fetch the data and load it in the random component
-    await bus.$on("makeCategoriesDivClosedEventForRandomPage", () => {
-      //fetch the data and load it in the random component
-      this.prepareDataForDisplay();
-    });
+    // //if a user clicks on the random page button in the navbar, save the random newsitem in localstorage
+    // await bus.$on("makeCategoriesDivClosedEventForRandomPage", () => {
+    //   this.saveRandomItemInLocalStorage();
+    // });
 
-    //if a user clicks on the random page button in the footer, fetch the data and load it in the random component
-    await bus.$on("triggerRandomPageLogic", () => {
-      //fetch the data and load it in the random component
-      this.prepareDataForDisplay();
-    });
-
-    if (this.randomNewsItem.length !== 0) {
-      //on reload, load the article that was there before the reload
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      this.randomNewsItem = JSON.parse(localStorage.getItem("randomArticle"!)!);
-
-      //get the publish date of the news item
-      this.newsItemPublishedTime = convertNewsItemPublishedTime(
-        this.randomNewsItem[0].publishedAt
-      );
-    }
+    // // if a user clicks on the random page button in the footer, fetch the data and load it in the random component
+    // await bus.$on("triggerRandomPageLogic", () => {
+    //   //fetch the data and load it in the random component
+    //   this.prepareDataForDisplay();
+    // });
   }
-
   //function fetches from the API randomly:
   //picks the country fetchbase array or the newscategory fetchbase array
   //then picks a country or newscategory from the selected array
@@ -222,12 +276,6 @@ export default class RandomPage extends Vue {
     // this.fetchTheData();
   }
 
-  //if a user hits the button on the random page, it triggers another newsItem to show
-  async changeRandomNewsItemOnButtonClick() {
-    //fetch the data and load it in the random component
-    this.prepareDataForDisplay();
-  }
-
   //get a random number for the index. Number must be higher than 10, because I don't want to display newsItems that already got displayed on the homepage.
   //The random number must also not be higher than the length of the array of newsitems
   randomIntFromInterval(min: number, max: number): number {
@@ -248,30 +296,64 @@ export default class RandomPage extends Vue {
       }
     );
     this.randomNewsItem = filterToGetRandomNewsItem;
-
-    //save the random news item to pick it up on reload or coming back from an external page
-    localStorage.setItem(
-      "randomArticle",
-      JSON.stringify(filterToGetRandomNewsItem)
-    );
-
-    console.log(this.newsItemPublishedTime);
     this.newsItemPublishedTime = convertNewsItemPublishedTime(
       this.randomNewsItem[0].publishedAt
     );
 
-    console.log(this.newsItemPublishedTime);
     return filterToGetRandomNewsItem;
   }
   async prepareDataForDisplay() {
     //fetch the data and load it in the random component
+
     await this.fetchDataForRandomPageAndLoadItInRandomComponent();
     this.newsData = this.$store.getters[
       "vuexModuleDecorators/newsDataModule"
     ].queriedNewsItemsGetter;
-
+    this.saveRandomItemInLocalStorage();
     //filter the data to display one random item
     this.filterArrayByRandomIndex();
+  }
+
+  //save the previous randomitem in localStorage to make it possible for the user to retrieve it
+  saveRandomItemInLocalStorage() {
+    if (this.randomNewsItem.length !== 0) {
+      localStorage.setItem(
+        "randomNewsItem",
+        JSON.stringify(this.randomNewsItem)
+      );
+      localStorage.setItem(
+        "randomNewsItemPublishedAt",
+        JSON.stringify(
+          convertNewsItemPublishedTime(this.randomNewsItem[0].publishedAt)
+        )
+      );
+    }
+  }
+
+  //if a user hits the button on the random page, it triggers another newsItem to show
+  async changeRandomNewsItemOnButtonClick() {
+    this.showAnotherNewsItemButtonClicked = true;
+    this.previousNewsItem = [];
+    this.previousDate = "";
+    //fetch the data and load it in the random component
+    this.prepareDataForDisplay();
+  }
+
+  //if a user hits the button to show a previous article, show it also on the page.
+  showPreviousNewsItem() {
+    this.showAnotherNewsItemButtonClicked = false;
+    // this.hideShowPreviousNewsItemButton = true;
+    // this.showAnotherNewsItemButtonClicked = false;
+    if (localStorage.getItem("randomNewsItem") !== null)
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      this.previousNewsItem = JSON.parse(
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        localStorage.getItem("randomNewsItem")!
+      );
+    this.previousDate = JSON.parse(
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      localStorage.getItem("randomNewsItemPublishedAt")!
+    );
   }
 }
 </script>
@@ -295,6 +377,10 @@ a {
 .randompage-button button {
   margin-bottom: 5%;
   font-size: 100%;
+}
+
+.random-page-previous-item-container button {
+  margin-top: 5%;
 }
 
 .randompage-no-newsitems {
@@ -357,6 +443,12 @@ a {
     text-align: left;
   }
 
+  .randompage-previous-item-bar {
+    background-color: blue;
+    margin: 2% 15% 2% 15%;
+    color: white;
+  }
+
   .randompage-newsdata-not-loaded {
     background-color: purple;
     height: 83vh;
@@ -412,6 +504,12 @@ a {
     text-align: left;
   }
 
+  .randompage-previous-item-bar {
+    background-color: blue;
+    margin: 2% 0 2% 0;
+    color: white;
+  }
+
   .randompage-newsdata-not-loaded {
     background-color: purple;
     height: 83vh;
@@ -455,6 +553,12 @@ a {
 
   .randompage-small-header {
     font-weight: bold;
+  }
+
+  .randompage-previous-item-bar {
+    background-color: blue;
+    margin: 2% 0 2% 0;
+    color: white;
   }
 
   .randompage-newsdata-not-loaded {
