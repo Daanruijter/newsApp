@@ -342,6 +342,7 @@ export default class RandomPage extends Vue {
     this.previousNewsItem = [];
     this.previousDate = "";
     //fetch the data and load it in the random component
+    this.saveRandomItemInLocalStorage();
     this.prepareDataForDisplay();
   }
 
