@@ -18,9 +18,9 @@
       >
         <div
           class="randompage-title"
-          @mouseover="isHovering = true"
-          @mouseout="isHovering = false"
-          :class="{ hovering: isHovering }"
+          @mouseover="linkIsHovered = true"
+          @mouseout="linkIsHovered = false"
+          :class="{ hovering: linkIsHovered }"
         >
           <a :href="newsItem.url">{{ newsItem.title }}</a>
         </div>
@@ -82,9 +82,9 @@
       >
         <div
           class="randompage-title"
-          @mouseover="isHovering = true"
-          @mouseout="isHovering = false"
-          :class="{ hovering: isHovering }"
+          @mouseover="previousArticleLinkIsHovered = true"
+          @mouseout="previousArticleLinkIsHovered = false"
+          :class="{ hovering: previousArticleLinkIsHovered }"
         >
           <a :href="newsItem.url">{{ newsItem.title }}</a>
         </div>
@@ -131,7 +131,7 @@ import { Vue, Component } from "vue-property-decorator";
 import news from "../store/modules/news";
 import NewsItemType from "../interfacesforapp";
 import { convertNewsItemPublishedTime } from "../methodsForGeneralUse";
-// import { bus } from "../main";
+import { bus } from "../main";
 
 @Component
 export default class RandomPage extends Vue {
@@ -139,7 +139,8 @@ export default class RandomPage extends Vue {
   randomNewsItem: NewsItemType[] = [];
   threeOtherNewsItems: NewsItemType[] = [];
   newsItemPublishedTime = "";
-  isHovering = false;
+  linkIsHovered = false;
+  previousArticleLinkIsHovered = false;
   hoveringReadMore = false;
   previousNewsItem: NewsItemType[] = [];
   previousDate = "";
@@ -306,10 +307,15 @@ export default class RandomPage extends Vue {
     //fetch the data and load it in the random component
 
     await this.fetchDataForRandomPageAndLoadItInRandomComponent();
-    this.newsData = this.$store.getters[
-      "vuexModuleDecorators/newsDataModule"
-    ].queriedNewsItemsGetter;
-    this.saveRandomItemInLocalStorage();
+
+    const data = this.$store.getters["vuexModuleDecorators/newsDataModule"]
+      .queriedNewsItemsGetter;
+
+    this.newsData = data;
+
+    //change newsData also in the newsFooter
+    bus.$emit("setNewsDataInNewsFooter", data);
+
     //filter the data to display one random item
     this.filterArrayByRandomIndex();
   }
@@ -388,6 +394,11 @@ a {
   font-weight: bold;
 }
 
+.randompage-description-wrapper,
+.randompage-contents-wrapper {
+  text-align: left;
+}
+
 /* bigger screens */
 @media only screen and (min-width: 1000px) {
   .randompage-container {
@@ -421,18 +432,13 @@ a {
     width: 35%;
   }
   .randompage-description,
-  .randompage-read-more,
   .randompage-contents {
-    margin-bottom: 5%;
-  }
-
-  .randompage-read-more {
-    font-weight: bold;
     margin-bottom: 5%;
   }
 
   .randompage-small-header {
     font-weight: bold;
+    margin-left: 15%;
   }
 
   .randompage-description,
@@ -440,7 +446,6 @@ a {
     margin-bottom: 2%;
     margin-left: 15%;
     margin-right: 15%;
-    text-align: left;
   }
 
   .randompage-previous-item-bar {
@@ -484,13 +489,7 @@ a {
   }
 
   .randompage-description,
-  .randompage-read-more,
   .randompage-contents {
-    margin-bottom: 5%;
-  }
-
-  .randompage-read-more {
-    font-weight: bold;
     margin-bottom: 5%;
   }
 
@@ -501,7 +500,6 @@ a {
   .randompage-description,
   .randompage-contents {
     margin-bottom: 2%;
-    text-align: left;
   }
 
   .randompage-previous-item-bar {
@@ -542,12 +540,6 @@ a {
 
   .randompage-description,
   .randompage-contents {
-    margin-bottom: 5%;
-    text-align: left;
-  }
-
-  .randompage-read-more {
-    font-weight: bold;
     margin-bottom: 5%;
   }
 

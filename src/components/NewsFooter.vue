@@ -54,7 +54,7 @@ import VueRouter from "vue-router";
 import DetailsPage from "../views/DetailsPage.vue";
 import NewsItemType from "../interfacesforapp";
 import { bus } from "../main";
-// import news from "../store/modules/news";
+import news from "../store/modules/news";
 
 export interface FetchNews {
   fetchBase: string;
@@ -84,6 +84,11 @@ export default class NewsFooter extends Vue {
     bus.$on("triggerDataToFetchInFooter", () => {
       console.log("fecthdatainNEWSFOOTER");
       this.getData();
+    });
+
+    //change the newsData variable on changes in the random page component
+    bus.$on("setNewsDataInNewsFooter", (data: NewsItemType[]) => {
+      this.newsData = data;
     });
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -121,7 +126,7 @@ export default class NewsFooter extends Vue {
     bus.$emit("triggerdetailspagereload", item);
   }
   //if a user clicks on the categories button, open the categories div in
-  doStuffOnCLickInSitemap(event: Event): void {
+  async doStuffOnCLickInSitemap(event: Event) {
     const routeText = (event.target as HTMLAnchorElement).text;
 
     //open the categories div if a user hits the categories button
@@ -139,7 +144,22 @@ export default class NewsFooter extends Vue {
 
     //load the first item of the details page by triggering the load function in the DetailsPage component
     if (routeText.includes("Details")) {
-      const title = this.newsData[0].title;
+      const newsCategoryFetchObject = {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        fetchBase: localStorage.getItem("fetchBase")!,
+
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        typeOfFetchBase: localStorage.getItem("typeOfFetchBase")!,
+      };
+
+      await news.fetchNewsQuery(newsCategoryFetchObject);
+
+      const title = this.$store.getters["vuexModuleDecorators/newsDataModule"]
+        .queriedNewsItemsGetter[0].title;
+
+      this.newsData = this.$store.getters[
+        "vuexModuleDecorators/newsDataModule"
+      ].queriedNewsItemsGetter;
 
       bus.$emit("loadFirstElementOfDetailsPage", title);
     }

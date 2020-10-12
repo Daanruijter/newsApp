@@ -294,6 +294,11 @@ a {
   font-weight: bold;
 }
 
+.detailspage-description-wrapper,
+.detailspage-contents-wrapper {
+  text-align: left;
+}
+
 /* bigger screens */
 @media only screen and (min-width: 1000px) {
   .detailspage-container {
@@ -337,6 +342,11 @@ a {
     margin-left: 15%;
     margin-right: 15%;
     text-align: left;
+  }
+
+  .detailspage-small-header {
+    text-align: left !important;
+    margin-left: 15%;
   }
 
   .detailspage-newsdata-not-loaded {

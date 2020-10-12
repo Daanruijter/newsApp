@@ -173,6 +173,8 @@ export default class NewsMenu extends Vue {
     bus.$on("openCategoriesDivFromNewsFooter", () => {
       console.log("event from NEWSFOOTER");
       this.categoriesPageBoolean = !this.categoriesPageBoolean;
+      this.newsCategorySelected = "Default News Category";
+      this.countrySelected = "Default Country";
     });
     bus.$on("closeCategoriesDivFromNewsFooter", () => {
       this.categoriesPageBoolean = false;
@@ -194,8 +196,11 @@ export default class NewsMenu extends Vue {
     this.newsCategorySelected = "Default News Category";
   }
 
-  setCategoriesBoolean() {
+  //change the categoriesBoolean variable onclick
+  setCategoriesBoolean(): void {
     this.categoriesPageBoolean = !this.categoriesPageBoolean;
+    this.countrySelected = "Default Country";
+    this.newsCategorySelected = "Default News Category";
   }
 
   async catchCountryValue(event: Event) {
@@ -402,9 +407,10 @@ export default class NewsMenu extends Vue {
     left: 8px;
     right: 8px;
     top: 0;
-    padding-left: 15%;
+    margin-left: 14.5%;
+    margin-right: 14.5%;
     max-height: 131px !important;
-    width: 70%;
+    width: calc(70% - 8px);
     z-index: 200;
     a {
       font-weight: bold;
