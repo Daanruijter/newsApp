@@ -94,7 +94,6 @@
           <option value="Thailand">Thailand</option>
           <option value="Turkey">Turkey</option>
           <option value="United Arabic Emirates">United Arabic Emirates</option>
-          <option value="Philippines">Philippines</option>
           <option value="Ukraine">Ukraine</option>
           <option value="United Kingdom">United Kingdom</option>
           <option value="United States">United States</option>

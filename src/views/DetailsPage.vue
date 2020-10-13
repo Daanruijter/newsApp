@@ -17,24 +17,33 @@
         >
           <a :href="newsItem.url">{{ newsItem.title }}</a>
         </div>
-
         <div>
-          <i>
-            Written by:{{ " " }}{{ newsItem.author }}{{ ", source: "
+          <i v-if="newsItem.author">
+            Written by:{{ " " }}{{ newsItem.author }}</i
+          ><i
+            ><i v-if="newsItem.author">,</i>{{ " source: "
             }}{{ newsItem.source.name }}</i
           >
         </div>
         <br />
         <div class="detailspage-description-wrapper">
-          <span class="detailspage-small-header">Description</span>
+          <span v-if="newsItem.description" class="detailspage-small-header"
+            >Description</span
+          >
           <br />
 
-          <div class="detailspage-description">{{ newsItem.description }}</div>
+          <div v-if="newsItem.description" class="detailspage-description">
+            {{ newsItem.description }}
+          </div>
         </div>
         <div class="detailspage-contents-wrapper">
-          <span class="detailspage-small-header">Contents</span>
+          <span v-if="newsItem.content" class="detailspage-small-header"
+            >Contents</span
+          >
           <br />
-          <div class="detailspage-contents">{{ newsItem.content }}</div>
+          <div v-if="newsItem.content" class="detailspage-contents">
+            {{ newsItem.content }}
+          </div>
         </div>
 
         <div class="detailspage-picture">
@@ -66,22 +75,28 @@
           </div>
 
           <div>
-            <i>
-              Written by:{{ " " }}{{ newsItem.author }}{{ ", source: "
+            <i v-if="newsItem.author">
+              Written by:{{ " " }}{{ newsItem.author }}</i
+            ><i
+              ><i v-if="newsItem.author">,</i>{{ " source: "
               }}{{ newsItem.source.name }}</i
             >
           </div>
           <br />
           <div class="detailspage-description-wrapper">
-            <span class="detailspage-small-header">Description</span>
+            <span v-if="newsItem.description" class="detailspage-small-header"
+              >Description</span
+            >
             <br />
 
-            <div class="detailspage-description">
+            <div v-if="newsItem.description" class="detailspage-description">
               {{ newsItem.description }}
             </div>
           </div>
-          <div class="detailspage-contents-wrapper">
-            <span class="detailspage-small-header">Contents</span>
+          <div v-if="newsItem.content" class="detailspage-contents-wrapper">
+            <span v-if="newsItem.content" class="detailspage-small-header"
+              >Contents</span
+            >
             <br />
             <div class="detailspage-contents">{{ newsItem.content }}</div>
           </div>

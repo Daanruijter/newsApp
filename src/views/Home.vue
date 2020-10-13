@@ -120,9 +120,9 @@ export default class Home extends Vue {
   indexOfHoveredLink: number | null = null;
   newsData: NewsItemType[] = [];
   newsDataToDisplay: NewsItemType[] = [];
+  newsDataToDisplayUnsorted: NewsItemType[] = [];
   newsDataToDisplayWithNoPictures: NewsItemType[] = [];
   newsDataToDisplayWithNoPicturesUnsorted: NewsItemType[] = [];
-  noImage = false;
   fetchedCategory: null | string = "";
   router = new VueRouter({
     routes: [
@@ -132,25 +132,29 @@ export default class Home extends Vue {
   });
   pictureString = "picture";
   noPictureString = "nopicture";
-  pictureNotLoadedArray: Array<number> = [];
 
-  //if a picture cannot load, filter it out of the newsItemTodisplay Array by filtering the item(s) out of that array in the news module
-  pictureNotLoaded(index: number): void {
-    let i: number;
-
-    for (i = 0; i < this.newsDataToDisplay.length; i++) {
-      if (i === index) {
-        this.pictureNotLoadedArray.push(index);
-
-        const removedItem = this.newsDataToDisplay.splice(index, 1);
-        this.newsDataToDisplayWithNoPictures.push(removedItem[0]);
-        //to have a variable that is not sorted
-        this.newsDataToDisplayWithNoPicturesUnsorted.push(removedItem[0]);
+  //if a picture cannot load, filter it out of the newsItemToDisplay Array by filtering the item(s) out
+  //and pushing them to the newsDataToDisplayWithNoPictures array that is constructed to display items without a picture
+  pictureNotLoaded(indexOfNotLoadedPicture: number): void {
+    this.newsDataToDisplay = this.newsDataToDisplay.filter(
+      (item: NewsItemType, index: number) => {
+        if (
+          index === indexOfNotLoadedPicture &&
+          //make sure that the broken picture does get added only once (the function gets called after a reset of the sorting)
+          !this.newsDataToDisplayWithNoPictures.includes(item) &&
+          !this.newsDataToDisplayWithNoPicturesUnsorted.includes(item)
+        ) {
+          //push the broken picture(s) in the newsDataToDisplayWithNoPictures, but also in the newsDataToDisplayWithNoPicturesUnsorted that I
+          //use to give a user the option to reset a sorting action
+          this.newsDataToDisplayWithNoPictures.push(item);
+          this.newsDataToDisplayWithNoPicturesUnsorted.push(item);
+        }
+        return index !== indexOfNotLoadedPicture;
       }
-    }
+    );
   }
 
-  //bus object needs to listen to events in another component on mounted hook
+  //bus objects can listen to events in another component if you put them in the mounted hook of the component in which you want to listen to the event
   async mounted() {
     console.log("mounted");
 
@@ -162,14 +166,17 @@ export default class Home extends Vue {
     };
 
     await news.fetchNewsQuery(newsCategoryFetchObject);
+    //disable non-null assertion, because fetchedCategory will not be null is it must not be. It get's populated with users querying the API
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     this.fetchedCategory = localStorage.getItem("fetchBase"!);
 
     //get the data from vuex in the newsFooter component
     bus.$emit("triggerDataToFetchInFooter");
 
-    //load the data in the component through the queriedNewsItemsGetter
+    //load the newsdata in the component through the queriedNewsItemsGetter. On mounting it will be the default news array (United States)
     this.setData();
+
+    //the "buses" below listen to users querying the API in the navbar and they change the news array accordingly
     bus.$on("selectedCountry", (selectedCountry: string) => {
       this.fetchedCategory = selectedCountry;
       this.setData();
@@ -201,15 +208,15 @@ export default class Home extends Vue {
 
   //set the data to the current values in the news module
   setData(): void {
-    const filterNewsDataBase = this.$store.getters[
+    const filteredNewsData = this.$store.getters[
       "vuexModuleDecorators/newsDataModule"
     ].queriedNewsItemsGetter;
-    this.newsDataToDisplay = filterNewsDataBase.filter(
+    this.newsDataToDisplay = filteredNewsData.filter(
       (item: NewsItemType, index: number) => {
         return index < 10;
       }
     );
-    this.newsData = filterNewsDataBase.filter(
+    this.newsData = filteredNewsData.filter(
       (item: NewsItemType, index: number) => {
         return index < 10;
       }
@@ -224,59 +231,34 @@ export default class Home extends Vue {
     }, 3000);
   }
 
-  //hide "other news" if there is no news item without a picture.
-  //If so, set the data variable noImage to true and display the Other News header
+  //If there is an item without a picture, create an array with pictures and an array without pictures
   checkIfThereIsANewsItemWithoutAPicture(): void {
-    let filteredArray: NewsItemType[] = this.newsDataToDisplay;
-    filteredArray = filteredArray.filter(
-      (item: NewsItemType, index: number) => {
-        return index < 10;
-      }
-    );
-    //clear the array
+    //clear the arrays (to prevent them to grow unintentionally on every query to the API from the user)
     this.newsDataToDisplayWithNoPictures = [];
     this.newsDataToDisplayWithNoPicturesUnsorted = [];
-    let i = 0;
-    for (i = 0; i < filteredArray.length; i++) {
-      if (
-        filteredArray[i].urlToImage === "" ||
-        filteredArray[i].urlToImage === null
-      ) {
-        // this.noImage = true;
+    this.newsDataToDisplayUnsorted = [];
 
-        // filteredArray.splice(i, 1);
-        // console.log(filteredArray.splice(i, 1));
-        const removedItem = filteredArray.splice(i, 1);
+    //Filter the items without a picture out of the newsDataToDisPlay array and put them in the newsDataToDisplayWithNoPictures array
+    //Those items get displayed below the header "Other news" with that particular array
 
-        this.newsDataToDisplayWithNoPictures.push(removedItem[0]);
-
-        //to have a variable that is not sorted
-        this.newsDataToDisplayWithNoPicturesUnsorted.push(removedItem[0]);
-        console.log(this.newsDataToDisplayWithNoPictures);
-        console.log(this.newsDataToDisplay);
+    //Also set the variable this.newsDataToDisplayUnsorted to the unsorted array, to be able to reset after sorting
+    this.newsDataToDisplay = this.newsDataToDisplayUnsorted = this.newsDataToDisplay.filter(
+      (item: NewsItemType) => {
+        if (item.urlToImage === null) {
+          this.newsDataToDisplayWithNoPictures.push(item);
+          this.newsDataToDisplayWithNoPicturesUnsorted.push(item);
+        }
+        return item.urlToImage !== null;
       }
-    }
-
-    // if (
-    //   this.$store.getters["vuexModuleDecorators/newsDataModule"]
-    //     .queriedNewsItemsGetter.length -
-    //     filteredArray.length ===
-    //   0
-    // ) {
-    //   this.newsDataToDisplayWithNoPictures = [];
-    // }
-
-    this.newsDataToDisplay = filteredArray;
-    this.newsData = filteredArray;
-
-    console.log(this.newsDataToDisplay);
+    );
   }
 
+  //Close the categories div if a user clicks on news items or on their link to the detail page
   makeCategoriesDivClosed(): void {
     bus.$emit("makeCategoriesDivClosedEventForDetailsPage");
   }
 
-  //sort the news array bij news source name
+  //Sort the news array by news title
   sortByNewsTitle(): void {
     function compareTitles(a: NewsItemType, b: NewsItemType): number {
       let returnComparisonNumber = 2;
@@ -297,15 +279,14 @@ export default class Home extends Vue {
       return returnComparisonNumber;
     }
 
-    this.newsDataToDisplay = this.newsData;
-
     //Before sorting filter the 10 least recent news items out of the array to have the 10 most recent ones left and display them
-    let newsDataToSort: NewsItemType[] = this.newsData;
+    let newsDataToSort: NewsItemType[] = this.newsDataToDisplay;
     newsDataToSort = newsDataToSort.filter(
       (item: NewsItemType, index: number) => {
         return index < 10;
       }
     );
+
     const sorted: NewsItemType[] = newsDataToSort.sort(compareTitles);
     this.newsDataToDisplay = sorted;
 
@@ -316,6 +297,7 @@ export default class Home extends Vue {
     this.newsDataToDisplayWithNoPictures = sortedWithoutPictures;
   }
 
+  //Sort the news array by news source
   sortByNewsSource(): void {
     function compareSourceNames(a: NewsItemType, b: NewsItemType): number {
       let returnComparisonNumber = 2;
@@ -339,16 +321,13 @@ export default class Home extends Vue {
       return returnComparisonNumber;
     }
 
-    this.newsDataToDisplay = this.newsData;
-
     //Before sorting filter the 10 least recent news items out of the array to have the 10 most recent ones left and display them
-    let newsDataToSort: NewsItemType[] = this.newsData;
+    let newsDataToSort: NewsItemType[] = this.newsDataToDisplay;
     newsDataToSort = newsDataToSort.filter(
       (item: NewsItemType, index: number) => {
         return index < 10;
       }
     );
-    this.newsDataToDisplay = newsDataToSort;
 
     const sorted: NewsItemType[] = newsDataToSort.sort(compareSourceNames);
 
@@ -361,12 +340,14 @@ export default class Home extends Vue {
     this.newsDataToDisplayWithNoPictures = sortedWithoutPictures;
   }
 
-  //reset the sorted news items to the list that it was
+  //Reset the sorted news items arrays to the original, unsorted arrays
   reset(): void {
-    this.newsDataToDisplay = this.newsData;
+    console.log(this.newsData);
+    this.newsDataToDisplay = this.newsDataToDisplayUnsorted;
     this.newsDataToDisplayWithNoPictures = this.newsDataToDisplayWithNoPicturesUnsorted;
   }
 
+  //Create a hovering effect if a user leaves a link with his mouse, for both the array with pictures and the array without pictures
   mouseEnter(
     index: number | null,
     pictureOrNoPictureArrayIndicator: string
@@ -394,6 +375,9 @@ export default class Home extends Vue {
       }
     }
   }
+
+  //Create a hovering effect if a user leaves a link with his mouse, for both the array with pictures and the array without pictures
+
   mouseLeave(
     index: number | null,
     pictureOrNoPictureArrayIndicator: string
@@ -698,6 +682,3 @@ a {
   }
 }
 </style>
-
-.randompage-newsdata-not-loaded { background-color: purple; height: 83vh; width:
-100%; display: flex; justify-content: center; align-items: center; }

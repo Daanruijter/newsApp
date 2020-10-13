@@ -25,25 +25,31 @@
           <a :href="newsItem.url">{{ newsItem.title }}</a>
         </div>
 
-        <div v-if="newsItem.author">
-          <i>
-            Written by:{{ " " }}{{ newsItem.author }}{{ ", source: "
-            }}{{ newsItem.source.name }}
-          </i>
+        <div>
+          <i v-if="newsItem.author">
+            Written by:{{ " " }}{{ newsItem.author }}</i
+          ><i
+            ><i v-if="newsItem.author">,</i>{{ " source: "
+            }}{{ newsItem.source.name }}</i
+          >
         </div>
         <br />
 
         <div class="randompage-description-wrapper">
-          <span class="randompage-small-header">Description</span>
+          <span v-if="newsItem.description" class="randompage-small-header"
+            >Description</span
+          >
           <br />
-          <div class="randompage-description">
+          <div v-if="newsItem.description" class="randompage-description">
             {{ newsItem.description }}
           </div>
         </div>
         <div class="randompage-contents-wrapper">
-          <span class="randompage-small-header">Contents</span>
+          <span v-if="newsItem.content" class="randompage-small-header"
+            >Contents</span
+          >
           <br />
-          <div class="randompage-contents">
+          <div v-if="newsItem.content" class="randompage-contents">
             {{ newsItem.content }}
           </div>
         </div>
@@ -89,25 +95,31 @@
           <a :href="newsItem.url">{{ newsItem.title }}</a>
         </div>
 
-        <div v-if="newsItem.author">
-          <i>
-            Written by:{{ " " }}{{ newsItem.author }}{{ ", source: "
-            }}{{ newsItem.source.name }}
-          </i>
+        <div>
+          <i v-if="newsItem.author">
+            Written by:{{ " " }}{{ newsItem.author }}</i
+          ><i
+            ><i v-if="newsItem.author">,</i>{{ " source: "
+            }}{{ newsItem.source.name }}</i
+          >
         </div>
         <br />
 
         <div class="randompage-description-wrapper">
-          <span class="randompage-small-header">Description</span>
+          <span v-if="newsItem.description" class="randompage-small-header"
+            >Description</span
+          >
           <br />
-          <div class="randompage-description">
+          <div v-if="newsItem.description" class="randompage-description">
             {{ newsItem.description }}
           </div>
         </div>
         <div class="randompage-contents-wrapper">
-          <span class="randompage-small-header">Contents</span>
+          <span v-if="newsItem.content" class="randompage-small-header"
+            >Contents</span
+          >
           <br />
-          <div class="randompage-contents">
+          <div v-if="newsItem.content" class="randompage-contents">
             {{ newsItem.content }}
           </div>
         </div>
