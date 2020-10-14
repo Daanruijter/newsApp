@@ -27,3 +27,8 @@ export interface FetchBase {
   fetchBase?: string;
   typeOfFetchBase?: string;
 }
+
+//interface for datestring array in details page
+export interface DateStringArray {
+  publishedAt: string;
+}

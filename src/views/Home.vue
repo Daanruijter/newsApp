@@ -1,6 +1,10 @@
 <template>
   <div class="home-container">
-    <div v-if="this.newsDataToDisplay[0]" class="home-newsdata-loaded">
+    <div
+      @change="test"
+      v-if="this.newsDataToDisplay[0]"
+      class="home-newsdata-loaded"
+    >
       <div
         class="home-show-selected-category"
         v-if="this.fetchedCategory !== 'Default Country'"
@@ -15,7 +19,16 @@
             to know more.
           </div>
 
-          <div class="home-sort-the-data">Sort the data by:</div>
+          <div
+            v-if="
+              makeSortingFunctionalityAvailable ===
+                this.makeSortingFunctionalityAvailable &&
+                this.newsDataToDisplayWithNoPictures.length !== 0
+            "
+            class="home-sort-the-data"
+          >
+            Sort the data by:
+          </div>
           <div class="home-buttons">
             <button
               name="sortByNewsSource"
@@ -123,6 +136,7 @@ export default class Home extends Vue {
   newsDataToDisplayUnsorted: NewsItemType[] = [];
   newsDataToDisplayWithNoPictures: NewsItemType[] = [];
   newsDataToDisplayWithNoPicturesUnsorted: NewsItemType[] = [];
+  makeSortingFunctionalityAvailable = false;
   fetchedCategory: null | string = "";
   router = new VueRouter({
     routes: [
@@ -133,25 +147,34 @@ export default class Home extends Vue {
   pictureString = "picture";
   noPictureString = "nopicture";
 
+  test() {
+    alert("sdlh");
+  }
+
   //if a picture cannot load, filter it out of the newsItemToDisplay Array by filtering the item(s) out
   //and pushing them to the newsDataToDisplayWithNoPictures array that is constructed to display items without a picture
   pictureNotLoaded(indexOfNotLoadedPicture: number): void {
-    this.newsDataToDisplay = this.newsDataToDisplay.filter(
-      (item: NewsItemType, index: number) => {
-        if (
-          index === indexOfNotLoadedPicture &&
-          //make sure that the broken picture does get added only once (the function gets called after a reset of the sorting)
-          !this.newsDataToDisplayWithNoPictures.includes(item) &&
-          !this.newsDataToDisplayWithNoPicturesUnsorted.includes(item)
-        ) {
-          //push the broken picture(s) in the newsDataToDisplayWithNoPictures, but also in the newsDataToDisplayWithNoPicturesUnsorted that I
-          //use to give a user the option to reset a sorting action
-          this.newsDataToDisplayWithNoPictures.push(item);
-          this.newsDataToDisplayWithNoPicturesUnsorted.push(item);
-        }
-        return index !== indexOfNotLoadedPicture;
-      }
-    );
+    console.log("PICTUTRENORLODAED");
+    // this.makeSortingFunctionalityAvailable = false;
+    // this.newsDataToDisplay = this.newsDataToDisplayUnsorted = this.newsDataToDisplay.filter(
+    //   (item: NewsItemType, index: number) => {
+    //     if (
+    //       index === indexOfNotLoadedPicture &&
+    //       //make sure that the broken picture does get added only once (the function gets called after a reset of the sorting)
+    //       !this.newsDataToDisplayWithNoPictures.includes(item) &&
+    //       !this.newsDataToDisplayWithNoPicturesUnsorted.includes(item)
+    //     ) {
+    //       //push the broken picture(s) in the newsDataToDisplayWithNoPictures, but also in the newsDataToDisplayWithNoPicturesUnsorted that I
+    //       //use to give a user the option to reset a sorting action
+    //       this.newsDataToDisplayWithNoPictures.push(item);
+    //       this.newsDataToDisplayWithNoPicturesUnsorted.push(item);
+    //     }
+    //     return index !== indexOfNotLoadedPicture;
+    //   }
+    // );
+    // //Make sure that a user cannot sort before the correct arrays are set up
+    // //I use this boolean with v-if
+    // this.makeSortingFunctionalityAvailable = true;
   }
 
   //bus objects can listen to events in another component if you put them in the mounted hook of the component in which you want to listen to the event
@@ -211,8 +234,12 @@ export default class Home extends Vue {
     const filteredNewsData = this.$store.getters[
       "vuexModuleDecorators/newsDataModule"
     ].queriedNewsItemsGetter;
+
+    // console.log(filteredNewsData);
+
     this.newsDataToDisplay = filteredNewsData.filter(
       (item: NewsItemType, index: number) => {
+        // console.log(item.urlToImage);
         return index < 10;
       }
     );
@@ -221,7 +248,7 @@ export default class Home extends Vue {
         return index < 10;
       }
     );
-    console.log(this.newsDataToDisplay);
+    // console.log(this.newsDataToDisplay);
   }
 
   //hide selected category div after a few seconds
@@ -244,7 +271,8 @@ export default class Home extends Vue {
     //Also set the variable this.newsDataToDisplayUnsorted to the unsorted array, to be able to reset after sorting
     this.newsDataToDisplay = this.newsDataToDisplayUnsorted = this.newsDataToDisplay.filter(
       (item: NewsItemType) => {
-        if (item.urlToImage === null) {
+        // console.log(item.urlToImage);
+        if (item.urlToImage === null || item.urlToImage === "") {
           this.newsDataToDisplayWithNoPictures.push(item);
           this.newsDataToDisplayWithNoPicturesUnsorted.push(item);
         }
@@ -342,38 +370,38 @@ export default class Home extends Vue {
 
   //Reset the sorted news items arrays to the original, unsorted arrays
   reset(): void {
-    console.log(this.newsData);
+    // console.log(this.newsData);
     this.newsDataToDisplay = this.newsDataToDisplayUnsorted;
     this.newsDataToDisplayWithNoPictures = this.newsDataToDisplayWithNoPicturesUnsorted;
   }
 
   //Create a hovering effect if a user leaves a link with his mouse, for both the array with pictures and the array without pictures
   mouseEnter(
-    index: number | null,
-    pictureOrNoPictureArrayIndicator: string
+    index: number | null
+    // pictureOrNoPictureArrayIndicator: string
   ): void {
     this.indexOfHoveredLink = index;
+    console.log("mouseenter");
+    // if (pictureOrNoPictureArrayIndicator === "picture") {
+    //   if (index !== null) {
+    //     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    //     const item = this.newsDataToDisplay[index]!;
 
-    if (pictureOrNoPictureArrayIndicator === "picture") {
-      if (index !== null) {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const item = this.newsDataToDisplay[index]!;
+    //     item.homePageLinksHovered = !item.homePageLinksHovered;
 
-        item.homePageLinksHovered = !item.homePageLinksHovered;
+    //     this.$set(this.newsDataToDisplay, index, item);
+    //   }
+    // }
+    // if (pictureOrNoPictureArrayIndicator === "nopicture") {
+    //   if (index !== null) {
+    //     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    //     const item = this.newsDataToDisplayWithNoPictures[index]!;
 
-        this.$set(this.newsDataToDisplay, index, item);
-      }
-    }
-    if (pictureOrNoPictureArrayIndicator === "nopicture") {
-      if (index !== null) {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const item = this.newsDataToDisplayWithNoPictures[index]!;
+    //     item.homePageLinksHovered = !item.homePageLinksHovered;
 
-        item.homePageLinksHovered = !item.homePageLinksHovered;
-
-        this.$set(this.newsDataToDisplayWithNoPictures, index, item);
-      }
-    }
+    //     this.$set(this.newsDataToDisplayWithNoPictures, index, item);
+    //   }
+    // }
   }
 
   //Create a hovering effect if a user leaves a link with his mouse, for both the array with pictures and the array without pictures
@@ -382,26 +410,28 @@ export default class Home extends Vue {
     index: number | null,
     pictureOrNoPictureArrayIndicator: string
   ): void {
-    if (pictureOrNoPictureArrayIndicator === "picture") {
-      if (index !== null) {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const item = this.newsDataToDisplay[index]!;
+    console.log("mouseleave");
 
-        item.homePageLinksHovered = !item.homePageLinksHovered;
+    //  if (pictureOrNoPictureArrayIndicator === "picture") {
+    //     if (index !== null) {
+    //       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    //       const item = this.newsDataToDisplay[index]!;
 
-        this.$set(this.newsDataToDisplay, index, item);
-      }
-    }
-    if (pictureOrNoPictureArrayIndicator === "nopicture") {
-      if (index !== null) {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const item = this.newsDataToDisplayWithNoPictures[index]!;
+    //       item.homePageLinksHovered = !item.homePageLinksHovered;
 
-        item.homePageLinksHovered = !item.homePageLinksHovered;
+    //       this.$set(this.newsDataToDisplay, index, item);
+    //     }
+    //   }
+    // if (pictureOrNoPictureArrayIndicator === "nopicture") {
+    //   if (index !== null) {
+    //     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    //     const item = this.newsDataToDisplayWithNoPictures[index]!;
 
-        this.$set(this.newsDataToDisplayWithNoPictures, index, item);
-      }
-    }
+    //     item.homePageLinksHovered = !item.homePageLinksHovered;
+
+    //     this.$set(this.newsDataToDisplayWithNoPictures, index, item);
+    //   }
+    // }
   }
 }
 </script>

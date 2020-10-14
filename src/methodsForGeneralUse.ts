@@ -1,5 +1,6 @@
 //convert the publishedAt timestring to be more concrete
 export function convertNewsItemPublishedTime(publishString: string): string {
+  console.log(publishString);
   const newsItemPublishedTime = publishString;
   const dateString = new Date(newsItemPublishedTime);
 

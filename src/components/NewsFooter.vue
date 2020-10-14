@@ -151,7 +151,7 @@ export default class NewsFooter extends Vue {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         typeOfFetchBase: localStorage.getItem("typeOfFetchBase")!,
       };
-
+      alert("fetch function fired");
       await news.fetchNewsQuery(newsCategoryFetchObject);
 
       const title = this.$store.getters["vuexModuleDecorators/newsDataModule"]

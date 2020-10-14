@@ -142,7 +142,7 @@
 import { Vue, Component } from "vue-property-decorator";
 import news from "../store/modules/news";
 import NewsItemType from "../interfacesforapp";
-import { convertNewsItemPublishedTime } from "../methodsForGeneralUse";
+
 import { bus } from "../main";
 
 @Component
@@ -309,9 +309,7 @@ export default class RandomPage extends Vue {
       }
     );
     this.randomNewsItem = filterToGetRandomNewsItem;
-    this.newsItemPublishedTime = convertNewsItemPublishedTime(
-      this.randomNewsItem[0].publishedAt
-    );
+    this.newsItemPublishedTime = this.randomNewsItem[0].publishedAt;
 
     return filterToGetRandomNewsItem;
   }
@@ -339,12 +337,6 @@ export default class RandomPage extends Vue {
         "randomNewsItem",
         JSON.stringify(this.randomNewsItem)
       );
-      localStorage.setItem(
-        "randomNewsItemPublishedAt",
-        JSON.stringify(
-          convertNewsItemPublishedTime(this.randomNewsItem[0].publishedAt)
-        )
-      );
     }
   }
 
@@ -369,6 +361,7 @@ export default class RandomPage extends Vue {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         localStorage.getItem("randomNewsItem")!
       );
+    //HIERRRRRRRRRRRRRRRRRRRRRRRR
     this.previousDate = JSON.parse(
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       localStorage.getItem("randomNewsItemPublishedAt")!
