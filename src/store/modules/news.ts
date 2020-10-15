@@ -564,7 +564,7 @@ class NewsModule extends VuexModule {
     if (fetchBaseObject.typeOfFetchBase === "fetchInput") {
       data = offLineData.Trump;
     }
-
+    // data = [];
     //TEST MODE
     //*********************************
     //TEST MODE

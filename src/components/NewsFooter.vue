@@ -11,6 +11,7 @@
           @click="doStuffOnCLickInSitemap($event)"
           class="newsfooter-individual-routes"
         >
+          <!-- for the newsfooter details button -->
           <router-link v-if="route.name !== 'Details'" :to="route.path">
             {{ route.name }}
           </router-link>
@@ -20,7 +21,8 @@
             >{{ route.name }}</router-link
           >
         </div>
-        <div class="newsfooter-detilspage-flexer">
+        <div class="newsfooter-detailspage-flexer">
+          <!-- for the newsfooter dynamic links -->
           <div class="newsfooter-detailspage" v-if="route.name === 'Details'">
             <div :key="item.title" v-for="(item, index) in newsData">
               <router-link
@@ -63,8 +65,8 @@ export interface FetchNews {
 
 @Component
 export default class NewsFooter extends Vue {
-  routes: RouteConfig[] | undefined = [];
   newsData: NewsItemType[] = [];
+  routes: RouteConfig[] | undefined = [];
   router = new VueRouter({
     routes: [
       // dynamic segments start with a colon
@@ -74,8 +76,10 @@ export default class NewsFooter extends Vue {
   indexOfHoveredLink: number | null = null;
 
   mounted() {
+    //get data from localStorage if the newsFooter mounts
     this.getData();
 
+    //if the newsMenu mounts, get the data
     bus.$on("triggerDataToFetchInFooter", () => {
       this.getData();
     });
@@ -85,12 +89,12 @@ export default class NewsFooter extends Vue {
       this.newsData = data;
     });
 
+    //make sure that the name Page is removed from the string
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const routeNames = route.options.routes!;
     let i = 0;
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     for (i = 0; i < routeNames.length!; i++) {
-      //make sure that the name Page is removed from the string
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       if (routeNames[i].name!.includes("Page")) {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -102,10 +106,10 @@ export default class NewsFooter extends Vue {
     this.routes = routeNames;
   }
 
-  //get data from localStorage
-  getData() {
+  //get data from localStorage (LocalStorage gets populated in the news module after every fetch)
+  getData(): void {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const newsDataFromLocalStorage = JSON.parse(
+    const newsDataFromLocalStorage: NewsItemType[] = JSON.parse(
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       localStorage.getItem("newsData")!
     );
@@ -113,19 +117,20 @@ export default class NewsFooter extends Vue {
     this.newsData = newsDataFromLocalStorage;
   }
 
-  //if a user clicks an item below the header "details page" in de footer, make sure that the details page gets rerendendered with the title where a user clicked on
-
-  triggerDetailPageToReload(item: string) {
+  //if a user clicks an item below the header "details page" in the footer, make sure that the details page gets rerendered to display the item with the title where a user clicked on
+  triggerDetailPageToReload(item: string): void {
     bus.$emit("triggerdetailspagereload", item);
   }
-  //if a user clicks on the categories button, open the categories div in
+
   async doStuffOnCLickInSitemap(event: Event) {
+    //save on which button a user clicked
     const routeText = (event.target as HTMLAnchorElement).text;
 
     //open the categories div if a user hits the categories button
     if (routeText.includes("Categories")) {
       bus.$emit("openCategoriesDivFromNewsFooter");
     }
+    //else close it
     if (
       routeText.includes("Home") ||
       routeText.includes("Random") ||
@@ -134,7 +139,7 @@ export default class NewsFooter extends Vue {
       bus.$emit("closeCategoriesDivFromNewsFooter");
     }
 
-    //load the first item of the details page by triggering the load function in the DetailsPage component
+    //if a user clicks on the details button, make sure the details page shows the relevant items
     if (routeText.includes("Details")) {
       const newsCategoryFetchObject = {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -143,23 +148,22 @@ export default class NewsFooter extends Vue {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         typeOfFetchBase: localStorage.getItem("typeOfFetchBase")!,
       };
-
+      //fetch the data based on user interaction, so fetch the defaults or for example a country a user selected
       await news.fetchNewsQuery(newsCategoryFetchObject);
 
+      //get the title of the item that's going to be displayed on the details page
       const title = this.$store.getters["vuexModuleDecorators/newsDataModule"]
         .queriedNewsItemsGetter[0].title;
-
-      this.newsData = this.$store.getters[
-        "vuexModuleDecorators/newsDataModule"
-      ].queriedNewsItemsGetter;
-
+      //load the first item of the details page by triggering the load function in the DetailsPage component
       bus.$emit("loadFirstElementOfDetailsPage", title);
     }
-
+    //if a user clicks on the random button, show a random article
     if (routeText.includes("Random")) {
       bus.$emit("triggerRandomPageLogic");
     }
   }
+
+  //create a hovering effect for the dynamic links if a user enters a link with his mouse
   mouseEnter(index: number | null): void {
     this.indexOfHoveredLink = index;
 
@@ -168,10 +172,12 @@ export default class NewsFooter extends Vue {
       const item = this.newsData[index]!;
 
       item.linksNewsFooterHovered = !item.linksNewsFooterHovered;
-
+      //add linksNewsFooterHovered as a property to the news array with a boolean that is set to true, indicating that the link with "index" is hovered
       this.$set(this.newsData, index, item);
     }
   }
+
+  //undo the hovering effect for the dynamic links is a user leaves the link with his mouse
   mouseLeave(index: number | null): void {
     if (index !== null) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -180,6 +186,7 @@ export default class NewsFooter extends Vue {
       item.linksNewsFooterHovered = !item.linksNewsFooterHovered;
 
       this.$set(this.newsData, index, item);
+      //set linksNewsFooterHovered to false
     }
   }
 }
@@ -217,7 +224,7 @@ a {
     margin-bottom: 2%;
   }
 
-  .newsfooter-detilspage-flexer {
+  .newsfooter-detailspage-flexer {
     display: flex;
     justify-content: center;
   }
