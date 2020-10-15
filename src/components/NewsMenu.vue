@@ -149,6 +149,7 @@ import { bus } from "../main";
 
 @Component
 export default class NewsMenu extends Vue {
+  //STATE
   categoriesPageBoolean = false;
   inputValue = "";
   countrySelected = "Default Country";

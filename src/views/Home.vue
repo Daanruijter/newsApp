@@ -1,16 +1,10 @@
 <template>
   <div class="home-container">
-    <div
-      @change="test"
-      v-if="this.newsDataToDisplay[0]"
-      class="home-newsdata-loaded"
-    >
+    <div @change="test" v-if="this.newsDataToDisplay[0]" class="home-newsdata-loaded">
       <div
         class="home-show-selected-category"
         v-if="this.fetchedCategory !== 'Default Country'"
-      >
-        You selected {{ this.fetchedCategory }} news
-      </div>
+      >You selected {{ this.fetchedCategory }} news</div>
 
       <div class="home-newsdata-loaded">
         <div class="home-headers">
@@ -18,29 +12,21 @@
             Get to know what's currently happening in the world. Tap on a title
             to know more.
           </div>
-          <div class="home-sort-the-data">
-            Sort the data by:
-          </div>
+          <div class="home-sort-the-data">Sort the data by:</div>
           <div class="home-buttons">
             <button
               name="sortByNewsSource"
               class="home-sort-by-newssource-button"
               @click="sortByNewsSource"
-            >
-              News source
-            </button>
+            >News source</button>
 
             <button
               name="sortByNewsTitle"
               class="home-sort-by-newstitle-button"
               @click="sortByNewsTitle"
-            >
-              News title
-            </button>
+            >News title</button>
 
-            <button name="reset" class="home-reset" @click="reset">
-              Reset
-            </button>
+            <button name="reset" class="home-reset" @click="reset">Reset</button>
           </div>
         </div>
         <div class="home-newsitems-flexer">
@@ -50,23 +36,21 @@
             v-for="(newsItem, index) in this.newsDataToDisplay"
             :key="newsItem.title + index"
           >
-            <router-link
-              :to="{ name: 'DetailsPage', params: { title: newsItem.title } }"
-            >
+            <router-link :to="{ name: 'DetailsPage', params: { title: newsItem.title } }">
               <div
-                v-if="newsItem.urlToImage"
                 class="home-newsitem-title"
                 @mouseover="mouseEnter(index, pictureString)"
                 @mouseout="mouseLeave(index, pictureString)"
                 :class="{ hovering: newsItem.homePageLinksHovered }"
               >
-                {{ newsItem.title }}
-              </div> </router-link
-            >Source: {{ newsItem.source.name }}
+                <div v-if="newsItem.title">{{ newsItem.title }}</div>
+              </div>
+            </router-link>
+            <div v-if="newsItem.source.name&&newsItem.title">Source: {{ newsItem.source.name }}</div>
             <div class="home-newsitem-picture">
               <img
                 @error="pictureNotLoaded(index)"
-                v-if="newsItem.urlToImage"
+                v-if="newsItem.urlToImage&&newsItem.title"
                 v-bind:src="newsItem.urlToImage"
               />
             </div>
@@ -74,10 +58,7 @@
           </div>
         </div>
         <!-- if there is no picture, put those news items under the header Other News -->
-        <div
-          class="home-other-news"
-          v-if="this.newsDataToDisplayWithNoPictures.length !== 0"
-        >
+        <div class="home-other-news" v-if="this.newsDataToDisplayWithNoPictures.length !== 0">
           <h2>Other news</h2>
         </div>
         <div
@@ -86,19 +67,16 @@
           v-for="(newsItem, index) in this.newsDataToDisplayWithNoPictures"
           :key="newsItem.title"
         >
-          <router-link
-            :to="{ name: 'DetailsPage', params: { title: newsItem.title } }"
-          >
+          <router-link :to="{ name: 'DetailsPage', params: { title: newsItem.title } }">
             <div
+              v-if="newsItem.title"
               class="home-newsitem-title"
               @mouseover="mouseEnter(index, noPictureString)"
               @mouseout="mouseLeave(index, noPictureString)"
               :class="{ hovering: newsItem.homePageLinksHovered }"
-            >
-              {{ newsItem.title }}, Source: {{ newsItem.source.name }}
-            </div>
+            >{{ newsItem.title }}, Source: {{ newsItem.source.name }}</div>
           </router-link>
-          <hr v-if="!newsItem.urlToImage" />
+          <hr v-if="!newsItem.urlToImage && newsItem.title" />
         </div>
       </div>
     </div>
@@ -121,6 +99,7 @@ import { bus } from "../main";
 
 @Component({ components: { DetailsPage } })
 export default class Home extends Vue {
+  //STATE
   isHovering = false;
   indexOfHoveredLink: number | null = null;
   newsData: NewsItemType[] = [];
@@ -132,8 +111,8 @@ export default class Home extends Vue {
   router = new VueRouter({
     routes: [
       // dynamic segments start with a colon
-      { path: "/details /:id", component: DetailsPage },
-    ],
+      { path: "/details /:id", component: DetailsPage }
+    ]
   });
   pictureString = "picture";
   noPictureString = "nopicture";
@@ -149,6 +128,8 @@ export default class Home extends Vue {
       (item: NewsItemType, index: number) => {
         if (
           index === indexOfNotLoadedPicture &&
+          //make sure that the item has a title
+          item.title &&
           //make sure that the broken picture does get added only once (the function gets called after a reset of the sorting)
           !this.newsDataToDisplayWithNoPictures.includes(item) &&
           !this.newsDataToDisplayWithNoPicturesUnsorted.includes(item)
@@ -169,7 +150,7 @@ export default class Home extends Vue {
 
     const newsCategoryFetchObject = {
       fetchBase: "Default Country",
-      typeOfFetchBase: "fetchCountry",
+      typeOfFetchBase: "fetchCountry"
     };
 
     await news.fetchNewsQuery(newsCategoryFetchObject);
@@ -247,11 +228,13 @@ export default class Home extends Vue {
 
     //Filter the items without a picture out of the newsDataToDisPlay array and put them in the newsDataToDisplayWithNoPictures array
     //Those items get displayed below the header "Other news" with that particular array
-
     //Also set the variable this.newsDataToDisplayUnsorted to the unsorted array, to be able to reset after sorting
     this.newsDataToDisplay = this.newsDataToDisplayUnsorted = this.newsDataToDisplay.filter(
       (item: NewsItemType) => {
-        if (item.urlToImage === null || item.urlToImage === "") {
+        if (
+          (item.urlToImage === null || item.urlToImage === "") &&
+          item.title
+        ) {
           this.newsDataToDisplayWithNoPictures.push(item);
           this.newsDataToDisplayWithNoPicturesUnsorted.push(item);
         }
@@ -353,7 +336,7 @@ export default class Home extends Vue {
     this.newsDataToDisplayWithNoPictures = this.newsDataToDisplayWithNoPicturesUnsorted;
   }
 
-  //Create a hovering effect if a user leaves a link with his mouse, for both the array with pictures and the array without pictures
+  //Create a hovering effect if a user enters a link with his mouse, for both the array with pictures and the array without pictures
   mouseEnter(
     index: number | null,
     pictureOrNoPictureArrayIndicator: string
@@ -365,7 +348,7 @@ export default class Home extends Vue {
         const item = this.newsDataToDisplay[index]!;
 
         item.homePageLinksHovered = !item.homePageLinksHovered;
-
+        //Add homePageLinksHovered as a property to the picture news array with a boolean that is set to true, indicating that the link with "index" is hovered
         this.$set(this.newsDataToDisplay, index, item);
       }
     }
@@ -375,7 +358,7 @@ export default class Home extends Vue {
         const item = this.newsDataToDisplayWithNoPictures[index]!;
 
         item.homePageLinksHovered = !item.homePageLinksHovered;
-
+        //Add homePageLinksHovered as a property to the no picture array with a boolean that is set to true, indicating that the link with "index" is hovered
         this.$set(this.newsDataToDisplayWithNoPictures, index, item);
       }
     }
@@ -393,7 +376,7 @@ export default class Home extends Vue {
         const item = this.newsDataToDisplay[index]!;
 
         item.homePageLinksHovered = !item.homePageLinksHovered;
-
+        //Set homePageLinksHovered in the picture array to false
         this.$set(this.newsDataToDisplay, index, item);
       }
     }
@@ -403,7 +386,7 @@ export default class Home extends Vue {
         const item = this.newsDataToDisplayWithNoPictures[index]!;
 
         item.homePageLinksHovered = !item.homePageLinksHovered;
-
+        //Set homePageLinksHovered in the no picture array to false
         this.$set(this.newsDataToDisplayWithNoPictures, index, item);
       }
     }
@@ -694,7 +677,3 @@ a {
   }
 }
 </style>
-
-v-if=" makeSortingFunctionalityAvailable ===
-this.makeSortingFunctionalityAvailable &&
-this.newsDataToDisplayWithNoPictures.length !== 0 "

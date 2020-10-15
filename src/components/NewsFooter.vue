@@ -65,6 +65,7 @@ export interface FetchNews {
 
 @Component
 export default class NewsFooter extends Vue {
+  //STATE
   newsData: NewsItemType[] = [];
   routes: RouteConfig[] | undefined = [];
   router = new VueRouter({
@@ -163,7 +164,7 @@ export default class NewsFooter extends Vue {
     }
   }
 
-  //create a hovering effect for the dynamic links if a user enters a link with his mouse
+  //Create a hovering effect for the dynamic links if a user enters a link with his mouse
   mouseEnter(index: number | null): void {
     this.indexOfHoveredLink = index;
 
@@ -172,12 +173,12 @@ export default class NewsFooter extends Vue {
       const item = this.newsData[index]!;
 
       item.linksNewsFooterHovered = !item.linksNewsFooterHovered;
-      //add linksNewsFooterHovered as a property to the news array with a boolean that is set to true, indicating that the link with "index" is hovered
+      //Add linksNewsFooterHovered as a property to the news array with a boolean that is set to true, indicating that the link with "index" is hovered
       this.$set(this.newsData, index, item);
     }
   }
 
-  //undo the hovering effect for the dynamic links is a user leaves the link with his mouse
+  //Undo the hovering effect for the dynamic links if a user leaves the link with his mouse
   mouseLeave(index: number | null): void {
     if (index !== null) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -186,7 +187,7 @@ export default class NewsFooter extends Vue {
       item.linksNewsFooterHovered = !item.linksNewsFooterHovered;
 
       this.$set(this.newsData, index, item);
-      //set linksNewsFooterHovered to false
+      //Set linksNewsFooterHovered to false
     }
   }
 }
