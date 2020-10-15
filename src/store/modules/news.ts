@@ -81,23 +81,26 @@ class NewsModule extends VuexModule {
       }
       data.sort(comparePublishData);
 
-      // //convert the publishedAt property to a string that is readable for users
-      // let i = 0;
+      //convert the publishedAt property to a string that is readable for users
+      let i = 0;
 
-      // for (i = 0; i < data.length; i++) {
-      //   //only change the date if it contains a "Z", because then you know that the date has not been converted yet
-      //   //this prevents the bug that the convertNewsItemPublishedTime gets served a converted date as an argument, which returns  NaN  NaN NaN:NaN
-      //   if (data[i].publishedAt.includes("Z")) {
-      //     data[i].publishedAt = convertNewsItemPublishedTime(
-      //       data[i].publishedAt
-      //     );
-      //   }
-      // }
+      for (i = 0; i < data.length; i++) {
+        //only change the date if it contains a "Z", because then you know that the date has not been converted yet
+        //this prevents the bug that the convertNewsItemPublishedTime gets served a converted date as an argument, which returns  NaN  NaN NaN:NaN
+        if (data[i].publishedAt.includes("Z")) {
+          data[i].publishedAt = convertNewsItemPublishedTime(
+            data[i].publishedAt
+          );
+        }
+      }
       console.log("CHINA 444, after sorting data on date");
       logDateAndUrlToImage(data);
     }
-
-    sortOnPublishedDate();
+    //only sort the data if publishedAt contains a "Z", because then you know that the date has not been converted yet
+    //otherwise the array gets sorted with the converted publishedAt, which causes unexpected behaviour (if the same array gets fetched sorting them again, but not in the right way)
+    if (data[0].publishedAt.includes("Z")) {
+      sortOnPublishedDate();
+    }
 
     data = data.map((item: NewsItemType, index: number) => {
       //remove the sourcename from the title

@@ -155,26 +155,26 @@ export default class Home extends Vue {
   //and pushing them to the newsDataToDisplayWithNoPictures array that is constructed to display items without a picture
   pictureNotLoaded(indexOfNotLoadedPicture: number): void {
     console.log("PICTUTRENORLODAED");
-    // this.makeSortingFunctionalityAvailable = false;
-    // this.newsDataToDisplay = this.newsDataToDisplayUnsorted = this.newsDataToDisplay.filter(
-    //   (item: NewsItemType, index: number) => {
-    //     if (
-    //       index === indexOfNotLoadedPicture &&
-    //       //make sure that the broken picture does get added only once (the function gets called after a reset of the sorting)
-    //       !this.newsDataToDisplayWithNoPictures.includes(item) &&
-    //       !this.newsDataToDisplayWithNoPicturesUnsorted.includes(item)
-    //     ) {
-    //       //push the broken picture(s) in the newsDataToDisplayWithNoPictures, but also in the newsDataToDisplayWithNoPicturesUnsorted that I
-    //       //use to give a user the option to reset a sorting action
-    //       this.newsDataToDisplayWithNoPictures.push(item);
-    //       this.newsDataToDisplayWithNoPicturesUnsorted.push(item);
-    //     }
-    //     return index !== indexOfNotLoadedPicture;
-    //   }
-    // );
-    // //Make sure that a user cannot sort before the correct arrays are set up
-    // //I use this boolean with v-if
-    // this.makeSortingFunctionalityAvailable = true;
+    this.makeSortingFunctionalityAvailable = false;
+    this.newsDataToDisplay = this.newsDataToDisplayUnsorted = this.newsDataToDisplay.filter(
+      (item: NewsItemType, index: number) => {
+        if (
+          index === indexOfNotLoadedPicture &&
+          //make sure that the broken picture does get added only once (the function gets called after a reset of the sorting)
+          !this.newsDataToDisplayWithNoPictures.includes(item) &&
+          !this.newsDataToDisplayWithNoPicturesUnsorted.includes(item)
+        ) {
+          //push the broken picture(s) in the newsDataToDisplayWithNoPictures, but also in the newsDataToDisplayWithNoPicturesUnsorted that I
+          //use to give a user the option to reset a sorting action
+          this.newsDataToDisplayWithNoPictures.push(item);
+          this.newsDataToDisplayWithNoPicturesUnsorted.push(item);
+        }
+        return index !== indexOfNotLoadedPicture;
+      }
+    );
+    //Make sure that a user cannot sort before the correct arrays are set up
+    //I use this boolean with v-if
+    this.makeSortingFunctionalityAvailable = true;
   }
 
   //bus objects can listen to events in another component if you put them in the mounted hook of the component in which you want to listen to the event
@@ -377,31 +377,31 @@ export default class Home extends Vue {
 
   //Create a hovering effect if a user leaves a link with his mouse, for both the array with pictures and the array without pictures
   mouseEnter(
-    index: number | null
-    // pictureOrNoPictureArrayIndicator: string
+    index: number | null,
+    pictureOrNoPictureArrayIndicator: string
   ): void {
     this.indexOfHoveredLink = index;
     console.log("mouseenter");
-    // if (pictureOrNoPictureArrayIndicator === "picture") {
-    //   if (index !== null) {
-    //     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    //     const item = this.newsDataToDisplay[index]!;
+    if (pictureOrNoPictureArrayIndicator === "picture") {
+      if (index !== null) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const item = this.newsDataToDisplay[index]!;
 
-    //     item.homePageLinksHovered = !item.homePageLinksHovered;
+        item.homePageLinksHovered = !item.homePageLinksHovered;
 
-    //     this.$set(this.newsDataToDisplay, index, item);
-    //   }
-    // }
-    // if (pictureOrNoPictureArrayIndicator === "nopicture") {
-    //   if (index !== null) {
-    //     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    //     const item = this.newsDataToDisplayWithNoPictures[index]!;
+        this.$set(this.newsDataToDisplay, index, item);
+      }
+    }
+    if (pictureOrNoPictureArrayIndicator === "nopicture") {
+      if (index !== null) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const item = this.newsDataToDisplayWithNoPictures[index]!;
 
-    //     item.homePageLinksHovered = !item.homePageLinksHovered;
+        item.homePageLinksHovered = !item.homePageLinksHovered;
 
-    //     this.$set(this.newsDataToDisplayWithNoPictures, index, item);
-    //   }
-    // }
+        this.$set(this.newsDataToDisplayWithNoPictures, index, item);
+      }
+    }
   }
 
   //Create a hovering effect if a user leaves a link with his mouse, for both the array with pictures and the array without pictures
@@ -412,26 +412,26 @@ export default class Home extends Vue {
   ): void {
     console.log("mouseleave");
 
-    //  if (pictureOrNoPictureArrayIndicator === "picture") {
-    //     if (index !== null) {
-    //       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    //       const item = this.newsDataToDisplay[index]!;
+    if (pictureOrNoPictureArrayIndicator === "picture") {
+      if (index !== null) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const item = this.newsDataToDisplay[index]!;
 
-    //       item.homePageLinksHovered = !item.homePageLinksHovered;
+        item.homePageLinksHovered = !item.homePageLinksHovered;
 
-    //       this.$set(this.newsDataToDisplay, index, item);
-    //     }
-    //   }
-    // if (pictureOrNoPictureArrayIndicator === "nopicture") {
-    //   if (index !== null) {
-    //     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    //     const item = this.newsDataToDisplayWithNoPictures[index]!;
+        this.$set(this.newsDataToDisplay, index, item);
+      }
+    }
+    if (pictureOrNoPictureArrayIndicator === "nopicture") {
+      if (index !== null) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const item = this.newsDataToDisplayWithNoPictures[index]!;
 
-    //     item.homePageLinksHovered = !item.homePageLinksHovered;
+        item.homePageLinksHovered = !item.homePageLinksHovered;
 
-    //     this.$set(this.newsDataToDisplayWithNoPictures, index, item);
-    //   }
-    // }
+        this.$set(this.newsDataToDisplayWithNoPictures, index, item);
+      }
+    }
   }
 }
 </script>

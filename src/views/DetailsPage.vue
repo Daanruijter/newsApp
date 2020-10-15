@@ -2,7 +2,7 @@
   <div class="detailspage-container">
     <div v-if="this.newsData[0]" class="detailspage-newsdata-loaded">
       <hr class="detailspage-hr-adapt-size" />
-      {{ this.newsItemPublishedTime }} GMT
+      {{ this.valueForDetailComponent[0].publishedAt }} GMT
       <hr class="detailspage-hr-adapt-size" />
       <div
         v-for="newsItem in this.valueForDetailComponent"
@@ -118,7 +118,7 @@
 import NewsItemType from "../interfacesforapp";
 import { Vue, Component } from "vue-property-decorator";
 import news from "../store/modules/news";
-import { convertNewsItemPublishedTime } from "../methodsForGeneralUse";
+// import { convertNewsItemPublishedTime } from "../methodsForGeneralUse";
 import { bus } from "../main";
 
 interface FetchBase {
@@ -230,14 +230,14 @@ export default class DetailsPage extends Vue {
       );
 
       //convert the publishedAt timestring to be readable
-      if (
-        valueForDetailComponentFiltered.length !== 0 &&
-        valueForDetailComponentFiltered[0].publishedAt
-      ) {
-        this.newsItemPublishedTime = convertNewsItemPublishedTime(
-          valueForDetailComponentFiltered[0].publishedAt
-        );
-      }
+      // if (
+      //   valueForDetailComponentFiltered.length !== 0 &&
+      //   valueForDetailComponentFiltered[0].publishedAt
+      // ) {
+      //   this.newsItemPublishedTime = convertNewsItemPublishedTime(
+      //     valueForDetailComponentFiltered[0].publishedAt
+      //   );
+      // }
 
       // extraValuesForDetailComponent[0].publishedAt = convertNewsItemPublishedTime(
       //   extraValuesForDetailComponent[0].publishedAt
