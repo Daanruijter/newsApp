@@ -118,23 +118,11 @@
 import NewsItemType from "../interfacesforapp";
 import { Vue, Component } from "vue-property-decorator";
 import news from "../store/modules/news";
-// import { convertNewsItemPublishedTime } from "../methodsForGeneralUse";
 import { bus } from "../main";
-
-interface FetchBase {
-  fetchBase: string;
-  typeOfFetchBase: string;
-}
-
-export interface Source {
-  id?: null;
-  name: string;
-}
 
 @Component
 export default class DetailsPage extends Vue {
   async mounted() {
-    console.log("DETAILSPAGE mounted");
     //on mounting, fetch the current newsItem array
     this.processDataForDetailsComponent();
 
@@ -145,7 +133,6 @@ export default class DetailsPage extends Vue {
 
     //if a user clicks on the details button in the footer, make sure that the details page gets rerendered with a default title
     bus.$on("loadFirstElementOfDetailsPage", (title: string) => {
-      console.log("loadfirstelementofdetailspage");
       this.processDataForDetailsComponent(title);
     });
   }
@@ -179,7 +166,6 @@ export default class DetailsPage extends Vue {
       this.newsBase = "United States";
     }
 
-    console.log("processDATAFORTANDOMCOMP");
     //fetch the data
     await news.fetchNewsQuery(newsCategoryFetchObject);
     this.newsData = this.$store.getters[
@@ -188,7 +174,6 @@ export default class DetailsPage extends Vue {
     const newsData = (this.newsData = this.$store.getters[
       "vuexModuleDecorators/newsDataModule"
     ].queriedNewsItemsGetter);
-    console.log(newsData);
 
     //process the data to display the clicked item and three extra relevant items
     this.getValuesForDetailComponent(newsData, title);
@@ -219,51 +204,12 @@ export default class DetailsPage extends Vue {
         }
       );
 
-      console.log(valueForDetailComponentFiltered);
-      console.log("valueForDetailComponentFiltered");
-
       //filter the newsitems array to get three other most recent items that are not shown on the homepage (so they should have indices 10,11 and 12 )
       const extraValuesForDetailComponent: NewsItemType[] = newsData.filter(
         (item: NewsItemType, index: number) => {
           return index === 10 || index === 11 || index === 12;
         }
       );
-
-      //convert the publishedAt timestring to be readable
-      // if (
-      //   valueForDetailComponentFiltered.length !== 0 &&
-      //   valueForDetailComponentFiltered[0].publishedAt
-      // ) {
-      //   this.newsItemPublishedTime = convertNewsItemPublishedTime(
-      //     valueForDetailComponentFiltered[0].publishedAt
-      //   );
-      // }
-
-      // extraValuesForDetailComponent[0].publishedAt = convertNewsItemPublishedTime(
-      //   extraValuesForDetailComponent[0].publishedAt
-      // );
-
-      //convert the publishedAt timestring to be readable
-      //WORKS
-      // const apie = extraValuesForDetailComponent.map(
-      //   (item: NewsItemType, index: number) => {
-      //     if (item.publishedAt) {
-      //       const gekkie = extraValuesForDetailComponent[index];
-      //       gekkie.publishedAt = convertNewsItemPublishedTime(item.publishedAt);
-      //       this.$set(extraValuesForDetailComponent, item.publishedAt, gekkie);
-      //     }
-      //     console.log(extraValuesForDetailComponent);
-      //     return item;
-      //   }
-      // );
-      // console.log(apie);
-      //WORKS
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      // const item = this.threeRelevantExtraNewsItems[index]!;
-
-      // item.extraThreeItemsDetailsPageHovered = !item.extraThreeItemsDetailsPageHovered;
-
-      // this.$set(this.threeRelevantExtraNewsItems, index, item);
 
       //populate the variables to display the data in the template
       this.valueForDetailComponent = valueForDetailComponentFiltered;

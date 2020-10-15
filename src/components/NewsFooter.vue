@@ -30,7 +30,7 @@
                 <div
                   @click="triggerDetailPageToReload(item.title)"
                   v-if="index < 10"
-                  class="title"
+                  class="newsfooter-title"
                   @mouseover="mouseEnter(index)"
                   @mouseout="mouseLeave(index)"
                   :class="{ hovering: item.linksNewsFooterHovered }"
@@ -48,7 +48,7 @@
 
 <script lang="ts">
 import route from "../router/index";
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import { RouteConfig } from "vue-router";
 import VueRouter from "vue-router";
 import DetailsPage from "../views/DetailsPage.vue";
@@ -63,7 +63,6 @@ export interface FetchNews {
 
 @Component
 export default class NewsFooter extends Vue {
-  @Prop() private msg!: string;
   routes: RouteConfig[] | undefined = [];
   newsData: NewsItemType[] = [];
   router = new VueRouter({
@@ -75,14 +74,9 @@ export default class NewsFooter extends Vue {
   indexOfHoveredLink: number | null = null;
 
   mounted() {
-    console.log("newsfooter mounted");
-
     this.getData();
 
-    // this.getNewsDataFromVuexFunction();
-
     bus.$on("triggerDataToFetchInFooter", () => {
-      console.log("fecthdatainNEWSFOOTER");
       this.getData();
     });
 
@@ -122,7 +116,6 @@ export default class NewsFooter extends Vue {
   //if a user clicks an item below the header "details page" in de footer, make sure that the details page gets rerendendered with the title where a user clicked on
 
   triggerDetailPageToReload(item: string) {
-    console.log("detailspagereloadtriggeractivatied");
     bus.$emit("triggerdetailspagereload", item);
   }
   //if a user clicks on the categories button, open the categories div in
@@ -131,7 +124,6 @@ export default class NewsFooter extends Vue {
 
     //open the categories div if a user hits the categories button
     if (routeText.includes("Categories")) {
-      console.log("categoriesclickevent");
       bus.$emit("openCategoriesDivFromNewsFooter");
     }
     if (
@@ -151,7 +143,7 @@ export default class NewsFooter extends Vue {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         typeOfFetchBase: localStorage.getItem("typeOfFetchBase")!,
       };
-      alert("fetch function fired");
+
       await news.fetchNewsQuery(newsCategoryFetchObject);
 
       const title = this.$store.getters["vuexModuleDecorators/newsDataModule"]
@@ -230,11 +222,12 @@ a {
     justify-content: center;
   }
 
-  .title {
+  .newsfooter-title {
     font-size: 100%;
     text-align: left;
     padding-top: 0.7%;
     padding-bottom: 0.7%;
+    margin-left: 1%;
     color: white;
   }
 
@@ -264,7 +257,7 @@ a {
     margin-bottom: 2%;
   }
 
-  .title {
+  .newsfooter-title {
     font-size: 100%;
     text-align: left;
     padding: 0.7%;
@@ -307,7 +300,7 @@ a {
     text-align: left;
   }
 
-  .title {
+  .newsfooter-title {
     text-align: left;
     padding: 2%;
     color: white;

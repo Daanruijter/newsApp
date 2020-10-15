@@ -18,15 +18,7 @@
             Get to know what's currently happening in the world. Tap on a title
             to know more.
           </div>
-
-          <div
-            v-if="
-              makeSortingFunctionalityAvailable ===
-                this.makeSortingFunctionalityAvailable &&
-                this.newsDataToDisplayWithNoPictures.length !== 0
-            "
-            class="home-sort-the-data"
-          >
+          <div class="home-sort-the-data">
             Sort the data by:
           </div>
           <div class="home-buttons">
@@ -136,7 +128,6 @@ export default class Home extends Vue {
   newsDataToDisplayUnsorted: NewsItemType[] = [];
   newsDataToDisplayWithNoPictures: NewsItemType[] = [];
   newsDataToDisplayWithNoPicturesUnsorted: NewsItemType[] = [];
-  makeSortingFunctionalityAvailable = false;
   fetchedCategory: null | string = "";
   router = new VueRouter({
     routes: [
@@ -154,8 +145,6 @@ export default class Home extends Vue {
   //if a picture cannot load, filter it out of the newsItemToDisplay Array by filtering the item(s) out
   //and pushing them to the newsDataToDisplayWithNoPictures array that is constructed to display items without a picture
   pictureNotLoaded(indexOfNotLoadedPicture: number): void {
-    console.log("PICTUTRENORLODAED");
-    this.makeSortingFunctionalityAvailable = false;
     this.newsDataToDisplay = this.newsDataToDisplayUnsorted = this.newsDataToDisplay.filter(
       (item: NewsItemType, index: number) => {
         if (
@@ -172,15 +161,10 @@ export default class Home extends Vue {
         return index !== indexOfNotLoadedPicture;
       }
     );
-    //Make sure that a user cannot sort before the correct arrays are set up
-    //I use this boolean with v-if
-    this.makeSortingFunctionalityAvailable = true;
   }
 
   //bus objects can listen to events in another component if you put them in the mounted hook of the component in which you want to listen to the event
   async mounted() {
-    console.log("mounted");
-
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 
     const newsCategoryFetchObject = {
@@ -235,11 +219,8 @@ export default class Home extends Vue {
       "vuexModuleDecorators/newsDataModule"
     ].queriedNewsItemsGetter;
 
-    // console.log(filteredNewsData);
-
     this.newsDataToDisplay = filteredNewsData.filter(
       (item: NewsItemType, index: number) => {
-        // console.log(item.urlToImage);
         return index < 10;
       }
     );
@@ -248,7 +229,6 @@ export default class Home extends Vue {
         return index < 10;
       }
     );
-    // console.log(this.newsDataToDisplay);
   }
 
   //hide selected category div after a few seconds
@@ -271,7 +251,6 @@ export default class Home extends Vue {
     //Also set the variable this.newsDataToDisplayUnsorted to the unsorted array, to be able to reset after sorting
     this.newsDataToDisplay = this.newsDataToDisplayUnsorted = this.newsDataToDisplay.filter(
       (item: NewsItemType) => {
-        // console.log(item.urlToImage);
         if (item.urlToImage === null || item.urlToImage === "") {
           this.newsDataToDisplayWithNoPictures.push(item);
           this.newsDataToDisplayWithNoPicturesUnsorted.push(item);
@@ -370,7 +349,6 @@ export default class Home extends Vue {
 
   //Reset the sorted news items arrays to the original, unsorted arrays
   reset(): void {
-    // console.log(this.newsData);
     this.newsDataToDisplay = this.newsDataToDisplayUnsorted;
     this.newsDataToDisplayWithNoPictures = this.newsDataToDisplayWithNoPicturesUnsorted;
   }
@@ -381,7 +359,6 @@ export default class Home extends Vue {
     pictureOrNoPictureArrayIndicator: string
   ): void {
     this.indexOfHoveredLink = index;
-    console.log("mouseenter");
     if (pictureOrNoPictureArrayIndicator === "picture") {
       if (index !== null) {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -410,8 +387,6 @@ export default class Home extends Vue {
     index: number | null,
     pictureOrNoPictureArrayIndicator: string
   ): void {
-    console.log("mouseleave");
-
     if (pictureOrNoPictureArrayIndicator === "picture") {
       if (index !== null) {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -616,6 +591,8 @@ a {
   .home-newsitem-title {
     font-weight: bold;
     color: black;
+    padding-top: 2%;
+    text-align: left;
   }
 
   button {
@@ -651,6 +628,10 @@ a {
     margin-top: 138px;
   }
 
+  .home-get-to-know {
+    text-align: left;
+  }
+
   .home-show-selected-category {
     background-color: darkblue;
     color: white;
@@ -670,6 +651,7 @@ a {
     font-weight: bold;
     color: black;
     text-align: left;
+    padding-top: 2%;
   }
 
   .home-newsitem-picture {
@@ -712,3 +694,7 @@ a {
   }
 }
 </style>
+
+v-if=" makeSortingFunctionalityAvailable ===
+this.makeSortingFunctionalityAvailable &&
+this.newsDataToDisplayWithNoPictures.length !== 0 "

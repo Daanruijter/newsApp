@@ -20,23 +20,11 @@ import {
 import store from "@/store";
 import NewsItemType from "../../interfacesforapp";
 import offLineData from "../../offLineData";
-
 import { convertNewsItemPublishedTime } from "../../methodsForGeneralUse";
-
-function logDateAndUrlToImage(dutu: NewsItemType[]) {
-  let i = 0;
-  for (i = 0; i < 20; i++) {
-    // console.log(dutu[i].urlToImage);
-    console.log(dutu[i].publishedAt);
-    // console.log(dutu[i].title);
-  }
-  // console.log(dutu);
-}
 
 @Module({ namespaced: true, name: "newsDataModule", store, dynamic: true })
 class NewsModule extends VuexModule {
   //state
-
   queriedNewsItems: NewsItemType[] = [];
   fetchBaseObject: FetchBase = {};
   testMode = false;
@@ -48,16 +36,8 @@ class NewsModule extends VuexModule {
 
   @Mutation
   addQueriedNewsDataToState(data: NewsItemType[]): void {
-    console.log("CHINA 111, before removing titles");
-    logDateAndUrlToImage(data);
-
     //making sure that the data are always sorted on date: most recent news must be displayed first and so have the highest indexes in the array
     function sortOnPublishedDate(): void {
-      console.log("CHINA 333, before sorting data on date");
-      logDateAndUrlToImage(data);
-
-      //hier eventueel opnieuw fetchen
-
       function comparePublishData(a: NewsItemType, b: NewsItemType): number {
         let returnComparisonNumber = 2;
 
@@ -68,7 +48,6 @@ class NewsModule extends VuexModule {
           if (a.publishedAt > b.publishedAt) {
             returnComparisonNumber = -1;
           }
-
           if (
             !(a.publishedAt < b.publishedAt) &&
             !(a.publishedAt > b.publishedAt)
@@ -76,9 +55,9 @@ class NewsModule extends VuexModule {
             returnComparisonNumber = 0;
           }
         }
-
         return returnComparisonNumber;
       }
+
       data.sort(comparePublishData);
 
       //convert the publishedAt property to a string that is readable for users
@@ -93,8 +72,6 @@ class NewsModule extends VuexModule {
           );
         }
       }
-      console.log("CHINA 444, after sorting data on date");
-      logDateAndUrlToImage(data);
     }
     //only sort the data if publishedAt contains a "Z", because then you know that the date has not been converted yet
     //otherwise the array gets sorted with the converted publishedAt, which causes unexpected behaviour (if the same array gets fetched sorting them again, but not in the right way)
@@ -102,7 +79,7 @@ class NewsModule extends VuexModule {
       sortOnPublishedDate();
     }
 
-    data = data.map((item: NewsItemType, index: number) => {
+    data = data.map((item: NewsItemType) => {
       //remove the sourcename from the title
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       if (
@@ -113,29 +90,14 @@ class NewsModule extends VuexModule {
         const replaceBase = " - " + item.source.name;
         item.title = item.title.replace(replaceBase, "");
       }
-      // //convert the publishedAt property to a string that is readable for users
-      // let i = 0;
-
-      // for (i = 0; i < data.length; i++) {
-      //   //only change the date if it contains a "Z", because then you know that the date has not been converted yet
-      //   //this prevents the bug that the convertNewsItemPublishedTime gets served a converted date as an argument, which returns  NaN  NaN NaN:NaN
-      //   if (data[i].publishedAt.includes("Z")) {
-      //     data[i].publishedAt = convertNewsItemPublishedTime(
-      //       data[i].publishedAt
-      //     );
-      //   }
-      // }
 
       //add the fetched newsData array to localstorage to be able to get it after page reloads or when coming back from external pages
       localStorage.setItem("newsData", JSON.stringify(data));
       return item;
     });
-    //populate the data variable
 
+    //populate the data variable
     this.queriedNewsItems = data;
-    console.log("CHINA 222, after removing titles");
-    console.log(data);
-    logDateAndUrlToImage(data);
   }
 
   @Mutation
@@ -155,8 +117,6 @@ class NewsModule extends VuexModule {
     //save the fetch base in localStorage for when a user reloads the Detail Page
     localStorage.setItem("fetchBase", fetchBaseObject.fetchBase);
     localStorage.setItem("typeOfFetchBase", fetchBaseObject.typeOfFetchBase);
-
-    // if(fetchBase === selectedCountry)
 
     let fetchUrl = "";
 
@@ -385,12 +345,10 @@ class NewsModule extends VuexModule {
     //   }
     // )
     //   .then((response) => {
-    //     console.log(response);
-    //     return response.json();
+    //    //     return response.json();
     //   })
 
     //   .then((data) => {
-    //     console.log(data);
 
     // data = data.articles;
 

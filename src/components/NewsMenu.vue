@@ -102,7 +102,6 @@
       </div>
 
       <div class="news-menu-possiblities">or</div>
-
       <div class="news-menu-query-subject">
         <select
           v-model="newsCategorySelected"
@@ -131,7 +130,6 @@
             name="searchNewsItem"
             @input="catchInputValue($event)"
           />
-
           <input type="submit" value="Submit" />
         </form>
         <br />
@@ -145,13 +143,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import news from "../store/modules/news";
 import { bus } from "../main";
 
 @Component
 export default class NewsMenu extends Vue {
-  @Prop() private msg!: string;
   categoriesPageBoolean = false;
   inputValue = "";
   countrySelected = "Default Country";
@@ -159,22 +156,24 @@ export default class NewsMenu extends Vue {
   space = "\u00a0";
 
   mounted() {
-    console.log("NEWSMENU mounted");
     //get the data from vuex in the newsFooter component
     bus.$emit("triggerDataToFetchInFooter");
 
     bus.$on("makeCategoriesDivClosedEventForDetailsPage", () => {
       this.categoriesPageBoolean = false;
     });
+
     bus.$on("makeCategoriesDivClosedEventForRandomPage", () => {
       this.categoriesPageBoolean = false;
     });
+
     bus.$on("openCategoriesDivFromNewsFooter", () => {
       console.log("event from NEWSFOOTER");
       this.categoriesPageBoolean = !this.categoriesPageBoolean;
       this.newsCategorySelected = "Default News Category";
       this.countrySelected = "Default Country";
     });
+
     bus.$on("closeCategoriesDivFromNewsFooter", () => {
       this.categoriesPageBoolean = false;
     });
@@ -210,8 +209,8 @@ export default class NewsMenu extends Vue {
     };
 
     this.newsCategorySelected = "Default News Category";
-    //trigger a logic that gets the newsdata array from vuex into the newsFooter component
 
+    //trigger a logic that gets the newsdata array from vuex into the newsFooter component
     await news.fetchNewsQuery(countryFetchObject);
     bus.$emit("selectedCountry", selectedCountry);
     this.categoriesPageBoolean = false;
@@ -220,7 +219,6 @@ export default class NewsMenu extends Vue {
 
   async catchNewsCategoryValue(event: Event) {
     //trigger a logic that gets the newsdata array from vuex into the newsFooter component
-
     const selectedNewsCategory = (event.target as HTMLTextAreaElement).value;
     const newsCategoryFetchObject = {
       fetchBase: selectedNewsCategory,
@@ -238,7 +236,6 @@ export default class NewsMenu extends Vue {
     this.inputValue = inputValue;
     this.countrySelected = "Default Country";
     this.newsCategorySelected = "Default News Category";
-
     bus.$emit("useInputValueToFetchData");
   }
 
@@ -253,7 +250,6 @@ export default class NewsMenu extends Vue {
   }
 
   async onSubmit(event: Event) {
-    console.log("submit");
     event.preventDefault();
     const inputValue = this.inputValue;
     const inputFetchObject = {
@@ -320,7 +316,6 @@ export default class NewsMenu extends Vue {
     a {
       font-weight: bold;
       color: #2c3e50;
-
       &.router-link-exact-active {
         color: #42b983;
       }

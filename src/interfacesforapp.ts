@@ -1,3 +1,4 @@
+//main interface that represents the news item array shape
 export default interface NewsItemType {
   source: Source;
   author: string;
@@ -11,24 +12,9 @@ export default interface NewsItemType {
   linksNewsFooterHovered?: boolean | string;
   homePageLinksHovered?: boolean | string;
 }
+
+//source is a nested array on the news item type
 export interface Source {
   id?: null;
   name?: string;
-}
-
-//interface for fetch function
-export interface FetchNews {
-  fetchBase: string;
-  typeOfFetchBase: string;
-}
-
-//interface for fetch function
-export interface FetchBase {
-  fetchBase?: string;
-  typeOfFetchBase?: string;
-}
-
-//interface for datestring array in details page
-export interface DateStringArray {
-  publishedAt: string;
 }

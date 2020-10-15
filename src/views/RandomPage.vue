@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */ /* eslint-disable
-@typescript-eslint/no-non-null-assertion */ /* eslint-disable
-@typescript-eslint/no-non-null-assertion */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 <template>
   <div class="randompage-container">
     <div
@@ -142,7 +140,6 @@
 import { Vue, Component } from "vue-property-decorator";
 import news from "../store/modules/news";
 import NewsItemType from "../interfacesforapp";
-
 import { bus } from "../main";
 
 @Component
@@ -236,23 +233,11 @@ export default class RandomPage extends Vue {
 
   async mounted() {
     this.prepareDataForDisplay();
-
-    // //if a user clicks on the random page button in the navbar, save the random newsitem in localstorage
-    // await bus.$on("makeCategoriesDivClosedEventForRandomPage", () => {
-    //   this.saveRandomItemInLocalStorage();
-    // });
-
-    // // if a user clicks on the random page button in the footer, fetch the data and load it in the random component
-    // await bus.$on("triggerRandomPageLogic", () => {
-    //   //fetch the data and load it in the random component
-    //   this.prepareDataForDisplay();
-    // });
   }
   //function fetches from the API randomly:
   //picks the country fetchbase array or the newscategory fetchbase array
   //then picks a country or newscategory from the selected array
   //passes that information on to the fetch action, which fetches the data
-  //the newsCountryQueriedGetter getter is are used to get the data in the component
 
   async fetchDataForRandomPageAndLoadItInRandomComponent() {
     const randomNumberZeroOrOne = this.randomIntFromInterval(0, 1);
@@ -285,8 +270,6 @@ export default class RandomPage extends Vue {
 
     //fetch the newsData and put it in the vuex store
     await news.fetchNewsQuery(fetchRandomNewsItemObject);
-
-    // this.fetchTheData();
   }
 
   //get a random number for the index. Number must be higher than 10, because I don't want to display newsItems that already got displayed on the homepage.
@@ -297,7 +280,6 @@ export default class RandomPage extends Vue {
   }
   //filter the array with one random index to display a random news item
   filterArrayByRandomIndex() {
-    console.log("filterArrayByRandomIndex");
     const randomNewsItemNumber = this.randomIntFromInterval(
       0,
       this.newsData.length - 1
