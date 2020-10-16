@@ -160,7 +160,6 @@ export default class NewsMenu extends Vue {
 
     //Open the categories div if a user clicks on its button in the newsfooter
     bus.$on("openCategoriesDivFromNewsFooter", () => {
-      console.log("event from NEWSFOOTER");
       this.categoriesPageBoolean = !this.categoriesPageBoolean;
       this.newsCategorySelected = "Default News Category";
       this.countrySelected = "Default Country";

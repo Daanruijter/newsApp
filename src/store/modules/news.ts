@@ -1,10 +1,10 @@
-//interface for fetch function
+//Interface for fetch function
 export interface FetchNews {
   fetchBase: string;
   typeOfFetchBase: string;
 }
 
-//interface for fetch function
+//Interface for fetch function
 export interface FetchBase {
   fetchBase?: string;
   typeOfFetchBase?: string;
@@ -24,19 +24,19 @@ import { convertNewsItemPublishedTime } from "../../methodsForGeneralUse";
 
 @Module({ namespaced: true, name: "newsDataModule", store, dynamic: true })
 class NewsModule extends VuexModule {
-  //state
+  //STATE
   queriedNewsItems: NewsItemType[] = [];
   fetchBaseObject: FetchBase = {};
   testMode = false;
 
-  //getter to load the data in components
+  //Getter to load the data in components
   get queriedNewsItemsGetter(): NewsItemType[] {
     return this.queriedNewsItems;
   }
 
   @Mutation
   addQueriedNewsDataToState(data: NewsItemType[]): void {
-    //making sure that the data are always sorted on date: most recent news must be displayed first and so have the highest indexes in the array
+    //Making sure that the data are always sorted on date: most recent news must be displayed first and so have the highest indexes in the array
     function sortOnPublishedDate(): void {
       function comparePublishData(a: NewsItemType, b: NewsItemType): number {
         let returnComparisonNumber = 2;
@@ -60,12 +60,12 @@ class NewsModule extends VuexModule {
 
       data.sort(comparePublishData);
 
-      //convert the publishedAt property to a string that is readable for users
+      //Convert the publishedAt property to a string that is readable for users
       let i = 0;
 
       for (i = 0; i < data.length; i++) {
-        //only change the date if it contains a "Z", because then you know that the date has not been converted yet
-        //this prevents the bug that the convertNewsItemPublishedTime gets served a converted date as an argument, which returns  NaN  NaN NaN:NaN
+        //Only change the date if it contains a "Z", because then you know that the date has not been converted yet
+        //This prevents the bug that the convertNewsItemPublishedTime gets served a converted date as an argument, which returns  NaN  NaN NaN:NaN
         if (data[i].publishedAt.includes("Z")) {
           data[i].publishedAt = convertNewsItemPublishedTime(
             data[i].publishedAt
@@ -73,14 +73,14 @@ class NewsModule extends VuexModule {
         }
       }
     }
-    //only sort the data if publishedAt contains a "Z", because then you know that the date has not been converted yet
-    //otherwise the array gets sorted with the converted publishedAt, which causes unexpected behaviour (if the same array gets fetched sorting them again, but not in the right way)
+    //Only sort the data if publishedAt contains a "Z", because then you know that the date has not been converted yet
+    //Otherwise the array gets sorted with the converted publishedAt, which causes unexpected behaviour (if the same array gets fetched sorting them again, but not in the right way)
     if (data[0].publishedAt.includes("Z")) {
       sortOnPublishedDate();
     }
 
     data = data.map((item: NewsItemType) => {
-      //remove the sourcename from the title
+      //Remove the sourcename from the title
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       if (
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -91,12 +91,12 @@ class NewsModule extends VuexModule {
         item.title = item.title.replace(replaceBase, "");
       }
 
-      //add the fetched newsData array to localstorage to be able to get it after page reloads or when coming back from external pages
+      //Add the fetched newsData array to localstorage to be able to get it after page reloads or when coming back from external pages
       localStorage.setItem("newsData", JSON.stringify(data));
       return item;
     });
 
-    //populate the data variable
+    //Populate the data variable
     this.queriedNewsItems = data;
   }
 
@@ -111,17 +111,17 @@ class NewsModule extends VuexModule {
     return categoryPageBoolean;
   }
 
-  //fetch the country newsData if a user selects a certain country
+  //Fetch the newsData based on what the user selects on the UI
   @Action
   async fetchNewsQuery(fetchBaseObject: FetchNews) {
-    //save the fetch base in localStorage for when a user reloads the Detail Page
+    //Save the fetch base in localStorage for when a user reloads the Detail Page
     localStorage.setItem("fetchBase", fetchBaseObject.fetchBase);
     localStorage.setItem("typeOfFetchBase", fetchBaseObject.typeOfFetchBase);
 
     let fetchUrl = "";
 
-    //country conditions to fetch a country's news dynamically
-    //the url needs to contain the country abbreviations
+    //Country conditions to fetch a country's news dynamically
+    //The url needs to contain the country abbreviations
     if (fetchBaseObject.typeOfFetchBase === "fetchCountry") {
       let countryToFetch = "";
       if (fetchBaseObject.fetchBase === "Argentina") {
@@ -316,10 +316,10 @@ class NewsModule extends VuexModule {
       fetchUrl = `https://newsapi.org/v2/everything?q=${inputToFetch}&apiKey=771f495b60b94bfabf9a9800d4996456`;
     }
 
-    //variable that holds the url to be fetched and sent to the backend
+    //Variable that holds the url to be fetched and sent to the backend
     const bodyWithUrls = { fetchUrl };
 
-    //based on the mode, make a call to my restAPI
+    //Based on the mode, make a call to my restAPI
     let url = "";
     if (process.env.NODE_ENV === "development") {
       url = "http://localhost:5000/";
@@ -329,7 +329,7 @@ class NewsModule extends VuexModule {
       url = "https://worldnews-app.herokuapp.com/";
     }
 
-    //make a call to the back-end to fetch the data
+    //Make a call to the back-end to fetch the data
     await fetch(
       url,
 
@@ -355,7 +355,7 @@ class NewsModule extends VuexModule {
         //*********************************
         //TEST MODE
 
-        //set the data to the country array in the offline data document if the user wants to fetch a country
+        //Set the data to the country array in the offline data document if the user wants to fetch a country
         // let data: any;
         // data = offLineData.UnitedStates;
 
@@ -528,7 +528,7 @@ class NewsModule extends VuexModule {
         //   }
         // }
 
-        // //set the data to the country array in the offline data document if the user wants to fetch a country
+        // //Set the data to the country array in the offline data document if the user wants to fetch a country
         // if (fetchBaseObject.typeOfFetchBase === "fetchNewsCategory") {
         //   if (fetchBaseObject.fetchBase === "Economics") {
         //     data = offLineData.Economics;
@@ -559,7 +559,7 @@ class NewsModule extends VuexModule {
         //   }
         // }
 
-        // //set the data to a default if a user wants to fetch by input
+        // //Set the data to a default if a user wants to fetch by input
         // if (fetchBaseObject.typeOfFetchBase === "fetchInput") {
         //   data = offLineData.Trump;
         // }
@@ -568,10 +568,10 @@ class NewsModule extends VuexModule {
         //*********************************
         //TEST MODE
 
-        //call the mutator
+        //Call the mutator
         this.context.commit("addQueriedNewsDataToState", data);
 
-        //call the mutator
+        //Call the mutator
         this.context.commit("addFetchBaseToState", fetchBaseObject);
       });
     url = "";

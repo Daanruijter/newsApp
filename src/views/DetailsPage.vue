@@ -255,8 +255,6 @@ export default class DetailsPage extends Vue {
         bus.$emit("triggerDataToFetchInFooter");
         valueForDetailComponentFiltered = this.newsData.filter(
           (item: NewsItemType) => {
-            console.log(item.title);
-            console.log(titleToFilterItemOut);
             return titleToFilterItemOut.includes(item.title);
           }
         );
