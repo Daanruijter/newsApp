@@ -46,7 +46,9 @@
     </div>
     <!-- The previous news item -->
     <div class="random-page-previous-item-container">
-      <div v-if="previousNewsItem[0]" class="randompage-previous-item-bar">Previous news item</div>
+      <div v-if="previousNewsItem[0]" class="randompage-previous-item-bar">
+        <h2>Previous news item</h2>
+      </div>
       <div class="randompage-button" v-if="this.previousNewsItem">
         <button
           v-if="this.showAnotherNewsItemButtonClicked"
@@ -366,7 +368,7 @@ a {
     font-weight: bold;
     color: black;
     margin-bottom: 2%;
-    font-size: 125%;
+    font-size: 105%;
   }
 
   .randompage-hr-adapt-size {
@@ -431,7 +433,8 @@ a {
     font-weight: bold;
     color: black;
     margin-bottom: 2%;
-    font-size: 125%;
+    font-size: 105%;
+    text-align: left;
   }
 
   .randompage-picture img {
@@ -482,6 +485,8 @@ a {
     font-weight: bold;
     color: black;
     margin-bottom: 5%;
+    text-align: left;
+    font-size: 105%;
   }
 
   .randompage-picture img {

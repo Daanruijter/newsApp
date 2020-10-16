@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 <template>
   <div class="home-container">
     <div @change="test" v-if="this.newsDataToDisplay[0]" class="home-newsdata-loaded">
@@ -38,6 +39,7 @@
           >
             <router-link :to="{ name: 'DetailsPage', params: { title: newsItem.title } }">
               <div
+                @click="makeHoveringEffectsUndone"
                 class="home-newsitem-title"
                 @mouseover="mouseEnter(index, pictureString)"
                 @mouseout="mouseLeave(index, pictureString)"
@@ -46,7 +48,10 @@
                 <div v-if="newsItem.title">{{ newsItem.title }}</div>
               </div>
             </router-link>
-            <div v-if="newsItem.source.name&&newsItem.title">Source: {{ newsItem.source.name }}</div>
+            <div
+              class="home-newsitem-source"
+              v-if="newsItem.source.name&&newsItem.title"
+            >Source: {{ newsItem.source.name }}</div>
             <div class="home-newsitem-picture">
               <img
                 @error="pictureNotLoaded(index)"
@@ -69,6 +74,7 @@
         >
           <router-link :to="{ name: 'DetailsPage', params: { title: newsItem.title } }">
             <div
+              @click="makeHoveringEffectsUndone"
               v-if="newsItem.title"
               class="home-newsitem-title"
               @mouseover="mouseEnter(index, noPictureString)"
@@ -76,7 +82,7 @@
               :class="{ hovering: newsItem.homePageLinksHovered }"
             >{{ newsItem.title }}, Source: {{ newsItem.source.name }}</div>
           </router-link>
-          <hr v-if="!newsItem.urlToImage && newsItem.title" />
+          <hr v-if="newsItem.title" />
         </div>
       </div>
     </div>
@@ -146,12 +152,25 @@ export default class Home extends Vue {
 
   //bus objects can listen to events in another component if you put them in the mounted hook of the component in which you want to listen to the event
   async mounted() {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    //If there is data fetched already, make sure that on mounting, the same data is fetched, otherwise fetch the defaults
 
-    const newsCategoryFetchObject = {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    let newsCategoryFetchObject = null;
+    newsCategoryFetchObject = {
       fetchBase: "Default Country",
       typeOfFetchBase: "fetchCountry"
     };
+
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    if (localStorage.getItem("fetchBase")!) {
+      newsCategoryFetchObject = {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        fetchBase: localStorage.getItem("fetchBase")!,
+
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        typeOfFetchBase: localStorage.getItem("typeOfFetchBase")!
+      };
+    }
 
     await news.fetchNewsQuery(newsCategoryFetchObject);
     //disable non-null assertion, because fetchedCategory will not be null is it must not be. It get's populated with users querying the API
@@ -189,6 +208,7 @@ export default class Home extends Vue {
     bus.$on("loadDefaultNewsItemsAfterClickOnHomeButton", () => {
       this.setData();
       this.checkIfThereIsANewsItemWithoutAPicture();
+      this.fetchedCategory = "Default Country";
     });
 
     this.checkIfThereIsANewsItemWithoutAPicture();
@@ -370,14 +390,16 @@ export default class Home extends Vue {
     index: number | null,
     pictureOrNoPictureArrayIndicator: string
   ): void {
+    // alert(index);
     if (pictureOrNoPictureArrayIndicator === "picture") {
       if (index !== null) {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const item = this.newsDataToDisplay[index]!;
-
-        item.homePageLinksHovered = !item.homePageLinksHovered;
-        //Set homePageLinksHovered in the picture array to false
-        this.$set(this.newsDataToDisplay, index, item);
+        if (item.homePageLinksHovered) {
+          item.homePageLinksHovered = false;
+          //Set homePageLinksHovered in the picture array to false
+          this.$set(this.newsDataToDisplay, index, item);
+        }
       }
     }
     if (pictureOrNoPictureArrayIndicator === "nopicture") {
@@ -385,17 +407,65 @@ export default class Home extends Vue {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const item = this.newsDataToDisplayWithNoPictures[index]!;
 
-        item.homePageLinksHovered = !item.homePageLinksHovered;
+        item.homePageLinksHovered = false;
         //Set homePageLinksHovered in the no picture array to false
         this.$set(this.newsDataToDisplayWithNoPictures, index, item);
       }
     }
+  }
+
+  //After a click on a link to an item's details page the fetchbase should be saved.
+  //I can use that in order to make a user land on the right details page if he comes back from the random page to the details page
+
+  saveFetchBaseInLocalStorage() {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const fetchBaseForDetailsComponent = localStorage.getItem("fetchBase")!;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const newsCategoryFetchObject = localStorage.getItem("typeOfFetchBase")!;
+    localStorage.setItem(
+      "fetchBaseForDetailsComponent",
+      fetchBaseForDetailsComponent
+    );
+    localStorage.setItem(
+      "newsCategoryForDetailsComponent",
+      newsCategoryFetchObject
+    );
+  }
+
+  //Clearing all hovering effect booleans on the arrays by this function, that gets fired after a click on a link to an item's details page.
+  makeHoveringEffectsUndone() {
+    let i = 0;
+    for (i = 0; i < this.newsDataToDisplay.length; i++) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      let item = this.newsDataToDisplay[i];
+      if (item.homePageLinksHovered) {
+        item.homePageLinksHovered = false;
+        //Set homePageLinksHovered in the picture array to false
+        this.$set(this.newsDataToDisplay, i, item);
+      }
+      let j = 0;
+      for (j = 0; j < this.newsDataToDisplayWithNoPictures.length; j++) {
+        item = this.newsDataToDisplayWithNoPictures[j];
+
+        if (item.homePageLinksHovered) {
+          alert("executed");
+          item.homePageLinksHovered = false;
+          //Set homePageLinksHovered in the picture array to false
+          this.$set(this.newsDataToDisplayWithNoPictures, j, item);
+        }
+      }
+    }
+    this.saveFetchBaseInLocalStorage();
   }
 }
 </script>
 
 <style scoped>
 /* general rules */
+
+.home-newsitem-title {
+  font-size: 105%;
+}
 
 a {
   text-decoration: none;
@@ -578,6 +648,10 @@ a {
     text-align: left;
   }
 
+  .home-newsitem-source {
+    margin-top: 1%;
+  }
+
   button {
     width: 20%;
     margin-left: 2%;
@@ -635,6 +709,10 @@ a {
     color: black;
     text-align: left;
     padding-top: 2%;
+  }
+
+  .home-newsitem-source {
+    margin-top: 1%;
   }
 
   .home-newsitem-picture {

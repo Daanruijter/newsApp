@@ -116,7 +116,13 @@
   </div>
 </template>
 
+
+
 <script lang="ts">
+export interface FetchNews {
+  fetchBase: string;
+  typeOfFetchBase: string;
+}
 import NewsItemType from "../interfacesforapp";
 import { Vue, Component } from "vue-property-decorator";
 import news from "../store/modules/news";
@@ -185,10 +191,10 @@ export default class DetailsPage extends Vue {
   }
 
   //Populate the variables that hold the data to be displayed, by filtering the newsItem array with the help of the title of the clicked news item.
-  getValuesForDetailComponent(newsData: NewsItemType[], title?: string): null {
+  async getValuesForDetailComponent(newsData: NewsItemType[], title?: string) {
     //This.newsItemTitle gets the title from params
     let titleToFilterItemOut = this.newsItemTitle;
-
+    let valueForDetailComponentFiltered: NewsItemType[] = [];
     //Title comes from a click on the details button in the newfooter. The "bus" passes it through
     //If that happens, titleToFilterItemOut must be equal to that title
     if (title) {
@@ -197,7 +203,7 @@ export default class DetailsPage extends Vue {
 
     if (newsData.length !== 0) {
       //Get the clicked news item from the array
-      const valueForDetailComponentFiltered: NewsItemType[] = newsData.filter(
+      valueForDetailComponentFiltered = newsData.filter(
         (item: NewsItemType) => {
           return titleToFilterItemOut.includes(item.title);
         }
@@ -213,6 +219,53 @@ export default class DetailsPage extends Vue {
       //Populate the variables to display the data in the template
       this.valueForDetailComponent = valueForDetailComponentFiltered;
       this.threeRelevantExtraNewsItems = extraValuesForDetailComponent;
+    }
+
+    //If a user goes from the details page to the random page and comes back to the details page, the newsData array has been changed,
+    //so I need to fetch the right data again and do a similar procedure to get them displayed
+    if (valueForDetailComponentFiltered.length === 0) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      let newsCategoryFetchObject: FetchNews = {
+        fetchBase: "",
+        typeOfFetchBase: ""
+      };
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      if (localStorage.getItem("fetchBaseForDetailsComponent")!) {
+        newsCategoryFetchObject = {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          fetchBase: localStorage.getItem("fetchBaseForDetailsComponent")!,
+
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          typeOfFetchBase: localStorage.getItem(
+            "newsCategoryForDetailsComponent"
+          )!
+        };
+        this.newsBase = newsCategoryFetchObject.fetchBase;
+        await news.fetchNewsQuery(newsCategoryFetchObject);
+        this.newsData = this.$store.getters[
+          "vuexModuleDecorators/newsDataModule"
+        ].queriedNewsItemsGetter;
+        //get the data from vuex in the newsFooter component
+        bus.$emit("triggerDataToFetchInFooter");
+        valueForDetailComponentFiltered = this.newsData.filter(
+          (item: NewsItemType) => {
+            console.log(item.title);
+            console.log(titleToFilterItemOut);
+            return titleToFilterItemOut.includes(item.title);
+          }
+        );
+      }
+      //Filter the newsitems array to get three other most recent items that are not shown on the homepage (so they should have indices 10, 11 and 12 )
+      const extraValuesForDetailComponent: NewsItemType[] = this.newsData.filter(
+        (item: NewsItemType, index: number) => {
+          return index === 10 || index === 11 || index === 12;
+        }
+      );
+
+      //Populate the variables to display the data in the template
+      this.valueForDetailComponent = valueForDetailComponentFiltered;
+      this.threeRelevantExtraNewsItems = extraValuesForDetailComponent;
+      console.log(extraValuesForDetailComponent);
     }
     return null;
   }
@@ -305,8 +358,8 @@ a {
     font-weight: bold;
     color: black;
     margin-bottom: 2%;
-    font-size: 125%;
-    text-align: left;
+    font-size: 105%;
+    text-align: center;
   }
 
   .detailspage-picture img {
@@ -354,6 +407,7 @@ a {
     color: black;
     margin-bottom: 5%;
     text-align: left;
+    font-size: 105%;
   }
 
   .detailspage-other-news-bar {
@@ -395,6 +449,7 @@ a {
     color: black;
     margin-bottom: 5%;
     text-align: left;
+    font-size: 105%;
   }
 
   .detailspage-other-news-bar {
