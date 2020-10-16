@@ -2,9 +2,9 @@
 <template>
   <div class="randompage-container">
     <div v-if="this.newsData[0] || this.randomNewsItem[0]" class="randompage-newsdata-loaded">
-      <hr class="randompage-hr-adapt-size" />
+      <hr v-if="this.newsData[0] || this.randomNewsItem[0]" class="randompage-hr-adapt-size" />
       {{ this.newsItemPublishedTime }} GMT
-      <hr class="randompage-hr-adapt-size" />
+      <hr v-if="this.newsData[0] || this.randomNewsItem[0]" class="randompage-hr-adapt-size" />
 
       <div v-for="newsItem in this.randomNewsItem" :key="newsItem.title" class="randompage-data">
         <div
@@ -201,9 +201,9 @@ export default class RandomPage extends Vue {
   async mounted() {
     this.prepareDataForDisplay();
   }
-  //function fetches from the API randomly:
-  //picks the country fetchbase array or the newscategory fetchbase array
-  //then picks a country or newscategory from the selected array
+  //The function below fetches from the API randomly:
+  //picks the country fetchbase array (that holds all country names) or the news category fetchbase array (which holds all news category names)
+  //then picks a country or news category from the selected array
   //passes that information on to the fetch action, which fetches the data
 
   async fetchDataForRandomPageAndLoadItInRandomComponent() {
@@ -235,17 +235,17 @@ export default class RandomPage extends Vue {
       typeOfFetchBase: pickType
     };
 
-    //fetch the newsData and put it in the vuex store
+    //Fetch the newsData and put it in the Vuex store
     await news.fetchNewsQuery(fetchRandomNewsItemObject);
   }
 
-  //get a random number for the index. Number must be higher than 10, because I don't want to display newsItems that already got displayed on the homepage.
-  //The random number must also not be higher than the length of the array of newsitems
+  //Get a random number for the index. Number must be higher than 10, because I don't want to display newsItems that already got displayed on the homepage.
+  //The random number must also not be higher than the length of the array of newsItems
   randomIntFromInterval(min: number, max: number): number {
     // min and max included
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
-  //filter the array with one random index to display a random news item
+  //Filter the array with one random index to display a random news item
   filterArrayByRandomIndex() {
     const randomNewsItemNumber = this.randomIntFromInterval(
       0,
@@ -263,7 +263,7 @@ export default class RandomPage extends Vue {
     return filterToGetRandomNewsItem;
   }
   async prepareDataForDisplay() {
-    //fetch the data and load it in the random component
+    //Fetch the data and load it in the random component
 
     await this.fetchDataForRandomPageAndLoadItInRandomComponent();
 
@@ -272,14 +272,14 @@ export default class RandomPage extends Vue {
 
     this.newsData = data;
 
-    //change newsData also in the newsFooter
+    //Change newsData also in the newsFooter
     bus.$emit("setNewsDataInNewsFooter", data);
 
-    //filter the data to display one random item
+    //Filter the data to display one random item
     this.filterArrayByRandomIndex();
   }
 
-  //save the previous randomitem in localStorage to make it possible for the user to retrieve it
+  //Save the previous random item in LocalStorage to make it possible for the user to retrieve it
   saveRandomItemInLocalStorage() {
     if (this.randomNewsItem.length !== 0) {
       localStorage.setItem(
@@ -289,21 +289,20 @@ export default class RandomPage extends Vue {
     }
   }
 
-  //if a user hits the button on the random page, it triggers another newsItem to show
+  //If a user hits the button on the random page, it triggers another newsItem to show
   async changeRandomNewsItemOnButtonClick() {
     this.showAnotherNewsItemButtonClicked = true;
     this.previousNewsItem = [];
     this.previousDate = "";
-    //fetch the data and load it in the random component
+    //Fetch the data and load it in the Random component
     this.saveRandomItemInLocalStorage();
     this.prepareDataForDisplay();
   }
 
-  //if a user hits the button to show a previous article, show it also on the page.
+  //If a user hits the button to show a previous article, show it also on the page.
   showPreviousNewsItem() {
     this.showAnotherNewsItemButtonClicked = false;
-    // this.hideShowPreviousNewsItemButton = true;
-    // this.showAnotherNewsItemButtonClicked = false;
+
     if (localStorage.getItem("randomNewsItem") !== null)
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       this.previousNewsItem = JSON.parse(

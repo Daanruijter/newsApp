@@ -173,23 +173,24 @@ export default class Home extends Vue {
     }
 
     await news.fetchNewsQuery(newsCategoryFetchObject);
-    //disable non-null assertion, because fetchedCategory will not be null is it must not be. It get's populated with users querying the API
+    //Disable non-null assertion, because fetchedCategory will not be null is it must not be. It get's populated with users querying the API
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     this.fetchedCategory = localStorage.getItem("fetchBase"!);
 
-    //get the data from vuex in the newsFooter component
+    //Get the data from vuex in the newsFooter component
     bus.$emit("triggerDataToFetchInFooter");
 
-    //load the newsdata in the component through the queriedNewsItemsGetter. On mounting it will be the default news array (United States)
+    //Load the newsdata in the component through the queriedNewsItemsGetter. On mounting it will be the default news array (United States)
     this.setData();
 
-    //the "buses" below listen to users querying the API in the navbar and they change the news array accordingly
+    //The "buses" below listen to users querying the API in the navbar and they change the news array accordingly
     bus.$on("selectedCountry", (selectedCountry: string) => {
       this.fetchedCategory = selectedCountry;
       this.setData();
       this.checkIfThereIsANewsItemWithoutAPicture();
       this.hideSelectedCategoryDiv();
     });
+
     bus.$on("selectedNewsCategory", (selectedNewsCategory: string) => {
       this.fetchedCategory = selectedNewsCategory;
       this.setData();
@@ -197,7 +198,6 @@ export default class Home extends Vue {
       this.hideSelectedCategoryDiv();
     });
 
-    //send input and onchange event to other components
     bus.$on("useInputValueToFetchData", (inputFetchValue: string) => {
       this.fetchedCategory = inputFetchValue;
       this.setData();
@@ -214,7 +214,7 @@ export default class Home extends Vue {
     this.checkIfThereIsANewsItemWithoutAPicture();
   }
 
-  //set the data to the current values in the news module
+  //Set the data to the current values in the news module
   setData(): void {
     const filteredNewsData = this.$store.getters[
       "vuexModuleDecorators/newsDataModule"
@@ -232,7 +232,7 @@ export default class Home extends Vue {
     );
   }
 
-  //hide selected category div after a few seconds
+  //Hide selected category div after a few seconds
   hideSelectedCategoryDiv(): void {
     setTimeout(() => {
       this.fetchedCategory = "Default Country";
@@ -241,7 +241,7 @@ export default class Home extends Vue {
 
   //If there is an item without a picture, create an array with pictures and an array without pictures
   checkIfThereIsANewsItemWithoutAPicture(): void {
-    //clear the arrays (to prevent them to grow unintentionally on every query to the API from the user)
+    //Clear the arrays (to prevent them to grow unintentionally on every query to the API from the user)
     this.newsDataToDisplayWithNoPictures = [];
     this.newsDataToDisplayWithNoPicturesUnsorted = [];
     this.newsDataToDisplayUnsorted = [];
@@ -390,7 +390,6 @@ export default class Home extends Vue {
     index: number | null,
     pictureOrNoPictureArrayIndicator: string
   ): void {
-    // alert(index);
     if (pictureOrNoPictureArrayIndicator === "picture") {
       if (index !== null) {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -415,7 +414,7 @@ export default class Home extends Vue {
   }
 
   //After a click on a link to an item's details page the fetchbase should be saved.
-  //I can use that in order to make a user land on the right details page if he comes back from the random page to the details page
+  //I can use that in order to make a user land on the right details page if he comes back to the details page from the random page
 
   saveFetchBaseInLocalStorage() {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -455,6 +454,8 @@ export default class Home extends Vue {
         }
       }
     }
+    //"makeHoveringEffectsUndone" is called because a user clicked on an item's link to its DetailPage
+    //This is exactly the moment when "saveFetchBaseInLocalStorage" must be called to save the fetchbase in LocalStorage
     this.saveFetchBaseInLocalStorage();
   }
 }

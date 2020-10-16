@@ -134,12 +134,12 @@ export default class DetailsPage extends Vue {
     //On mounting, fetch the current newsItem array
     this.processDataForDetailsComponent();
 
-    //if a user clicks link below the header "details page" in the footer, make sure that the details page gets rerendered with the title where a user clicked on
+    //If a user clicks on a dynamic sitemap link in the footer, make sure that the Details Page gets rerendered with the help of the title where a user clicked on
     bus.$on("triggerdetailspagereload", (title: string) => {
       this.processDataForDetailsComponent(title);
     });
 
-    //If a user clicks on the details button in the footer, make sure that the details page gets rerendered with relevant items
+    //If a user clicks on the details button in the footer, make sure that the Details Page gets rerendered with relevant items
     bus.$on("loadFirstElementOfDetailsPage", (title: string) => {
       this.processDataForDetailsComponent(title);
     });
@@ -150,13 +150,13 @@ export default class DetailsPage extends Vue {
   indexOfHoveredExtraItem: number | null = null;
   newsData = [];
   newsBase = "";
-  //get the newsitem where a user clicked on to go to its detail page from params (because there is no parent/child relation between the home and detailspage component)
+  //Get the newsitem where a user clicked on to go to its detail page from params (because there is no parent/child relation between the home and Details Page component)
   newsItemTitle = this.$route.params.title;
   newsItemPublishedTime = "";
   valueForDetailComponent: NewsItemType[] = [];
   threeRelevantExtraNewsItems: NewsItemType[] = [];
 
-  //fetch the newsitems and call the this.getValuesForDetailComponent method to display the data on the page
+  //Fetch the news items and call the this.getValuesForDetailComponent method to display the data on the page
   async processDataForDetailsComponent(
     title?: string
   ): Promise<NewsItemType[]> {
@@ -175,7 +175,7 @@ export default class DetailsPage extends Vue {
       this.newsBase = "United States";
     }
 
-    //fetch the data
+    //Fetch the data
     await news.fetchNewsQuery(newsCategoryFetchObject);
     this.newsData = this.$store.getters[
       "vuexModuleDecorators/newsDataModule"
@@ -184,7 +184,7 @@ export default class DetailsPage extends Vue {
       "vuexModuleDecorators/newsDataModule"
     ].queriedNewsItemsGetter);
 
-    //process the data to display the (on the homepage or the newsfooter) clicked item and three extra relevant items
+    //Process the data to display the (on the homepage or the newsfooter) clicked item and three extra relevant items
     this.getValuesForDetailComponent(newsData, title);
 
     return newsData;
@@ -209,7 +209,7 @@ export default class DetailsPage extends Vue {
         }
       );
 
-      //Filter the newsitems array to get three other most recent items that are not shown on the homepage (so they should have indices 10, 11 and 12 )
+      //Filter the news items array to get three other most recent items that are not shown on the homepage (so they should have indices 10, 11 and 12 )
       const extraValuesForDetailComponent: NewsItemType[] = newsData.filter(
         (item: NewsItemType, index: number) => {
           return index === 10 || index === 11 || index === 12;
@@ -245,7 +245,7 @@ export default class DetailsPage extends Vue {
         this.newsData = this.$store.getters[
           "vuexModuleDecorators/newsDataModule"
         ].queriedNewsItemsGetter;
-        //get the data from vuex in the newsFooter component
+        //Get the data from vuex in the newsFooter component
         bus.$emit("triggerDataToFetchInFooter");
         valueForDetailComponentFiltered = this.newsData.filter(
           (item: NewsItemType) => {

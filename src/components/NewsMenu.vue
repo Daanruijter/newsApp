@@ -3,13 +3,8 @@
     <hr />
     <div class="news-menu-flex-header-items">
       <div class="news-menu-header-titles">
-        <div class="news-menu-description news-menu-world-news">
-          WORLD NEWS{{ this.space }}
-        </div>
-        &nbsp;
-        <div class="news-menu-description news-menu-everyday-headlines">
-          Your everyday headlines
-        </div>
+        <div class="news-menu-description news-menu-world-news">WORLD NEWS{{ this.space }}</div>&nbsp;
+        <div class="news-menu-description news-menu-everyday-headlines">Your everyday headlines</div>
       </div>
       <div class="news-menu-header-image-div">
         <img class="news-menu-globe" src="@/assets/globe.jpg" />
@@ -21,10 +16,7 @@
       <div @click="loadDefaultNewsItems" class="news-menu-home">
         <router-link to="/">HOME</router-link>
       </div>
-      <div
-        :class="{ categoriesClosed: !categoriesPageBoolean }"
-        @click="setCategoriesBoolean"
-      >
+      <div :class="{ categoriesClosed: !categoriesPageBoolean }" @click="setCategoriesBoolean">
         <router-link to="/categories">CATEGORIES</router-link>
       </div>
       <div @click="this.makeCategoriesDivClosed" class="news-menu-random">
@@ -32,9 +24,7 @@
       </div>
     </div>
     <div class="news-menu-categories" v-if="categoriesPageBoolean">
-      <div class="news-menu-information">
-        Get the most recent news per category
-      </div>
+      <div class="news-menu-information">Get the most recent news per category</div>
 
       <div class="news-menu-query-country">
         <select
@@ -133,9 +123,7 @@
           <input type="submit" value="Submit" />
         </form>
         <br />
-        <div @click="closeCategoriesDiv" class="news-menu-close-categoriesdiv">
-          X
-        </div>
+        <div @click="closeCategoriesDiv" class="news-menu-close-categoriesdiv">X</div>
       </div>
       <br />
     </div>
@@ -157,111 +145,118 @@ export default class NewsMenu extends Vue {
   space = "\u00a0";
 
   mounted() {
-    //get the data from vuex in the newsFooter component
+    //get the data from Vuex in the newsFooter component
     bus.$emit("triggerDataToFetchInFooter");
 
+    //Close the categories div if a user clicks on a news item link to its detail page
     bus.$on("makeCategoriesDivClosedEventForDetailsPage", () => {
       this.categoriesPageBoolean = false;
     });
-
+    //Close the categories div if a user clicks on the home button
     bus.$on("makeCategoriesDivClosedEventForRandomPage", () => {
       this.categoriesPageBoolean = false;
     });
-
+    //Open the categories div if a user clicks on its button in the newsfooter
     bus.$on("openCategoriesDivFromNewsFooter", () => {
       console.log("event from NEWSFOOTER");
       this.categoriesPageBoolean = !this.categoriesPageBoolean;
       this.newsCategorySelected = "Default News Category";
       this.countrySelected = "Default Country";
     });
-
+    //Close the categories div if a user clicks on a button in the newsfooter that is not the categories button
     bus.$on("closeCategoriesDivFromNewsFooter", () => {
       this.categoriesPageBoolean = false;
     });
   }
 
   async loadDefaultNewsItems() {
+    //If a user clicks on home, fetch the defaults
     const countryFetchObject = {
       fetchBase: "Default Country",
-      typeOfFetchBase: "fetchCountry",
+      typeOfFetchBase: "fetchCountry"
     };
 
     await news.fetchNewsQuery(countryFetchObject);
     bus.$emit("loadDefaultNewsItemsAfterClickOnHomeButton");
     bus.$emit("triggerDataToFetchInFooter");
 
-    //if a user clicks on home, reset the categories settings to their defaults
+    //If a user clicks on home, reset the categories settings to their defaults
     this.countrySelected = "Default Country";
     this.newsCategorySelected = "Default News Category";
   }
 
-  //change the categoriesBoolean variable onclick
+  //Change the categoriesBoolean variable onclick
   setCategoriesBoolean(): void {
     this.categoriesPageBoolean = !this.categoriesPageBoolean;
+    //Make sure the defaults are displayed after a click on the categories button
     this.countrySelected = "Default Country";
     this.newsCategorySelected = "Default News Category";
   }
-
+  //On the Ui catch the country name to fetch on the UI
   async catchCountryValue(event: Event) {
     const selectedCountry = (event.target as HTMLTextAreaElement).value;
     const countryFetchObject = {
       fetchBase: selectedCountry,
-      typeOfFetchBase: "fetchCountry",
+      typeOfFetchBase: "fetchCountry"
     };
 
     this.newsCategorySelected = "Default News Category";
 
-    //trigger a logic that gets the newsdata array from vuex into the newsFooter component
     await news.fetchNewsQuery(countryFetchObject);
+    //Trigger a logic in the home component that populates it with the data
     bus.$emit("selectedCountry", selectedCountry);
     this.categoriesPageBoolean = false;
+    //Trigger a logic that gets the newsdata array from Vuex into the NewsFooter component
     bus.$emit("triggerDataToFetchInFooter");
   }
-
+  //On the UI catch the category name to fetch
   async catchNewsCategoryValue(event: Event) {
-    //trigger a logic that gets the newsdata array from vuex into the newsFooter component
     const selectedNewsCategory = (event.target as HTMLTextAreaElement).value;
     const newsCategoryFetchObject = {
       fetchBase: selectedNewsCategory,
-      typeOfFetchBase: "fetchNewsCategory",
+      typeOfFetchBase: "fetchNewsCategory"
     };
     this.countrySelected = "Default Country";
     await news.fetchNewsQuery(newsCategoryFetchObject);
+    //Trigger a logic in the Home component that populates it with the data
     bus.$emit("selectedNewsCategory", selectedNewsCategory);
     this.categoriesPageBoolean = false;
+    //Trigger a logic that gets the newsdata array from vuex into the NewsFooter component
     bus.$emit("triggerDataToFetchInFooter");
   }
-
+  //On the UI catch the input name to fetch
   async catchInputValue(event: Event) {
     const inputValue = (event.target as HTMLTextAreaElement).value;
     this.inputValue = inputValue;
     this.countrySelected = "Default Country";
     this.newsCategorySelected = "Default News Category";
+    //Trigger a logic in the Home component that populates it with the data
     bus.$emit("useInputValueToFetchData");
   }
 
-  //if someone clicks the random button, he gets redirected to the random page, where the category selection menu should not be shown
+  //If someone clicks the random button, he gets redirected to the random page, where the category selection menu should not be shown
   makeCategoriesDivClosed() {
     bus.$emit("makeCategoriesDivClosedEventForRandomPage");
   }
 
-  //close the categoriesdiv from the menu itself
+  //Close the categories div from the menu itself
   closeCategoriesDiv() {
     this.categoriesPageBoolean = false;
   }
 
+  //If a user queries the API with the input, fetch the data
   async onSubmit(event: Event) {
     event.preventDefault();
     const inputValue = this.inputValue;
     const inputFetchObject = {
       fetchBase: inputValue,
-      typeOfFetchBase: "fetchInput",
+      typeOfFetchBase: "fetchInput"
     };
     await news.fetchNewsQuery(inputFetchObject);
     const inputFetchValue = inputFetchObject.fetchBase;
     bus.$emit("useInputValueToFetchData", inputFetchValue);
     this.categoriesPageBoolean = false;
-    //trigger a logic that gets the newsdata array from vuex into the newsFooter component
+    //Trigger a logic that gets the newsData array from Vuex into the NewsFooter component
     bus.$emit("triggerDataToFetchInFooter");
   }
 }

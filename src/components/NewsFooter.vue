@@ -7,19 +7,13 @@
       </div>
 
       <div v-for="route in routes" :key="route.name" class="newsfooter-routes">
-        <div
-          @click="doStuffOnCLickInSitemap($event)"
-          class="newsfooter-individual-routes"
-        >
+        <div @click="doStuffOnCLickInSitemap($event)" class="newsfooter-individual-routes">
           <!-- for the newsfooter details button -->
-          <router-link v-if="route.name !== 'Details'" :to="route.path">
-            {{ route.name }}
-          </router-link>
+          <router-link v-if="route.name !== 'Details'" :to="route.path">{{ route.name }}</router-link>
           <router-link
             v-if="route.name === 'Details' && newsData[0] !== undefined"
             :to="{ name: 'DetailsPage', params: { title: newsData[0].title } }"
-            >{{ route.name }}</router-link
-          >
+          >{{ route.name }}</router-link>
         </div>
         <div class="newsfooter-detailspage-flexer">
           <!-- for the newsfooter dynamic links -->
@@ -36,9 +30,7 @@
                   @mouseover="mouseEnter(index)"
                   @mouseout="mouseLeave(index)"
                   :class="{ hovering: item.linksNewsFooterHovered }"
-                >
-                  {{ item.title }}
-                </div>
+                >{{ item.title }}</div>
               </router-link>
             </div>
           </div>
@@ -71,26 +63,26 @@ export default class NewsFooter extends Vue {
   router = new VueRouter({
     routes: [
       // dynamic segments start with a colon
-      { path: "/details /:id", component: DetailsPage },
-    ],
+      { path: "/details /:id", component: DetailsPage }
+    ]
   });
   indexOfHoveredLink: number | null = null;
 
   mounted() {
-    //get data from localStorage if the newsFooter mounts
+    //Get data from localStorage if the newsFooter mounts
     this.getData();
 
-    //if the newsMenu mounts, get the data
+    //If the newsMenu component mounts, get the data
     bus.$on("triggerDataToFetchInFooter", () => {
       this.getData();
     });
 
-    //change the newsData variable on changes in the random page component
+    //Change the newsData variable on changes in the random page component
     bus.$on("setNewsDataInNewsFooter", (data: NewsItemType[]) => {
       this.newsData = data;
     });
 
-    //make sure that the name Page is removed from the string
+    //Make sure that the name Page is removed from the strings that represent the sitemap buttons
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const routeNames = route.options.routes!;
     let i = 0;
@@ -107,7 +99,7 @@ export default class NewsFooter extends Vue {
     this.routes = routeNames;
   }
 
-  //get data from localStorage (LocalStorage gets populated in the news module after every fetch)
+  //Get data from localStorage (LocalStorage gets populated in the news module after every fetch)
   getData(): void {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const newsDataFromLocalStorage: NewsItemType[] = JSON.parse(
@@ -118,20 +110,20 @@ export default class NewsFooter extends Vue {
     this.newsData = newsDataFromLocalStorage;
   }
 
-  //if a user clicks an item below the header "details page" in the footer, make sure that the details page gets rerendered to display the item with the title where a user clicked on
+  //If a user clicks an item below the header "details page" in the footer, make sure that the details page gets rerendered to display the details page of the item with the title where a user clicked on
   triggerDetailPageToReload(item: string): void {
     bus.$emit("triggerdetailspagereload", item);
   }
 
   async doStuffOnCLickInSitemap(event: Event) {
-    //save on which button a user clicked
+    //Save on which button a user clicked
     const routeText = (event.target as HTMLAnchorElement).text;
 
-    //open the categories div if a user hits the categories button
+    //Open the categories div (the UI) if a user hits the categories button
     if (routeText.includes("Categories")) {
       bus.$emit("openCategoriesDivFromNewsFooter");
     }
-    //else close it
+    //Else close it
     if (
       routeText.includes("Home") ||
       routeText.includes("Random") ||
@@ -140,31 +132,31 @@ export default class NewsFooter extends Vue {
       bus.$emit("closeCategoriesDivFromNewsFooter");
     }
 
-    //if a user clicks on the details button, make sure the details page shows the relevant items
+    //If a user clicks on the details button, make sure the details page shows the relevant items
     if (routeText.includes("Details")) {
       const newsCategoryFetchObject = {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         fetchBase: localStorage.getItem("fetchBase")!,
 
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        typeOfFetchBase: localStorage.getItem("typeOfFetchBase")!,
+        typeOfFetchBase: localStorage.getItem("typeOfFetchBase")!
       };
-      //fetch the data based on user interaction, so fetch the defaults or for example a country a user selected
+      //Fetch the data based on user interaction, so fetch the defaults or for example a country a user selected
       await news.fetchNewsQuery(newsCategoryFetchObject);
 
-      //get the title of the item that's going to be displayed on the details page
+      //Get the title of the item which details are going to be displayed on the details page
       const title = this.$store.getters["vuexModuleDecorators/newsDataModule"]
         .queriedNewsItemsGetter[0].title;
-      //load the first item of the details page by triggering the load function in the DetailsPage component
+      //Load the first item of the details page by triggering the load function in the DetailsPage component
       bus.$emit("loadFirstElementOfDetailsPage", title);
     }
-    //if a user clicks on the random button, show a random article
+    //If a user clicks on the random button, show a random article on the random page
     if (routeText.includes("Random")) {
       bus.$emit("triggerRandomPageLogic");
     }
   }
 
-  //Create a hovering effect for the dynamic links if a user enters a link with his mouse
+  //Create a hovering effect for the dynamic sitemap links if a user enters a link with his mouse
   mouseEnter(index: number | null): void {
     this.indexOfHoveredLink = index;
 
@@ -178,16 +170,15 @@ export default class NewsFooter extends Vue {
     }
   }
 
-  //Undo the hovering effect for the dynamic links if a user leaves the link with his mouse
+  //Undo the hovering effect for the dynamic sitemap links if a user leaves the link with his mouse
   mouseLeave(index: number | null): void {
     if (index !== null) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const item = this.newsData[index]!;
 
       item.linksNewsFooterHovered = !item.linksNewsFooterHovered;
-
-      this.$set(this.newsData, index, item);
       //Set linksNewsFooterHovered to false
+      this.$set(this.newsData, index, item);
     }
   }
 }
