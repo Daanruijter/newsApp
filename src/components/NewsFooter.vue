@@ -83,6 +83,7 @@ export default class NewsFooter extends Vue {
     });
 
     //Make sure that the name Page is removed from the strings that represent the sitemap buttons
+
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const routeNames = route.options.routes!;
     let i = 0;
@@ -95,7 +96,6 @@ export default class NewsFooter extends Vue {
         routeNames[i].name = res;
       }
     }
-
     this.routes = routeNames;
   }
 
@@ -123,6 +123,7 @@ export default class NewsFooter extends Vue {
     if (routeText.includes("Categories")) {
       bus.$emit("openCategoriesDivFromNewsFooter");
     }
+
     //Else close it
     if (
       routeText.includes("Home") ||
@@ -141,15 +142,18 @@ export default class NewsFooter extends Vue {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         typeOfFetchBase: localStorage.getItem("typeOfFetchBase")!
       };
+
       //Fetch the data based on user interaction, so fetch the defaults or for example a country a user selected
       await news.fetchNewsQuery(newsCategoryFetchObject);
 
       //Get the title of the item which details are going to be displayed on the details page
       const title = this.$store.getters["vuexModuleDecorators/newsDataModule"]
         .queriedNewsItemsGetter[0].title;
+
       //Load the first item of the details page by triggering the load function in the DetailsPage component
       bus.$emit("loadFirstElementOfDetailsPage", title);
     }
+
     //If a user clicks on the random button, show a random article on the random page
     if (routeText.includes("Random")) {
       bus.$emit("triggerRandomPageLogic");

@@ -116,8 +116,6 @@
   </div>
 </template>
 
-
-
 <script lang="ts">
 export interface FetchNews {
   fetchBase: string;
@@ -150,6 +148,7 @@ export default class DetailsPage extends Vue {
   indexOfHoveredExtraItem: number | null = null;
   newsData = [];
   newsBase = "";
+
   //Get the newsitem where a user clicked on to go to its detail page from params (because there is no parent/child relation between the home and Details Page component)
   newsItemTitle = this.$route.params.title;
   newsItemPublishedTime = "";
@@ -177,9 +176,11 @@ export default class DetailsPage extends Vue {
 
     //Fetch the data
     await news.fetchNewsQuery(newsCategoryFetchObject);
+
     this.newsData = this.$store.getters[
       "vuexModuleDecorators/newsDataModule"
     ].queriedNewsItemsGetter;
+
     const newsData = (this.newsData = this.$store.getters[
       "vuexModuleDecorators/newsDataModule"
     ].queriedNewsItemsGetter);
@@ -195,6 +196,7 @@ export default class DetailsPage extends Vue {
     //This.newsItemTitle gets the title from params
     let titleToFilterItemOut = this.newsItemTitle;
     let valueForDetailComponentFiltered: NewsItemType[] = [];
+
     //Title comes from a click on the details button in the newfooter. The "bus" passes it through
     //If that happens, titleToFilterItemOut must be equal to that title
     if (title) {
@@ -240,11 +242,15 @@ export default class DetailsPage extends Vue {
             "newsCategoryForDetailsComponent"
           )!
         };
+
         this.newsBase = newsCategoryFetchObject.fetchBase;
+
         await news.fetchNewsQuery(newsCategoryFetchObject);
+
         this.newsData = this.$store.getters[
           "vuexModuleDecorators/newsDataModule"
         ].queriedNewsItemsGetter;
+
         //Get the data from vuex in the newsFooter component
         bus.$emit("triggerDataToFetchInFooter");
         valueForDetailComponentFiltered = this.newsData.filter(
@@ -255,6 +261,7 @@ export default class DetailsPage extends Vue {
           }
         );
       }
+
       //Filter the newsitems array to get three other most recent items that are not shown on the homepage (so they should have indices 10, 11 and 12 )
       const extraValuesForDetailComponent: NewsItemType[] = this.newsData.filter(
         (item: NewsItemType, index: number) => {
@@ -265,7 +272,6 @@ export default class DetailsPage extends Vue {
       //Populate the variables to display the data in the template
       this.valueForDetailComponent = valueForDetailComponentFiltered;
       this.threeRelevantExtraNewsItems = extraValuesForDetailComponent;
-      console.log(extraValuesForDetailComponent);
     }
     return null;
   }
@@ -279,18 +285,20 @@ export default class DetailsPage extends Vue {
       const item = this.threeRelevantExtraNewsItems[index]!;
 
       item.extraThreeItemsDetailsPageHovered = !item.extraThreeItemsDetailsPageHovered;
+
       //Add extraThreeItemsDetailsPageHovered as a property to the news array with a boolean that is set to true, indicating that the link with "index" is hovered
       this.$set(this.threeRelevantExtraNewsItems, index, item);
     }
-
-    //Undo the hovering effect for the links if a user leaves the link with his mouse
   }
+
+  //Undo the hovering effect for the links if a user leaves the link with his mouse
   mouseLeave(index: number | null): void {
     if (index !== null) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const item = this.threeRelevantExtraNewsItems[index]!;
 
       item.extraThreeItemsDetailsPageHovered = !item.extraThreeItemsDetailsPageHovered;
+
       //Set extraThreeItemsDetailsPageHovered to false
       this.$set(this.threeRelevantExtraNewsItems, index, item);
     }

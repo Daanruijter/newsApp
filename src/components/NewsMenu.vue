@@ -152,10 +152,12 @@ export default class NewsMenu extends Vue {
     bus.$on("makeCategoriesDivClosedEventForDetailsPage", () => {
       this.categoriesPageBoolean = false;
     });
+
     //Close the categories div if a user clicks on the home button
     bus.$on("makeCategoriesDivClosedEventForRandomPage", () => {
       this.categoriesPageBoolean = false;
     });
+
     //Open the categories div if a user clicks on its button in the newsfooter
     bus.$on("openCategoriesDivFromNewsFooter", () => {
       console.log("event from NEWSFOOTER");
@@ -163,6 +165,7 @@ export default class NewsMenu extends Vue {
       this.newsCategorySelected = "Default News Category";
       this.countrySelected = "Default Country";
     });
+
     //Close the categories div if a user clicks on a button in the newsfooter that is not the categories button
     bus.$on("closeCategoriesDivFromNewsFooter", () => {
       this.categoriesPageBoolean = false;
@@ -178,23 +181,29 @@ export default class NewsMenu extends Vue {
 
     await news.fetchNewsQuery(countryFetchObject);
     bus.$emit("loadDefaultNewsItemsAfterClickOnHomeButton");
+
     bus.$emit("triggerDataToFetchInFooter");
 
     //If a user clicks on home, reset the categories settings to their defaults
     this.countrySelected = "Default Country";
+
     this.newsCategorySelected = "Default News Category";
   }
 
   //Change the categoriesBoolean variable onclick
   setCategoriesBoolean(): void {
     this.categoriesPageBoolean = !this.categoriesPageBoolean;
+
     //Make sure the defaults are displayed after a click on the categories button
     this.countrySelected = "Default Country";
+
     this.newsCategorySelected = "Default News Category";
   }
+
   //On the Ui catch the country name to fetch on the UI
   async catchCountryValue(event: Event) {
     const selectedCountry = (event.target as HTMLTextAreaElement).value;
+
     const countryFetchObject = {
       fetchBase: selectedCountry,
       typeOfFetchBase: "fetchCountry"
@@ -203,24 +212,31 @@ export default class NewsMenu extends Vue {
     this.newsCategorySelected = "Default News Category";
 
     await news.fetchNewsQuery(countryFetchObject);
+
     //Trigger a logic in the home component that populates it with the data
     bus.$emit("selectedCountry", selectedCountry);
+
     this.categoriesPageBoolean = false;
+
     //Trigger a logic that gets the newsdata array from Vuex into the NewsFooter component
     bus.$emit("triggerDataToFetchInFooter");
   }
   //On the UI catch the category name to fetch
   async catchNewsCategoryValue(event: Event) {
     const selectedNewsCategory = (event.target as HTMLTextAreaElement).value;
+
     const newsCategoryFetchObject = {
       fetchBase: selectedNewsCategory,
       typeOfFetchBase: "fetchNewsCategory"
     };
+
     this.countrySelected = "Default Country";
     await news.fetchNewsQuery(newsCategoryFetchObject);
+
     //Trigger a logic in the Home component that populates it with the data
     bus.$emit("selectedNewsCategory", selectedNewsCategory);
     this.categoriesPageBoolean = false;
+
     //Trigger a logic that gets the newsdata array from vuex into the NewsFooter component
     bus.$emit("triggerDataToFetchInFooter");
   }
@@ -230,6 +246,7 @@ export default class NewsMenu extends Vue {
     this.inputValue = inputValue;
     this.countrySelected = "Default Country";
     this.newsCategorySelected = "Default News Category";
+
     //Trigger a logic in the Home component that populates it with the data
     bus.$emit("useInputValueToFetchData");
   }
@@ -247,15 +264,19 @@ export default class NewsMenu extends Vue {
   //If a user queries the API with the input, fetch the data
   async onSubmit(event: Event) {
     event.preventDefault();
+
     const inputValue = this.inputValue;
     const inputFetchObject = {
       fetchBase: inputValue,
       typeOfFetchBase: "fetchInput"
     };
+
     await news.fetchNewsQuery(inputFetchObject);
     const inputFetchValue = inputFetchObject.fetchBase;
+
     bus.$emit("useInputValueToFetchData", inputFetchValue);
     this.categoriesPageBoolean = false;
+
     //Trigger a logic that gets the newsData array from Vuex into the NewsFooter component
     bus.$emit("triggerDataToFetchInFooter");
   }

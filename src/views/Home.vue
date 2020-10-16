@@ -94,9 +94,6 @@
 
 <script lang="ts">
 import NewsItemType from "../interfacesforapp";
-
-// Prop
-
 import { Vue, Component } from "vue-property-decorator";
 import news from "../store/modules/news";
 import DetailsPage from "./DetailsPage.vue";
@@ -116,32 +113,28 @@ export default class Home extends Vue {
   fetchedCategory: null | string = "";
   router = new VueRouter({
     routes: [
-      // dynamic segments start with a colon
+      // Dynamic segments start with a colon
       { path: "/details /:id", component: DetailsPage }
     ]
   });
   pictureString = "picture";
   noPictureString = "nopicture";
 
-  test() {
-    alert("sdlh");
-  }
-
-  //if a picture cannot load, filter it out of the newsItemToDisplay Array by filtering the item(s) out
+  //If a picture cannot load, filter it out of the newsItemToDisplay Array by filtering the item(s) out
   //and pushing them to the newsDataToDisplayWithNoPictures array that is constructed to display items without a picture
   pictureNotLoaded(indexOfNotLoadedPicture: number): void {
     this.newsDataToDisplay = this.newsDataToDisplayUnsorted = this.newsDataToDisplay.filter(
       (item: NewsItemType, index: number) => {
         if (
           index === indexOfNotLoadedPicture &&
-          //make sure that the item has a title
+          //Make sure that the item has a title
           item.title &&
-          //make sure that the broken picture does get added only once (the function gets called after a reset of the sorting)
+          //Make sure that the broken picture does get added only once (the function gets called after a reset of the sorting)
           !this.newsDataToDisplayWithNoPictures.includes(item) &&
           !this.newsDataToDisplayWithNoPicturesUnsorted.includes(item)
         ) {
-          //push the broken picture(s) in the newsDataToDisplayWithNoPictures, but also in the newsDataToDisplayWithNoPicturesUnsorted that I
-          //use to give a user the option to reset a sorting action
+          //Push the broken picture(s) in the newsDataToDisplayWithNoPictures, but also in the newsDataToDisplayWithNoPicturesUnsorted that I
+          //Use to give a user the option to reset a sorting action
           this.newsDataToDisplayWithNoPictures.push(item);
           this.newsDataToDisplayWithNoPicturesUnsorted.push(item);
         }
@@ -150,7 +143,7 @@ export default class Home extends Vue {
     );
   }
 
-  //bus objects can listen to events in another component if you put them in the mounted hook of the component in which you want to listen to the event
+  //Bus objects can listen to events in another component if you put them in the mounted hook of the component in which you want to listen to the event
   async mounted() {
     //If there is data fetched already, make sure that on mounting, the same data is fetched, otherwise fetch the defaults
 
@@ -368,6 +361,7 @@ export default class Home extends Vue {
         const item = this.newsDataToDisplay[index]!;
 
         item.homePageLinksHovered = !item.homePageLinksHovered;
+
         //Add homePageLinksHovered as a property to the picture news array with a boolean that is set to true, indicating that the link with "index" is hovered
         this.$set(this.newsDataToDisplay, index, item);
       }
@@ -378,6 +372,7 @@ export default class Home extends Vue {
         const item = this.newsDataToDisplayWithNoPictures[index]!;
 
         item.homePageLinksHovered = !item.homePageLinksHovered;
+
         //Add homePageLinksHovered as a property to the no picture array with a boolean that is set to true, indicating that the link with "index" is hovered
         this.$set(this.newsDataToDisplayWithNoPictures, index, item);
       }
@@ -396,6 +391,7 @@ export default class Home extends Vue {
         const item = this.newsDataToDisplay[index]!;
         if (item.homePageLinksHovered) {
           item.homePageLinksHovered = false;
+
           //Set homePageLinksHovered in the picture array to false
           this.$set(this.newsDataToDisplay, index, item);
         }
@@ -407,6 +403,7 @@ export default class Home extends Vue {
         const item = this.newsDataToDisplayWithNoPictures[index]!;
 
         item.homePageLinksHovered = false;
+
         //Set homePageLinksHovered in the no picture array to false
         this.$set(this.newsDataToDisplayWithNoPictures, index, item);
       }
@@ -421,6 +418,7 @@ export default class Home extends Vue {
     const fetchBaseForDetailsComponent = localStorage.getItem("fetchBase")!;
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const newsCategoryFetchObject = localStorage.getItem("typeOfFetchBase")!;
+
     localStorage.setItem(
       "fetchBaseForDetailsComponent",
       fetchBaseForDetailsComponent
@@ -437,12 +435,15 @@ export default class Home extends Vue {
     for (i = 0; i < this.newsDataToDisplay.length; i++) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       let item = this.newsDataToDisplay[i];
+
       if (item.homePageLinksHovered) {
         item.homePageLinksHovered = false;
+
         //Set homePageLinksHovered in the picture array to false
         this.$set(this.newsDataToDisplay, i, item);
       }
       let j = 0;
+
       for (j = 0; j < this.newsDataToDisplayWithNoPictures.length; j++) {
         item = this.newsDataToDisplayWithNoPictures[j];
 
@@ -454,6 +455,7 @@ export default class Home extends Vue {
         }
       }
     }
+
     //"makeHoveringEffectsUndone" is called because a user clicked on an item's link to its DetailPage
     //This is exactly the moment when "saveFetchBaseInLocalStorage" must be called to save the fetchbase in LocalStorage
     this.saveFetchBaseInLocalStorage();

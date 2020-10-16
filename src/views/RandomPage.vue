@@ -122,7 +122,7 @@ export default class RandomPage extends Vue {
   previousDate = "";
   showAnotherNewsItemButtonClicked = false;
 
-  //base to fetch news from a random news category
+  //Base to fetch news from a random news category
   randomNewsCategoriesArray = [
     "Economics",
     "Politics",
@@ -135,7 +135,7 @@ export default class RandomPage extends Vue {
     "Default News Category"
   ];
 
-  //base to fetch news from a random country
+  //Base to fetch news from a random country
   randomCountryCategoriesArray = [
     "Argentina",
     "Australia",
@@ -245,6 +245,7 @@ export default class RandomPage extends Vue {
     // min and max included
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
+
   //Filter the array with one random index to display a random news item
   filterArrayByRandomIndex() {
     const randomNewsItemNumber = this.randomIntFromInterval(
@@ -262,6 +263,7 @@ export default class RandomPage extends Vue {
 
     return filterToGetRandomNewsItem;
   }
+
   async prepareDataForDisplay() {
     //Fetch the data and load it in the random component
 
@@ -294,6 +296,7 @@ export default class RandomPage extends Vue {
     this.showAnotherNewsItemButtonClicked = true;
     this.previousNewsItem = [];
     this.previousDate = "";
+
     //Fetch the data and load it in the Random component
     this.saveRandomItemInLocalStorage();
     this.prepareDataForDisplay();

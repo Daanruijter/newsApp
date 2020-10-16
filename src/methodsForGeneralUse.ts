@@ -1,14 +1,12 @@
-//convert the publishedAt timestring to be more concrete
+//Convert the publishedAt timestring to be more concrete
 export function convertNewsItemPublishedTime(publishString: string): string {
-  // console.log(publishString);
-
   const newsItemPublishedTime = publishString;
   const dateString = new Date(newsItemPublishedTime);
 
   let minutes: number | string;
   minutes = dateString.getMinutes();
 
-  //convert for example 7h7 to 7h07
+  //Convert for example 7h7 to 7h07
   function convertMinutes(minutes: number | string) {
     return (minutes < 10 ? "0" : "") + minutes;
   }
@@ -18,7 +16,7 @@ export function convertNewsItemPublishedTime(publishString: string): string {
 
   const hours = dateString.getHours();
 
-  //get the current day in letters
+  //Get the current day in letters
   const day = dateString.getDay();
   let weekDay = "";
 
@@ -44,10 +42,10 @@ export function convertNewsItemPublishedTime(publishString: string): string {
     weekDay = "Saturday";
   }
 
-  //get the day number in month in letters//
+  //Get the day number in month in letters//
   const dateNumber = dateString.getDate();
 
-  //get the month in letters//
+  //Get the month in letters//
   const month = dateString.getMonth();
 
   let monthName = "";
@@ -89,7 +87,7 @@ export function convertNewsItemPublishedTime(publishString: string): string {
     monthName = "December";
   }
 
-  //get the year//
+  //Get the year//
   const year = dateString.getFullYear();
 
   const convertedDateString =
@@ -104,7 +102,6 @@ export function convertNewsItemPublishedTime(publishString: string): string {
     hours +
     ":" +
     minutes;
-  // console.log(convertedDateString);
 
   return convertedDateString;
 }
