@@ -116,6 +116,8 @@
   </div>
 </template>
 
+ createSitemap(this.newsData, "");
+
 <script lang="ts">
 export interface FetchNews {
   fetchBase: string;
@@ -125,6 +127,7 @@ import NewsItemType from "../interfacesforapp";
 import { Vue, Component } from "vue-property-decorator";
 import news from "../store/modules/news";
 import { bus } from "../main";
+import createSitemap from "../methodsForGeneralUse";
 
 @Component
 export default class DetailsPage extends Vue {
@@ -271,6 +274,8 @@ export default class DetailsPage extends Vue {
       this.valueForDetailComponent = valueForDetailComponentFiltered;
       this.threeRelevantExtraNewsItems = extraValuesForDetailComponent;
     }
+    //Create a sitemap with the title put on the details page url
+    createSitemap(this.newsData, titleToFilterItemOut);
     return null;
   }
 

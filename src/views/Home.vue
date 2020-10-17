@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 <template>
   <div class="home-container">
-    <div @change="test" v-if="this.newsDataToDisplay[0]" class="home-newsdata-loaded">
+    <div v-if="this.newsDataToDisplay[0]" class="home-newsdata-loaded">
       <div
         class="home-show-selected-category"
         v-if="this.fetchedCategory !== 'Default Country'"
@@ -166,6 +166,7 @@ export default class Home extends Vue {
     }
 
     await news.fetchNewsQuery(newsCategoryFetchObject);
+
     //Disable non-null assertion, because fetchedCategory will not be null is it must not be. It get's populated with users querying the API
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     this.fetchedCategory = localStorage.getItem("fetchBase"!);
@@ -225,11 +226,11 @@ export default class Home extends Vue {
     );
   }
 
-  //Hide selected category div after a few seconds
+  //Hide selected category div after a while
   hideSelectedCategoryDiv(): void {
     setTimeout(() => {
       this.fetchedCategory = "Default Country";
-    }, 3000);
+    }, 10000);
   }
 
   //If there is an item without a picture, create an array with pictures and an array without pictures

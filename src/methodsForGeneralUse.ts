@@ -1,3 +1,5 @@
+import NewsItemType from "./interfacesforapp";
+
 //Convert the publishedAt timestring to be more concrete
 export function convertNewsItemPublishedTime(publishString: string): string {
   const newsItemPublishedTime = publishString;
@@ -104,4 +106,65 @@ export function convertNewsItemPublishedTime(publishString: string): string {
     minutes;
 
   return convertedDateString;
+}
+
+//sitemapCreator
+export default function createSitemap(data: NewsItemType[], title?: string) {
+  const dynamicData: NewsItemType[] = data;
+  const doc = document.implementation.createDocument("", "", null);
+  const titleFromDetailPage = title;
+  //create the outer tag
+  const urlset = doc.createElement("urlset");
+  urlset.setAttribute("xmlns", " http://www.sitemaps.org/schemas/sitemap/0.9");
+
+  let url = null;
+  let changefreq = null;
+  let loc = null;
+
+  //first create static sites (note, that this is a selection)
+  const staticSites = ["/", `details/${title}`, "random"];
+  for (let i = 0; i < staticSites.length; i++) {
+    url = doc.createElement("url");
+    loc = doc.createElement("loc");
+    loc.innerHTML = "http://localhost:8081/#" + staticSites[i];
+    changefreq = doc.createElement("changefreq");
+    changefreq.innerHTML = "monthly";
+    url.appendChild(loc);
+    url.appendChild(changefreq);
+    urlset.appendChild(url);
+  }
+  doc.appendChild(urlset);
+  //append dynamic user urls (EXAMPLE)
+  for (let i = 0; i < dynamicData.length; i++) {
+    url = doc.createElement("url");
+    loc = doc.createElement("loc");
+    loc.innerHTML = `${dynamicData[i].url}`;
+    changefreq = doc.createElement("changefreq");
+    changefreq.innerHTML = "weekly";
+    url.appendChild(loc);
+    url.appendChild(changefreq);
+    urlset.appendChild(url);
+  }
+  alert(dynamicData[0].url);
+
+  //Serialize xml and then download the file
+  //Serialize the xml file to txt
+  const oSerializer = new XMLSerializer();
+  let xmltext = oSerializer.serializeToString(doc);
+  xmltext = '<?xml version="1.0" encoding="UTF-8"?>' + xmltext;
+
+  alert(xmltext);
+
+  //Download the file
+  let pom = document.createElement("a");
+  const filename = "sitemap.xml";
+  pom = document.createElement("a");
+  const bb = new Blob([xmltext], { type: "text/plain" });
+  pom.setAttribute("href", window.URL.createObjectURL(bb));
+  pom.setAttribute("download", filename);
+  pom.dataset.downloadurl = ["text/plain", pom.download, pom.href].join(":");
+  pom.draggable = true;
+  pom.classList.add("dragout");
+  pom.click();
+  console.log(doc);
 }

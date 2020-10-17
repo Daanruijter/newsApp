@@ -16,14 +16,18 @@ if (process.env.NODE_ENV === "production") {
 if (process.env.NODE_ENV === "development") {
   app.use(serveStatic(__dirname + "/worldnews-app"));
 }
-app.use(
-  "/robots.txt",
-  express.static(path.join(__dirname, "dist/static/robots.txt"))
-);
-app.use(
-  "/sitemap.xml",
-  express.static(path.join(__dirname, "dist/static/sitemap.xml"))
-);
+// app.use(
+//   "/robots.txt",
+//   express.static(path.join(__dirname, "dist/static/robots.txt"))
+// );
+// app.use(
+//   "/sitemap.xml",
+//   express.static(path.join(__dirname, "dist/static/sitemap.xml"))
+// );
+
+app.get("/sitemap.xml", function(req, res) {
+  res.sendFile(path.join(__dirname + "dist/static/sitemap.xml"));
+});
 var port = process.env.PORT || 5000;
 
 const bodyParser = require("body-parser");
