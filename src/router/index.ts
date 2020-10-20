@@ -37,6 +37,13 @@ const routes: Array<RouteConfig> = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/DetailsPage.vue"),
   },
+  {
+    path: "/sitemap",
+    name: "XMLSitemap",
+
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/XMLSitemap.vue"),
+  },
 ];
 
 const router = new VueRouter({

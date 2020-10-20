@@ -25,9 +25,6 @@ if (process.env.NODE_ENV === "development") {
 //   express.static(path.join(__dirname, "dist/static/sitemap.xml"))
 // );
 
-app.get("/sitemap.xml", function(req, res) {
-  res.sendFile(path.join(__dirname + "dist/static/sitemap.xml"));
-});
 var port = process.env.PORT || 5000;
 
 const bodyParser = require("body-parser");
@@ -47,7 +44,7 @@ app.use(
 );
 
 app.use(function(req, res, next) {
-  console.log("ACCESS CONTORL ");
+  console.log("ACCESS COsNTORL ");
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
     "Access-Control-Allow-Headers",
@@ -74,5 +71,8 @@ mongoose
   .catch((err) => console.log(err + "There is no connection"));
 
 mongoose.set("debug", true);
-
+app.get("/", function() {
+  console.log("sitemap function execyuted");
+  // res.sendFile(path.join(__dirname + "/dist/static/sitemap.xml"));
+});
 app.use("/", require("./worldNewsUrls.ts"));

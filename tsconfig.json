@@ -5,6 +5,10 @@
     "strict": true,
     "jsx": "preserve",
     "importHelpers": true,
+    "typeRoots": [
+      "node_modules/@types",
+      "node_modules/@types/node"
+    ],
     "moduleResolution": "node",
     "experimentalDecorators": true,
     "skipLibCheck": true,

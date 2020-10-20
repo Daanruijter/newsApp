@@ -331,250 +331,250 @@ class NewsModule extends VuexModule {
     }
 
     //Make a call to the back-end to fetch the data
-    // await fetch(
-    //   url,
+    await fetch(
+      url,
 
-    //   {
-    //     method: "POST",
+      {
+        method: "POST",
 
-    //     headers: {
-    //       Accept: "application/json",
-    //       "Content-Type": "application/json",
-    //       "Access-Control-Allow-Origin": "*",
-    //     },
-    //     body: JSON.stringify(bodyWithUrls),
-    //   }
-    // )
-    //   .then((response) => {
-    //     return response.json();
-    //   })
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify(bodyWithUrls),
+      }
+    )
+      .then((response) => {
+        return response.json();
+      })
 
-    //   .then((data) => {
-    //     data = data.articles;
+      .then((data) => {
+        // data = data.articles;
 
-    //TEST MODE
-    //*********************************
-    //TEST MODE
+        //TEST MODE
+        //*********************************
+        //TEST MODE
 
-    //Set the data to the country array in the offline data document if the user wants to fetch a country
-    let data: any;
-    data = offLineData.UnitedStates;
+        //Set the data to the country array in the offline data document if the user wants to fetch a country
+        // let data: any;
+        // data = offLineData.UnitedStates;
 
-    if (fetchBaseObject.typeOfFetchBase === "fetchCountry") {
-      data = offLineData.UnitedStates;
-      if (fetchBaseObject.fetchBase === "Argentina") {
-        data = offLineData.Argentina;
-      }
-      if (fetchBaseObject.fetchBase === "Australia") {
-        data = offLineData.Australia;
-      }
-      if (fetchBaseObject.fetchBase === "Austria") {
-        data = offLineData.Austria;
-      }
-      if (fetchBaseObject.fetchBase === "Belgium") {
-        data = offLineData.Belgium;
-      }
-      if (fetchBaseObject.fetchBase === "Brazil") {
-        data = offLineData.Brazil;
-      }
-      if (fetchBaseObject.fetchBase === "Bulgaria") {
-        data = offLineData.Bulgaria;
-      }
-      if (fetchBaseObject.fetchBase === "Canada") {
-        data = offLineData.Canada;
-      }
-      if (fetchBaseObject.fetchBase === "China") {
-        data = offLineData.China;
-      }
-      if (fetchBaseObject.fetchBase === "Colombia") {
-        data = offLineData.Colombia;
-      }
-      if (fetchBaseObject.fetchBase === "Cuba") {
-        data = offLineData.Cuba;
-      }
-      if (fetchBaseObject.fetchBase === "Czech Republic") {
-        data = offLineData.CzechRepublic;
-      }
-      if (fetchBaseObject.fetchBase === "Egypt") {
-        data = offLineData.Egypt;
-      }
-      if (fetchBaseObject.fetchBase === "France") {
-        data = offLineData.France;
-      }
-      if (fetchBaseObject.fetchBase === "Germany") {
-        data = offLineData.Germany;
-      }
-      if (fetchBaseObject.fetchBase === "Greece") {
-        data = offLineData.Greece;
-      }
-      if (fetchBaseObject.fetchBase === "Hong Kong") {
-        data = offLineData.HongKong;
-      }
-      if (fetchBaseObject.fetchBase === "Hungary") {
-        data = offLineData.Hungary;
-      }
-      if (fetchBaseObject.fetchBase === "India") {
-        data = offLineData.India;
-      }
-      if (fetchBaseObject.fetchBase === "Indonesia") {
-        data = offLineData.Indonesia;
-      }
-      if (fetchBaseObject.fetchBase === "Ireland") {
-        data = offLineData.Ireland;
-      }
-      if (fetchBaseObject.fetchBase === "Israel") {
-        data = offLineData.Israel;
-      }
-      if (fetchBaseObject.fetchBase === "Italy") {
-        data = offLineData.Italy;
-      }
-      if (fetchBaseObject.fetchBase === "Japan") {
-        data = offLineData.Japan;
-      }
-      if (fetchBaseObject.fetchBase === "Latvia") {
-        data = offLineData.Latvia;
-      }
-      if (fetchBaseObject.fetchBase === "Lithuania") {
-        data = offLineData.Lithuania;
-      }
-      if (fetchBaseObject.fetchBase === "Malaysia") {
-        data = offLineData.Malaysia;
-      }
-      if (fetchBaseObject.fetchBase === "Mexico") {
-        data = offLineData.Mexico;
-      }
-      if (fetchBaseObject.fetchBase === "Morocco") {
-        data = offLineData.Morocco;
-      }
-      if (fetchBaseObject.fetchBase === "Netherlands") {
-        data = offLineData.Netherlands;
-      }
-      if (fetchBaseObject.fetchBase === "New Zealand") {
-        data = offLineData.NewZealand;
-      }
-      if (fetchBaseObject.fetchBase === "Nigeria") {
-        data = offLineData.Nigeria;
-      }
-      if (fetchBaseObject.fetchBase === "Norway") {
-        data = offLineData.Norway;
-      }
-      if (fetchBaseObject.fetchBase === "Philippines") {
-        data = offLineData.Phillippines;
-      }
-      if (fetchBaseObject.fetchBase === "Poland") {
-        data = offLineData.Poland;
-      }
-      if (fetchBaseObject.fetchBase === "Portugal") {
-        data = offLineData.Portugal;
-      }
-      if (fetchBaseObject.fetchBase === "Romania") {
-        data = offLineData.Romania;
-      }
-      if (fetchBaseObject.fetchBase === "Russia") {
-        data = offLineData.Russia;
-      }
-      if (fetchBaseObject.fetchBase === "Saudi Arabia") {
-        data = offLineData.SaudiArabia;
-      }
-      if (fetchBaseObject.fetchBase === "Serbia") {
-        data = offLineData.Serbia;
-      }
-      if (fetchBaseObject.fetchBase === "Singapore") {
-        data = offLineData.Singapore;
-      }
-      if (fetchBaseObject.fetchBase === "Slovakia") {
-        data = offLineData.Slovakia;
-      }
-      if (fetchBaseObject.fetchBase === "Slovenia") {
-        data = offLineData.Slovenia;
-      }
-      if (fetchBaseObject.fetchBase === "South Africa") {
-        data = offLineData.SouthAfrica;
-      }
-      if (fetchBaseObject.fetchBase === "South Korea") {
-        data = offLineData.SouthKorea;
-      }
-      if (fetchBaseObject.fetchBase === "Sweden") {
-        data = offLineData.Sweden;
-      }
-      if (fetchBaseObject.fetchBase === "Switzerland") {
-        data = offLineData.Switzerland;
-      }
-      if (fetchBaseObject.fetchBase === "Taiwan") {
-        data = offLineData.Taiwan;
-      }
-      if (fetchBaseObject.fetchBase === "Thailand") {
-        data = offLineData.Thailand;
-      }
-      if (fetchBaseObject.fetchBase === "Turkey") {
-        data = offLineData.Turkey;
-      }
-      if (fetchBaseObject.fetchBase === "United Arabic Emirates") {
-        data = offLineData.UnitedArabicEmirates;
-      }
-      if (fetchBaseObject.fetchBase === "Ukraine") {
-        data = offLineData.Ukraine;
-      }
-      if (fetchBaseObject.fetchBase === "United Kingdom") {
-        data = offLineData.UnitedKingdom;
-      }
-      if (fetchBaseObject.fetchBase === "United States") {
-        data = offLineData.UnitedStates;
-      }
-      if (fetchBaseObject.fetchBase === "Venezuela") {
-        data = offLineData.Venezuela;
-      }
-      if (fetchBaseObject.fetchBase === "Default Country") {
-        data = offLineData.defaultCountry;
-      }
-    }
+        // if (fetchBaseObject.typeOfFetchBase === "fetchCountry") {
+        //   data = offLineData.UnitedStates;
+        //   if (fetchBaseObject.fetchBase === "Argentina") {
+        //     data = offLineData.Argentina;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Australia") {
+        //     data = offLineData.Australia;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Austria") {
+        //     data = offLineData.Austria;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Belgium") {
+        //     data = offLineData.Belgium;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Brazil") {
+        //     data = offLineData.Brazil;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Bulgaria") {
+        //     data = offLineData.Bulgaria;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Canada") {
+        //     data = offLineData.Canada;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "China") {
+        //     data = offLineData.China;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Colombia") {
+        //     data = offLineData.Colombia;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Cuba") {
+        //     data = offLineData.Cuba;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Czech Republic") {
+        //     data = offLineData.CzechRepublic;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Egypt") {
+        //     data = offLineData.Egypt;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "France") {
+        //     data = offLineData.France;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Germany") {
+        //     data = offLineData.Germany;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Greece") {
+        //     data = offLineData.Greece;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Hong Kong") {
+        //     data = offLineData.HongKong;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Hungary") {
+        //     data = offLineData.Hungary;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "India") {
+        //     data = offLineData.India;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Indonesia") {
+        //     data = offLineData.Indonesia;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Ireland") {
+        //     data = offLineData.Ireland;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Israel") {
+        //     data = offLineData.Israel;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Italy") {
+        //     data = offLineData.Italy;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Japan") {
+        //     data = offLineData.Japan;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Latvia") {
+        //     data = offLineData.Latvia;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Lithuania") {
+        //     data = offLineData.Lithuania;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Malaysia") {
+        //     data = offLineData.Malaysia;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Mexico") {
+        //     data = offLineData.Mexico;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Morocco") {
+        //     data = offLineData.Morocco;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Netherlands") {
+        //     data = offLineData.Netherlands;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "New Zealand") {
+        //     data = offLineData.NewZealand;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Nigeria") {
+        //     data = offLineData.Nigeria;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Norway") {
+        //     data = offLineData.Norway;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Philippines") {
+        //     data = offLineData.Phillippines;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Poland") {
+        //     data = offLineData.Poland;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Portugal") {
+        //     data = offLineData.Portugal;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Romania") {
+        //     data = offLineData.Romania;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Russia") {
+        //     data = offLineData.Russia;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Saudi Arabia") {
+        //     data = offLineData.SaudiArabia;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Serbia") {
+        //     data = offLineData.Serbia;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Singapore") {
+        //     data = offLineData.Singapore;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Slovakia") {
+        //     data = offLineData.Slovakia;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Slovenia") {
+        //     data = offLineData.Slovenia;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "South Africa") {
+        //     data = offLineData.SouthAfrica;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "South Korea") {
+        //     data = offLineData.SouthKorea;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Sweden") {
+        //     data = offLineData.Sweden;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Switzerland") {
+        //     data = offLineData.Switzerland;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Taiwan") {
+        //     data = offLineData.Taiwan;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Thailand") {
+        //     data = offLineData.Thailand;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Turkey") {
+        //     data = offLineData.Turkey;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "United Arabic Emirates") {
+        //     data = offLineData.UnitedArabicEmirates;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Ukraine") {
+        //     data = offLineData.Ukraine;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "United Kingdom") {
+        //     data = offLineData.UnitedKingdom;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "United States") {
+        //     data = offLineData.UnitedStates;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Venezuela") {
+        //     data = offLineData.Venezuela;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Default Country") {
+        //     data = offLineData.defaultCountry;
+        //   }
+        // }
 
-    //Set the data to the country array in the offline data document if the user wants to fetch a country
-    if (fetchBaseObject.typeOfFetchBase === "fetchNewsCategory") {
-      if (fetchBaseObject.fetchBase === "Economics") {
-        data = offLineData.Economics;
-      }
-      if (fetchBaseObject.fetchBase === "Politics") {
-        data = offLineData.Politics;
-      }
-      if (fetchBaseObject.fetchBase === "Science") {
-        data = offLineData.Science;
-      }
-      if (fetchBaseObject.fetchBase === "Health") {
-        data = offLineData.Health;
-      }
-      if (fetchBaseObject.fetchBase === "Sports") {
-        data = offLineData.Sports;
-      }
-      if (fetchBaseObject.fetchBase === "Leisuer") {
-        data = offLineData.Leisure;
-      }
-      if (fetchBaseObject.fetchBase === "Entertainment") {
-        data = offLineData.Entertainment;
-      }
-      if (fetchBaseObject.fetchBase === "Travel") {
-        data = offLineData.Travel;
-      }
-      if (fetchBaseObject.fetchBase === "Default News Category") {
-        data = offLineData.Economics;
-      }
-    }
+        //Set the data to the country array in the offline data document if the user wants to fetch a country
+        // if (fetchBaseObject.typeOfFetchBase === "fetchNewsCategory") {
+        //   if (fetchBaseObject.fetchBase === "Economics") {
+        //     data = offLineData.Economics;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Politics") {
+        //     data = offLineData.Politics;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Science") {
+        //     data = offLineData.Science;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Health") {
+        //     data = offLineData.Health;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Sports") {
+        //     data = offLineData.Sports;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Leisuer") {
+        //     data = offLineData.Leisure;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Entertainment") {
+        //     data = offLineData.Entertainment;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Travel") {
+        //     data = offLineData.Travel;
+        //   }
+        //   if (fetchBaseObject.fetchBase === "Default News Category") {
+        //     data = offLineData.Economics;
+        //   }
+        // }
 
-    // //Set the data to a default if a user wants to fetch by input
-    if (fetchBaseObject.typeOfFetchBase === "fetchInput") {
-      data = offLineData.Trump;
-    }
-    // data = [];
-    //TEST MODE
-    //*********************************
-    //TEST MODE
+        // //Set the data to a default if a user wants to fetch by input
+        // if (fetchBaseObject.typeOfFetchBase === "fetchInput") {
+        //   data = offLineData.Trump;
+        // }
+        // data = [];
+        //TEST MODE
+        //*********************************
+        //TEST MODE
 
-    //Call the mutator
-    this.context.commit("addQueriedNewsDataToState", data);
+        //Call the mutator
+        this.context.commit("addQueriedNewsDataToState", data);
 
-    //Call the mutator
-    this.context.commit("addFetchBaseToState", fetchBaseObject);
-    // });
+        //Call the mutator
+        this.context.commit("addFetchBaseToState", fetchBaseObject);
+      });
     url = "";
   }
 }

@@ -2,10 +2,13 @@
   <div class="detailspage-container">
     <div v-if="this.newsData[0]" class="detailspage-newsdata-loaded">
       <hr v-if="this.newsData[0]" class="detailspage-hr-adapt-size" />
-      <div
+      <div v-if="this.valueForDetailComponent[0].publishedAt">
+        {{ this.valueForDetailComponent[0].publishedAt }} GMT
+      </div>
+      <hr
         v-if="this.valueForDetailComponent[0].publishedAt"
-      >{{ this.valueForDetailComponent[0].publishedAt }} GMT</div>
-      <hr v-if="this.valueForDetailComponent[0].publishedAt" class="detailspage-hr-adapt-size" />
+        class="detailspage-hr-adapt-size"
+      />
       <div
         v-for="newsItem in this.valueForDetailComponent"
         :key="newsItem.title"
@@ -21,33 +24,45 @@
           <a :href="newsItem.url">{{ newsItem.title }}</a>
         </div>
         <div>
-          <i v-if="newsItem.author&&newsItem.title">Written by:{{ " " }}{{ newsItem.author }}</i>
-          <i v-if="newsItem.source.name && newsItem.author&&newsItem.title">
-            <i v-if="newsItem.source.name && newsItem.author&&newsItem.title">,</i>
-            {{ " Source: "
-            }}{{ newsItem.source.name }}
+          <i v-if="newsItem.author && newsItem.title"
+            >Written by:{{ " " }}{{ newsItem.author }}</i
+          >
+          <i v-if="newsItem.source.name && newsItem.author && newsItem.title">
+            <i v-if="newsItem.source.name && newsItem.author && newsItem.title"
+              >,</i
+            >
+            {{ " Source: " }}{{ newsItem.source.name }}
           </i>
         </div>
         <br />
         <div class="detailspage-description-wrapper">
           <span
-            v-if="newsItem.description&&newsItem.title"
+            v-if="newsItem.description && newsItem.title"
             class="detailspage-small-header"
-          >Description</span>
+            >Description</span
+          >
           <br />
 
           <div
-            v-if="newsItem.description&&newsItem.title"
+            v-if="newsItem.description && newsItem.title"
             class="detailspage-description"
-          >{{ newsItem.description }}</div>
+          >
+            {{ newsItem.description }}
+          </div>
         </div>
         <div class="detailspage-contents-wrapper">
-          <span v-if="newsItem.content&&newsItem.title" class="detailspage-small-header">Contents</span>
+          <span
+            v-if="newsItem.content && newsItem.title"
+            class="detailspage-small-header"
+            >Contents</span
+          >
           <br />
           <div
-            v-if="newsItem.content&&newsItem.title"
+            v-if="newsItem.content && newsItem.title"
             class="detailspage-contents"
-          >{{ newsItem.content }}</div>
+          >
+            {{ newsItem.content }}
+          </div>
         </div>
 
         <div class="detailspage-picture">
@@ -56,18 +71,29 @@
       </div>
       <!-- three other relevant items -->
 
-      <div v-if="threeRelevantExtraNewsItems[0]" class="detailspage-other-relevant-items">
+      <div
+        v-if="threeRelevantExtraNewsItems[0]"
+        class="detailspage-other-relevant-items"
+      >
         <div class="detailspage-other-news-bar">
           <h2>More{{ " " }}{{ this.newsBase }}{{ " news" }}</h2>
         </div>
-        <hr v-if="threeRelevantExtraNewsItems[0]" class="detailspage-hr-adapt-size" />
+        <hr
+          v-if="threeRelevantExtraNewsItems[0]"
+          class="detailspage-hr-adapt-size"
+        />
         <div
           v-for="(newsItem, index) in this.threeRelevantExtraNewsItems"
           :key="newsItem.title"
           class="detailspage-data"
         >
-          <div v-if="newsItem.publishedAt && newsItem.title ">{{ newsItem.publishedAt }} GMT</div>
-          <hr v-if="newsItem.publishedAt &&newsItem.title" class="detailspage-hr-adapt-size" />
+          <div v-if="newsItem.publishedAt && newsItem.title">
+            {{ newsItem.publishedAt }} GMT
+          </div>
+          <hr
+            v-if="newsItem.publishedAt && newsItem.title"
+            class="detailspage-hr-adapt-size"
+          />
 
           <div
             v-if="newsItem.title"
@@ -80,25 +106,40 @@
           </div>
 
           <div>
-            <i v-if="newsItem.author&&newsItem.title">Written by:{{ " " }}{{ newsItem.author }}</i>
-            <i v-if="newsItem.source.name && newsItem.author&&newsItem.title">
-              <i v-if="newsItem.source.name && newsItem.author&&newsItem.title">,</i>
-              {{ " Source: "
-              }}{{ newsItem.source.name }}
+            <i v-if="newsItem.author && newsItem.title"
+              >Written by:{{ " " }}{{ newsItem.author }}</i
+            >
+            <i v-if="newsItem.source.name && newsItem.author && newsItem.title">
+              <i
+                v-if="newsItem.source.name && newsItem.author && newsItem.title"
+                >,</i
+              >
+              {{ " Source: " }}{{ newsItem.source.name }}
             </i>
           </div>
           <br />
           <div class="detailspage-description-wrapper">
-            <span v-if="newsItem.description" class="detailspage-small-header">Description</span>
+            <span v-if="newsItem.description" class="detailspage-small-header"
+              >Description</span
+            >
             <br />
 
             <div
-              v-if="newsItem.description&&newsItem.title"
+              v-if="newsItem.description && newsItem.title"
               class="detailspage-description"
-            >{{ newsItem.description }}</div>
+            >
+              {{ newsItem.description }}
+            </div>
           </div>
-          <div v-if="newsItem.content &&newsItem.title" class="detailspage-contents-wrapper">
-            <span v-if="newsItem.content &&newsItem.title" class="detailspage-small-header">Contents</span>
+          <div
+            v-if="newsItem.content && newsItem.title"
+            class="detailspage-contents-wrapper"
+          >
+            <span
+              v-if="newsItem.content && newsItem.title"
+              class="detailspage-small-header"
+              >Contents</span
+            >
             <br />
             <div class="detailspage-contents">{{ newsItem.content }}</div>
           </div>
@@ -106,7 +147,10 @@
           <div class="detailspage-picture">
             <img v-bind:src="newsItem.urlToImage" />
           </div>
-          <hr v-if="newsItem.title &&newsItem.title" class="detailspage-hr-adapt-size" />
+          <hr
+            v-if="newsItem.title && newsItem.title"
+            class="detailspage-hr-adapt-size"
+          />
         </div>
       </div>
     </div>
@@ -115,8 +159,6 @@
     </div>
   </div>
 </template>
-
- createSitemap(this.newsData, "");
 
 <script lang="ts">
 export interface FetchNews {
@@ -167,7 +209,7 @@ export default class DetailsPage extends Vue {
       fetchBase: localStorage.getItem("fetchBase")!,
 
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      typeOfFetchBase: localStorage.getItem("typeOfFetchBase")!
+      typeOfFetchBase: localStorage.getItem("typeOfFetchBase")!,
     };
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -232,7 +274,7 @@ export default class DetailsPage extends Vue {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       let newsCategoryFetchObject: FetchNews = {
         fetchBase: "",
-        typeOfFetchBase: ""
+        typeOfFetchBase: "",
       };
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       if (localStorage.getItem("fetchBaseForDetailsComponent")!) {
@@ -243,7 +285,7 @@ export default class DetailsPage extends Vue {
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           typeOfFetchBase: localStorage.getItem(
             "newsCategoryForDetailsComponent"
-          )!
+          )!,
         };
 
         this.newsBase = newsCategoryFetchObject.fetchBase;

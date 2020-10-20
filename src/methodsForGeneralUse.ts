@@ -1,4 +1,14 @@
 import NewsItemType from "./interfacesforapp";
+import axios from "axios";
+// import parse from "xml-parser";
+// import stringify from "xml-stringify";
+// declare function require(name: string): any;
+// const fs = require("fs");
+
+// const fs = require("fs");
+// module.exports.readFile = function (f) {
+//   return fs.readFileSync(f);
+// };
 
 //Convert the publishedAt timestring to be more concrete
 export function convertNewsItemPublishedTime(publishString: string): string {
@@ -145,21 +155,21 @@ export default function createSitemap(data: NewsItemType[], title?: string) {
     url.appendChild(changefreq);
     urlset.appendChild(url);
   }
-  alert(dynamicData[0].url);
+  console.log(dynamicData[0].url);
 
   //Serialize xml and then download the file
   //Serialize the xml file to txt
   const oSerializer = new XMLSerializer();
   let xmltext = oSerializer.serializeToString(doc);
   xmltext = '<?xml version="1.0" encoding="UTF-8"?>' + xmltext;
-
-  alert(xmltext);
+  console.log(xmltext);
 
   //Download the file
   let pom = document.createElement("a");
   const filename = "sitemap.xml";
   pom = document.createElement("a");
   const bb = new Blob([xmltext], { type: "text/plain" });
+
   pom.setAttribute("href", window.URL.createObjectURL(bb));
   pom.setAttribute("download", filename);
   pom.dataset.downloadurl = ["text/plain", pom.download, pom.href].join(":");
@@ -167,4 +177,85 @@ export default function createSitemap(data: NewsItemType[], title?: string) {
   pom.classList.add("dragout");
   pom.click();
   console.log(doc);
+  console.log(pom);
+
+  // const ast = parse(urlset);
+  // const xml = stringify(ast);
+
+  const xml = `${urlset}`;
+  // const xml = urlset;
+  console.log(bb);
+  console.log(xml);
+
+  // const test = { test: "sss" };
+
+  //call the backend that updates the xml document
+  //Based on the mode, make a call to my restAPI
+  url = "";
+  if (process.env.NODE_ENV === "development") {
+    url = "http://localhost:5000/updateXMLSitemap";
+  }
+
+  if (process.env.NODE_ENV === "production") {
+    url = "https://worldnews-app.herokuapp.com/updateXMLSitemap";
+  }
+
+  //   const headers = { "Content-Type": "application/x-www-form-urlencoded" };
+  const test = { tesst: urlset.innerHTML };
+  console.log(test);
+
+  //   axios
+  //     .post(url, body, {
+  //       headers,
+  //     })
+  //     .then((res) => {
+  //       console.log(res);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }
+
+  //Make a call to the back-end to fetch the data
+  fetch(
+    url,
+
+    {
+      method: "POST",
+
+      // headers: {
+      //   Accept: "application/json",
+      //   "Content-Type": "application/json",
+      //   "Access-Control-Allow-Origin": "*",
+      // },
+      // headers: {
+      //   Accept: "application/xml",
+      //   "Content-Type": "application/xml",
+      //   "Access-Control-Allow-Origin": "*",
+      // },
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json  ",
+        "Access-Control-Allow-Origin": "*",
+      },
+
+      //WORKSSS
+      // headers: {
+      //   Accept: "application/x-www-form-urlencoded",
+      //   "Content-Type": "application/x-www-form-urlencoded",
+      //   "Access-Control-Allow-Origin": "*",
+      // },
+      body: JSON.stringify(test),
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+
+    .then((res) => {
+      res.send("data succesfully fetched");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
