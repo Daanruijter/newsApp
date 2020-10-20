@@ -1,14 +1,4 @@
 import NewsItemType from "./interfacesforapp";
-import axios from "axios";
-// import parse from "xml-parser";
-// import stringify from "xml-stringify";
-// declare function require(name: string): any;
-// const fs = require("fs");
-
-// const fs = require("fs");
-// module.exports.readFile = function (f) {
-//   return fs.readFileSync(f);
-// };
 
 //Convert the publishedAt timestring to be more concrete
 export function convertNewsItemPublishedTime(publishString: string): string {
@@ -118,12 +108,12 @@ export function convertNewsItemPublishedTime(publishString: string): string {
   return convertedDateString;
 }
 
-//sitemapCreator
+//Sitemap Creator
 export default function createSitemap(data: NewsItemType[], title?: string) {
   const dynamicData: NewsItemType[] = data;
   const doc = document.implementation.createDocument("", "", null);
-  const titleFromDetailPage = title;
-  //create the outer tag
+
+  //Create the outer tag
   const urlset = doc.createElement("urlset");
   urlset.setAttribute("xmlns", " http://www.sitemaps.org/schemas/sitemap/0.9");
 
@@ -131,7 +121,7 @@ export default function createSitemap(data: NewsItemType[], title?: string) {
   let changefreq = null;
   let loc = null;
 
-  //first create static sites (note, that this is a selection)
+  //First create static links from the router (the navigation buttons)
   const staticSites = ["/", `details/${title}`, "random"];
   for (let i = 0; i < staticSites.length; i++) {
     url = doc.createElement("url");
@@ -144,7 +134,8 @@ export default function createSitemap(data: NewsItemType[], title?: string) {
     urlset.appendChild(url);
   }
   doc.appendChild(urlset);
-  //append dynamic user urls (EXAMPLE)
+
+  //Append dynamic sitemap urls (EXAMPLE)
   for (let i = 0; i < dynamicData.length; i++) {
     url = doc.createElement("url");
     loc = doc.createElement("loc");
@@ -155,7 +146,6 @@ export default function createSitemap(data: NewsItemType[], title?: string) {
     url.appendChild(changefreq);
     urlset.appendChild(url);
   }
-  console.log(dynamicData[0].url);
 
   const urlSetToSend = urlset.outerHTML;
 
@@ -164,35 +154,21 @@ export default function createSitemap(data: NewsItemType[], title?: string) {
   const oSerializer = new XMLSerializer();
   let xmltext = oSerializer.serializeToString(doc);
   xmltext = '<?xml version="1.0" encoding="UTF-8"?>' + xmltext;
-  console.log(xmltext);
 
   //Download the file
-  let pom = document.createElement("a");
-  const filename = "sitemap.xml";
-  pom = document.createElement("a");
-  const bb = new Blob([xmltext], { type: "text/plain" });
+  // let pom = document.createElement("a");
+  // const filename = "sitemap.xml";
+  // pom = document.createElement("a");
+  // const bb = new Blob([xmltext], { type: "text/plain" });
 
-  pom.setAttribute("href", window.URL.createObjectURL(bb));
-  pom.setAttribute("download", filename);
-  pom.dataset.downloadurl = ["text/plain", pom.download, pom.href].join(":");
-  pom.draggable = true;
-  pom.classList.add("dragout");
-  pom.click();
-  console.log(doc);
-  console.log(pom);
+  // pom.setAttribute("href", window.URL.createObjectURL(bb));
+  // pom.setAttribute("download", filename);
+  // pom.dataset.downloadurl = ["text/plain", pom.download, pom.href].join(":");
+  // pom.draggable = true;
+  // pom.classList.add("dragout");
+  // pom.click();
 
-  // const ast = parse(urlset);
-  // const xml = stringify(ast);
-
-  const xml = `${urlset}`;
-  // const xml = urlset;
-  console.log(bb);
-  console.log(xml);
-  console.log(urlset.innerHTML);
-
-  // const test = { test: "sss" };
-
-  //call the backend that updates the xml document
+  //Call the backend that updates the xml document
   //Based on the mode, make a call to my restAPI
   url = "";
   if (process.env.NODE_ENV === "development") {
@@ -203,54 +179,20 @@ export default function createSitemap(data: NewsItemType[], title?: string) {
     url = "https://worldnews-app.herokuapp.com/updateXMLSitemap";
   }
 
-  //   const headers = { "Content-Type": "application/x-www-form-urlencoded" };
-  const test = { tesst: urlSetToSend };
-  console.log(test);
+  //Create a variable thats going to be send in the body
+  const XMLurlSet = { urlSetToSend: urlSetToSend };
 
-  //   axios
-  //     .post(url, body, {
-  //       headers,
-  //     })
-  //     .then((res) => {
-  //       console.log(res);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }
+  //Make a call to the back end to fetch the data
+  fetch(url, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json  ",
+      "Access-Control-Allow-Origin": "*",
+    },
 
-  //Make a call to the back-end to fetch the data
-  fetch(
-    url,
-
-    {
-      method: "POST",
-
-      // headers: {
-      //   Accept: "application/json",
-      //   "Content-Type": "application/json",
-      //   "Access-Control-Allow-Origin": "*",
-      // },
-      // headers: {
-      //   Accept: "application/xml",
-      //   "Content-Type": "application/xml",
-      //   "Access-Control-Allow-Origin": "*",
-      // },
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json  ",
-        "Access-Control-Allow-Origin": "*",
-      },
-
-      //WORKSSS
-      // headers: {
-      //   Accept: "application/x-www-form-urlencoded",
-      //   "Content-Type": "application/x-www-form-urlencoded",
-      //   "Access-Control-Allow-Origin": "*",
-      // },
-      body: JSON.stringify(test),
-    }
-  )
+    body: JSON.stringify(XMLurlSet),
+  })
     .then((response) => {
       return response.json();
     })

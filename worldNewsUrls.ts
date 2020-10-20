@@ -6,7 +6,6 @@ const fs = require("fs");
 const xml2js = require("xml2js");
 
 router.post("/", (req, res) => {
-  console.log("POSTSTPOOSTPSOSOT");
   const url = req.body.fetchUrl;
 
   res.sendFile(path.join(__dirname + "/dist/static/sitemap.xml"));
@@ -387,127 +386,13 @@ module.exports = router;
 
 //Update the xml sitemap
 router.post("/updateXMLSitemap", (req, res) => {
-  console.log("test");
+  let XMLData =
+    '<?xml version="1.0" encoding="UTF-8"?>' + req.body.urlSetToSend;
 
-  // fs.readFile("./dist/static/sitemap.xml", function(err, data) {
-  //   if (err) {
-  //     throw err;
-  //   }
-  //   console.log(data);
-  //   console.log("DATA from 397");
-
-  // convert XML data to JSON object
-  // xml2js.parseString(data, (err, result) => {
-  //   if (err) {
-  //     throw err;
-  //   }
-
-  //   //    print JSON object
-  //   console.log(JSON.stringify(result, null, 4));
-
-  let apie = req.body;
-  // req.body.replace("`", "");
-  console.log("before apie log");
-  console.log(apie.tesst);
-
-  let gekkie = '<?xml version="1.0" encoding="UTF-8"?>' + apie.tesst;
-
-  console.log("after apie log");
-
-  // const text = apie.tesst;
-  // const parser = new DOMParser();
-  // const xmlDoc = parser.parseFromString(text, "text/xml");
-  // console.log(xmlDoc);
-  // result = xmlDoc;
-
-  // const a = `${apie.testt}`;
-  // console.log(a);
-
-  // xml2js.parseString(a, (err, result) => {
-  //   if (err) {
-  //     throw err;
-  //   }
-  //   console.log(result);
-  // });
-
-  // result = `<urlset xmlns=" http://www.sitemaps.org/schemas/sitemap/0.9">
-  //     <url>
-  //         <loc>http://localhost:8081/#/</loc>
-  //         <changefreq>monthly</changefreq>
-  //     </url>
-  //     <url>
-  //         <loc>http://localhost:8081/#details/</loc>
-  //         <changefreq>monthly</changefreq>
-  //     </url>
-  //     <url>
-  //         <loc>http://localhost:8081/#random</loc>
-  //         <changefreq>monthly</changefreq>
-  //     </url>
-  //     <url>
-  //         <loc>https://www.nytimes.com/2020/10/12/business/nobel-economics-paul-milgrom-robert-wilson.html</loc>
-  //         <changefreq>weekly</changefreq>
-  //     </url>
-  //     <url>
-  //         <loc>https://www.npr.org/2020/10/12/922482941/many-firsts-at-confirmation-hearings-for-judge-amy-coney-barrett
-  //         </loc>
-  //         <changefreq>weekly</changefreq>
-  //     </url>
-  //     <url>
-  //         <loc>https://www.politico.com/news/2020/10/12/biden-trump-2020-election-night-428856</loc>
-  //         <changefreq>weekly</changefreq>
-  //     </url>
-  //     <url>
-  //         <loc>https://www.washingtonpost.com/nation/2020/10/12/coronavirus-covid-live-updates-us/</loc>
-  //         <changefreq>weekly</changefreq>
-  //     </url>
-  //     <url>
-  //         <loc>https://www.cnn.com/2020/10/12/world/wolf-rayet-star-apep-scn-trnd/index.html</loc>
-  //         <changefreq>weekly</changefreq>
-  //     </url>
-  //     <url>
-  //         <loc>https://www.cnn.com/2020/10/12/asia/china-qingdao-coronavirus-golden-week-intl-hnk/index.html</loc>
-  //         <changefreq>weekly</changefreq>
-  //     </url>
-  //     <url>
-  //         <loc>https://www.engadget.com/coronavirus-flu-virus-smartphone-screens-080440373.html</loc>
-  //         <changefreq>weekly</changefreq>
-  //     </url>
-  //     <url>
-  //         <loc>https://www.theguardian.com/sport/2020/oct/12/dak-prescott-injury-dallas-cowboys-nfl-football</loc>
-  //         <changefreq>weekly</changefreq>
-  //     </url>
-  //     <url>
-  //         <loc>https://www.cnbc.com/2020/10/12/british-airways-chief-alex-cruz-to-step-down.html</loc>
-  //         <changefreq>weekly</changefreq>
-  //     </url>
-  //     <url>
-  //         <loc>https://www.huffpost.com/entry/jennifer-aniston-puppy_n_5f83a8a9c5b62f97bac470d9</loc>
-  //         <changefreq>weekly</changefreq>
-  //     </url>
-  // </urlset>`;
-
-  // result = apie.testt;
-  console.log("urlset");
-
-  // console.log(JSON.stringify(result, null, 4));
-
-  //Convert JSON object to XML
-  // const builder = new xml2js.Builder();
-  // console.log("ERRORRRRRRRRRRRRRR");
-  // console.log(result);
-  // const xml = builder.buildObject(result);
-
-  // console.log(xml);
-  // console.log("xml changed");
-
-  // write updated XML string to a file
-  fs.writeFile("./dist/static/sitemap.xml", gekkie, (err) => {
-    console.log("xml");
+  // Write updated XML string to the sitemap
+  fs.writeFile("./dist/static/sitemap.xml", XMLData, (err) => {
     if (err) {
       throw err;
     }
-    console.log(`Updated XML is written to a new file.`);
   });
 });
-//   });
-// });
