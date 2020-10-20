@@ -157,6 +157,8 @@ export default function createSitemap(data: NewsItemType[], title?: string) {
   }
   console.log(dynamicData[0].url);
 
+  const urlSetToSend = urlset.outerHTML;
+
   //Serialize xml and then download the file
   //Serialize the xml file to txt
   const oSerializer = new XMLSerializer();
@@ -186,6 +188,7 @@ export default function createSitemap(data: NewsItemType[], title?: string) {
   // const xml = urlset;
   console.log(bb);
   console.log(xml);
+  console.log(urlset.innerHTML);
 
   // const test = { test: "sss" };
 
@@ -201,7 +204,7 @@ export default function createSitemap(data: NewsItemType[], title?: string) {
   }
 
   //   const headers = { "Content-Type": "application/x-www-form-urlencoded" };
-  const test = { tesst: urlset.innerHTML };
+  const test = { tesst: urlSetToSend };
   console.log(test);
 
   //   axios
