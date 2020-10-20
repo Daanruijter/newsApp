@@ -1,12 +1,25 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 <template>
   <div class="randompage-container">
-    <div v-if="this.newsData[0] || this.randomNewsItem[0]" class="randompage-newsdata-loaded">
-      <hr v-if="this.newsData[0] || this.randomNewsItem[0]" class="randompage-hr-adapt-size" />
+    <div
+      v-if="this.newsData[0] || this.randomNewsItem[0]"
+      class="randompage-newsdata-loaded"
+    >
+      <hr
+        v-if="this.newsData[0] || this.randomNewsItem[0]"
+        class="randompage-hr-adapt-size"
+      />
       {{ this.newsItemPublishedTime }} GMT
-      <hr v-if="this.newsData[0] || this.randomNewsItem[0]" class="randompage-hr-adapt-size" />
+      <hr
+        v-if="this.newsData[0] || this.randomNewsItem[0]"
+        class="randompage-hr-adapt-size"
+      />
 
-      <div v-for="newsItem in this.randomNewsItem" :key="newsItem.title" class="randompage-data">
+      <div
+        v-for="newsItem in this.randomNewsItem"
+        :key="newsItem.title"
+        class="randompage-data"
+      >
         <div
           class="randompage-title"
           @mouseover="linkIsHovered = true"
@@ -17,30 +30,43 @@
         </div>
 
         <div>
-          <i v-if="newsItem.author&&newsItem.title">Written by:{{ " " }}{{ newsItem.author }}</i>
-          <i v-if="newsItem.source.name && newsItem.author&&newsItem.title">
-            <i v-if="newsItem.source.name && newsItem.author&&newsItem.title">,</i>
-            {{ " source: "
-            }}{{ newsItem.source.name }}
+          <i v-if="newsItem.author && newsItem.title"
+            >Written by:{{ " " }}{{ newsItem.author }}</i
+          >
+          <i v-if="newsItem.source.name && newsItem.author && newsItem.title">
+            <i v-if="newsItem.source.name && newsItem.author && newsItem.title"
+              >,</i
+            >
+            {{ " source: " }}{{ newsItem.source.name }}
           </i>
         </div>
         <br />
 
         <div class="randompage-description-wrapper">
-          <span v-if="newsItem.description" class="randompage-small-header">Description</span>
+          <span v-if="newsItem.description" class="randompage-small-header"
+            >Description</span
+          >
           <br />
-          <div v-if="newsItem.description" class="randompage-description">{{ newsItem.description }}</div>
+          <div v-if="newsItem.description" class="randompage-description">
+            {{ newsItem.description }}
+          </div>
         </div>
         <div class="randompage-contents-wrapper">
-          <span v-if="newsItem.content" class="randompage-small-header">Contents</span>
+          <span v-if="newsItem.content" class="randompage-small-header"
+            >Contents</span
+          >
           <br />
-          <div v-if="newsItem.content" class="randompage-contents">{{ newsItem.content }}</div>
+          <div v-if="newsItem.content" class="randompage-contents">
+            {{ newsItem.content }}
+          </div>
         </div>
         <div class="randompage-button">
-          <button @click="changeRandomNewsItemOnButtonClick">Show another random news item</button>
+          <button @click="changeRandomNewsItemOnButtonClick">
+            Show another random news item
+          </button>
         </div>
         <div class="randompage-picture">
-          <img v-bind:src="newsItem.urlToImage" />
+          <img v-if="newsItem.urlToImage" v-bind:src="newsItem.urlToImage" />
         </div>
       </div>
     </div>
@@ -53,14 +79,20 @@
         <button
           v-if="this.showAnotherNewsItemButtonClicked"
           @click="showPreviousNewsItem"
-        >Show previous news item</button>
+        >
+          Show previous news item
+        </button>
       </div>
       <div v-if="this.previousDate">
         <hr class="randompage-hr-adapt-size" />
         {{ this.previousDate }} GMT
         <hr class="randompage-hr-adapt-size" />
       </div>
-      <div v-for="newsItem in this.previousNewsItem" :key="newsItem.title" class="randompage-data">
+      <div
+        v-for="newsItem in this.previousNewsItem"
+        :key="newsItem.title"
+        class="randompage-data"
+      >
         <div
           class="randompage-title"
           @mouseover="previousArticleLinkIsHovered = true"
@@ -71,31 +103,49 @@
         </div>
 
         <div>
-          <i v-if="newsItem.author&&newsItem.title">Written by:{{ " " }}{{ newsItem.author }}</i>
-          <i v-if="newsItem.source.name && newsItem.author&&newsItem.title">
-            <i v-if="newsItem.source.name && newsItem.author&&newsItem.title">,</i>
-            {{ " source: "
-            }}{{ newsItem.source.name }}
+          <i v-if="newsItem.author && newsItem.title"
+            >Written by:{{ " " }}{{ newsItem.author }}</i
+          >
+          <i v-if="newsItem.source.name && newsItem.author && newsItem.title">
+            <i v-if="newsItem.source.name && newsItem.author && newsItem.title"
+              >,</i
+            >
+            {{ " source: " }}{{ newsItem.source.name }}
           </i>
         </div>
         <br />
 
         <div class="randompage-description-wrapper">
-          <span v-if="newsItem.description" class="randompage-small-header">Description</span>
+          <span v-if="newsItem.description" class="randompage-small-header"
+            >Description</span
+          >
           <br />
-          <div v-if="newsItem.description" class="randompage-description">{{ newsItem.description }}</div>
+          <div v-if="newsItem.description" class="randompage-description">
+            {{ newsItem.description }}
+          </div>
         </div>
         <div class="randompage-contents-wrapper">
-          <span v-if="newsItem.content" class="randompage-small-header">Contents</span>
+          <span v-if="newsItem.content" class="randompage-small-header"
+            >Contents</span
+          >
           <br />
-          <div v-if="newsItem.content" class="randompage-contents">{{ newsItem.content }}</div>
+          <div v-if="newsItem.content" class="randompage-contents">
+            {{ newsItem.content }}
+          </div>
         </div>
         <div class="randompage-picture">
-          <img v-bind:src="newsItem.urlToImage" />
+          <img
+            @error="pictureNotLoaded(index)"
+            v-if="newsItem.urlToImage"
+            v-bind:src="newsItem.urlToImage"
+          />
         </div>
       </div>
 
-      <div v-if="!this.randomNewsItem[0]" class="randompage-newsdata-not-loaded">
+      <div
+        v-if="!this.randomNewsItem[0]"
+        class="randompage-newsdata-not-loaded"
+      >
         <div class="randompage-no-newsitems">No news items to show</div>
       </div>
     </div>
@@ -132,7 +182,7 @@ export default class RandomPage extends Vue {
     "Leisure",
     "Entertainment",
     "Travel",
-    "Default News Category"
+    "Default News Category",
   ];
 
   //Base to fetch news from a random country
@@ -190,12 +240,12 @@ export default class RandomPage extends Vue {
     "United Kingdom",
     "United States",
     "Venezuela",
-    "Default Country"
+    "Default Country",
   ];
 
   randomNewsCategoryFetchBaseArray = [
     this.randomCountryCategoriesArray,
-    this.randomNewsCategoriesArray
+    this.randomNewsCategoriesArray,
   ];
 
   async mounted() {
@@ -232,11 +282,15 @@ export default class RandomPage extends Vue {
 
     const fetchRandomNewsItemObject = {
       fetchBase: pickFetchBase,
-      typeOfFetchBase: pickType
+      typeOfFetchBase: pickType,
     };
 
     //Fetch the newsData and put it in the Vuex store
     await news.fetchNewsQuery(fetchRandomNewsItemObject);
+  }
+
+  picturerNotLoaded(index: number) {
+    alert(index);
   }
 
   //Get a random number for the index. Number must be higher than 10, because I don't want to display newsItems that already got displayed on the homepage.

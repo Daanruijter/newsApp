@@ -110,6 +110,8 @@ export function convertNewsItemPublishedTime(publishString: string): string {
 
 //Sitemap Creator
 export default function createSitemap(data: NewsItemType[], title?: string) {
+  console.log(data);
+
   const dynamicData: NewsItemType[] = data;
   const doc = document.implementation.createDocument("", "", null);
 
@@ -135,11 +137,32 @@ export default function createSitemap(data: NewsItemType[], title?: string) {
   }
   doc.appendChild(urlset);
 
-  //Append dynamic sitemap urls (EXAMPLE)
-  for (let i = 0; i < dynamicData.length; i++) {
+  console.log(doc);
+
+  let convertUrlIfAmperSandBeforeConverting = "";
+  let convertUrlIfAmperSandAfterConverting = "";
+
+  for (let j = 0; j < dynamicData.length; j++) {
+    console.log(dynamicData[j].url);
+  }
+
+  //Append dynamic sitemap urls
+  for (let j = 0; j < dynamicData.length; j++) {
     url = doc.createElement("url");
     loc = doc.createElement("loc");
-    loc.innerHTML = `${dynamicData[i].url}`;
+
+    convertUrlIfAmperSandBeforeConverting = dynamicData[j].url;
+    convertUrlIfAmperSandAfterConverting = dynamicData[j].url;
+
+    //& not allowed in XML, so replace it by &amp;
+    if (convertUrlIfAmperSandBeforeConverting.includes("&")) {
+      convertUrlIfAmperSandAfterConverting = convertUrlIfAmperSandBeforeConverting.replace(
+        /&/g,
+        "&amp;"
+      );
+    }
+    console.log(convertUrlIfAmperSandAfterConverting);
+    loc.innerHTML = convertUrlIfAmperSandAfterConverting;
     changefreq = doc.createElement("changefreq");
     changefreq.innerHTML = "weekly";
     url.appendChild(loc);
@@ -182,7 +205,7 @@ export default function createSitemap(data: NewsItemType[], title?: string) {
   //Create a variable thats going to be send in the body
   const XMLurlSet = { urlSetToSend: urlSetToSend };
 
-  //Make a call to the back end to fetch the data
+  //Make a call to the back end to send the XML data
   fetch(url, {
     method: "POST",
     headers: {
@@ -193,12 +216,8 @@ export default function createSitemap(data: NewsItemType[], title?: string) {
 
     body: JSON.stringify(XMLurlSet),
   })
-    .then((response) => {
-      return response.json();
-    })
-
     .then((res) => {
-      res.send("data succesfully fetched");
+      console.log(res);
     })
     .catch((err) => {
       console.log(err);
