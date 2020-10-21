@@ -66,7 +66,11 @@
         </div>
 
         <div class="detailspage-picture">
-          <img v-bind:src="newsItem.urlToImage" />
+          <img
+            @error="turnBrokenPictureVariableToTrue"
+            v-if="!firstItemPictureNotLoaded"
+            v-bind:src="newsItem.urlToImage"
+          />
         </div>
       </div>
       <!-- three other relevant items -->
@@ -145,7 +149,11 @@
           </div>
 
           <div class="detailspage-picture">
-            <img v-bind:src="newsItem.urlToImage" />
+            <img
+              @error="pushIndicesOfNotLoadedPictures(index)"
+              v-if="!extraItemsPictureNotLoaded.includes(index)"
+              v-bind:src="newsItem.urlToImage"
+            />
           </div>
           <hr
             v-if="newsItem.title && newsItem.title"
@@ -199,6 +207,9 @@ export default class DetailsPage extends Vue {
   newsItemPublishedTime = "";
   valueForDetailComponent: NewsItemType[] = [];
   threeRelevantExtraNewsItems: NewsItemType[] = [];
+
+  firstItemPictureNotLoaded = false;
+  extraItemsPictureNotLoaded: number[] = [];
 
   //Fetch the news items and call the this.getValuesForDetailComponent method to display the data on the page
   async processDataForDetailsComponent(
@@ -319,6 +330,17 @@ export default class DetailsPage extends Vue {
     //Create a sitemap with the title put on the details page url
     createSitemap(this.newsData, titleToFilterItemOut);
     return null;
+  }
+
+  //Hide a picture of the first item on the page if it's broken/does not load
+  turnBrokenPictureVariableToTrue() {
+    this.firstItemPictureNotLoaded = true;
+  }
+
+  //Hide a picture if an extra item has a broken one
+  pushIndicesOfNotLoadedPictures(index: number) {
+    if (!this.extraItemsPictureNotLoaded.includes(index))
+      this.extraItemsPictureNotLoaded.push(index);
   }
 
   //Create a hovering effect for the links if a user enters a link with his mouse

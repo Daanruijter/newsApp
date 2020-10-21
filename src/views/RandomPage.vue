@@ -66,7 +66,14 @@
           </button>
         </div>
         <div class="randompage-picture">
-          <img v-if="newsItem.urlToImage" v-bind:src="newsItem.urlToImage" />
+          <img
+            @error="pushBrokenImageId(newsItem.title)"
+            v-if="
+              newsItem.urlToImage &&
+                !brokenPictureArrray.includes(newsItem.title)
+            "
+            v-bind:src="newsItem.urlToImage"
+          />
         </div>
       </div>
     </div>
@@ -135,8 +142,11 @@
         </div>
         <div class="randompage-picture">
           <img
-            @error="pictureNotLoaded(index)"
-            v-if="newsItem.urlToImage"
+            @error="pushBrokenImageId(newsItem.title)"
+            v-if="
+              newsItem.urlToImage &&
+                !brokenPictureArrray.includes(newsItem.title)
+            "
             v-bind:src="newsItem.urlToImage"
           />
         </div>
@@ -163,7 +173,6 @@ export default class RandomPage extends Vue {
   //STATE
   newsData = [];
   randomNewsItem: NewsItemType[] = [];
-  threeOtherNewsItems: NewsItemType[] = [];
   newsItemPublishedTime = "";
   linkIsHovered = false;
   previousArticleLinkIsHovered = false;
@@ -248,6 +257,8 @@ export default class RandomPage extends Vue {
     this.randomNewsCategoriesArray,
   ];
 
+  brokenPictureArrray: string[] = [];
+
   async mounted() {
     this.prepareDataForDisplay();
   }
@@ -289,8 +300,12 @@ export default class RandomPage extends Vue {
     await news.fetchNewsQuery(fetchRandomNewsItemObject);
   }
 
-  picturerNotLoaded(index: number) {
-    alert(index);
+  //Hide a picture of an item on the page if it's broken/does not load
+  //Push the title of that particular item to an array variable,
+  //Compare that title with the title using a v-if on the image, hide it if the titles match
+  pushBrokenImageId(titleAsId: string) {
+    if (!this.brokenPictureArrray.includes(titleAsId))
+      this.brokenPictureArrray.push(titleAsId);
   }
 
   //Get a random number for the index. Number must be higher than 10, because I don't want to display newsItems that already got displayed on the homepage.
