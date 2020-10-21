@@ -381,9 +381,7 @@ router.post("/", (req, res) => {
 let counter = 0;
 //Update the xml sitemap
 router.post("/updateXMLSitemap", (req, res) => {
-  console.log("fires!!!!");
   counter++;
-  console.log(counter);
   let XMLData =
     '<?xml version="1.0" encoding="UTF-8"?>' + req.body.urlSetToSend;
 

@@ -110,8 +110,6 @@ export function convertNewsItemPublishedTime(publishString: string): string {
 
 //Sitemap Creator
 export default function createSitemap(data: NewsItemType[], title?: string) {
-  console.log(data);
-
   const dynamicData: NewsItemType[] = data;
   const doc = document.implementation.createDocument("", "", null);
 
@@ -137,14 +135,8 @@ export default function createSitemap(data: NewsItemType[], title?: string) {
   }
   doc.appendChild(urlset);
 
-  console.log(doc);
-
   let convertUrlIfAmperSandBeforeConverting = "";
   let convertUrlIfAmperSandAfterConverting = "";
-
-  for (let j = 0; j < dynamicData.length; j++) {
-    console.log(dynamicData[j].url);
-  }
 
   //Append dynamic sitemap urls
   for (let j = 0; j < dynamicData.length; j++) {
@@ -161,7 +153,7 @@ export default function createSitemap(data: NewsItemType[], title?: string) {
         "&amp;"
       );
     }
-    console.log(convertUrlIfAmperSandAfterConverting);
+
     loc.innerHTML = convertUrlIfAmperSandAfterConverting;
     changefreq = doc.createElement("changefreq");
     changefreq.innerHTML = "weekly";
@@ -174,9 +166,9 @@ export default function createSitemap(data: NewsItemType[], title?: string) {
 
   //Serialize xml and then download the file
   //Serialize the xml file to txt
-  const oSerializer = new XMLSerializer();
-  let xmltext = oSerializer.serializeToString(doc);
-  xmltext = '<?xml version="1.0" encoding="UTF-8"?>' + xmltext;
+  // const oSerializer = new XMLSerializer();
+  // let xmltext = oSerializer.serializeToString(doc);
+  // xmltext = '<?xml version="1.0" encoding="UTF-8"?>' + xmltext;
 
   //Download the file
   // let pom = document.createElement("a");

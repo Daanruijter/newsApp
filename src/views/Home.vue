@@ -5,7 +5,9 @@
       <div
         class="home-show-selected-category"
         v-if="this.fetchedCategory !== 'Default Country'"
-      >You selected {{ this.fetchedCategory }} news</div>
+      >
+        You selected {{ this.fetchedCategory }} news
+      </div>
 
       <div class="home-newsdata-loaded">
         <div class="home-headers">
@@ -19,15 +21,21 @@
               name="sortByNewsSource"
               class="home-sort-by-newssource-button"
               @click="sortByNewsSource"
-            >News source</button>
+            >
+              News source
+            </button>
 
             <button
               name="sortByNewsTitle"
               class="home-sort-by-newstitle-button"
               @click="sortByNewsTitle"
-            >News title</button>
+            >
+              News title
+            </button>
 
-            <button name="reset" class="home-reset" @click="reset">Reset</button>
+            <button name="reset" class="home-reset" @click="reset">
+              Reset
+            </button>
           </div>
         </div>
         <div class="home-newsitems-flexer">
@@ -37,7 +45,9 @@
             v-for="(newsItem, index) in this.newsDataToDisplay"
             :key="newsItem.title + index"
           >
-            <router-link :to="{ name: 'DetailsPage', params: { title: newsItem.title } }">
+            <router-link
+              :to="{ name: 'DetailsPage', params: { title: newsItem.title } }"
+            >
               <div
                 @click="makeHoveringEffectsUndone"
                 class="home-newsitem-title"
@@ -50,12 +60,14 @@
             </router-link>
             <div
               class="home-newsitem-source"
-              v-if="newsItem.source.name&&newsItem.title"
-            >Source: {{ newsItem.source.name }}</div>
+              v-if="newsItem.source.name && newsItem.title"
+            >
+              Source: {{ newsItem.source.name }}
+            </div>
             <div class="home-newsitem-picture">
               <img
                 @error="pictureNotLoaded(index)"
-                v-if="newsItem.urlToImage&&newsItem.title"
+                v-if="newsItem.urlToImage && newsItem.title"
                 v-bind:src="newsItem.urlToImage"
               />
             </div>
@@ -63,7 +75,10 @@
           </div>
         </div>
         <!-- if there is no picture, put those news items under the header Other News -->
-        <div class="home-other-news" v-if="this.newsDataToDisplayWithNoPictures.length !== 0">
+        <div
+          class="home-other-news"
+          v-if="this.newsDataToDisplayWithNoPictures.length !== 0"
+        >
           <h2>Other news</h2>
         </div>
         <div
@@ -72,7 +87,9 @@
           v-for="(newsItem, index) in this.newsDataToDisplayWithNoPictures"
           :key="newsItem.title"
         >
-          <router-link :to="{ name: 'DetailsPage', params: { title: newsItem.title } }">
+          <router-link
+            :to="{ name: 'DetailsPage', params: { title: newsItem.title } }"
+          >
             <div
               @click="makeHoveringEffectsUndone"
               v-if="newsItem.title"
@@ -80,7 +97,9 @@
               @mouseover="mouseEnter(index, noPictureString)"
               @mouseout="mouseLeave(index, noPictureString)"
               :class="{ hovering: newsItem.homePageLinksHovered }"
-            >{{ newsItem.title }}, Source: {{ newsItem.source.name }}</div>
+            >
+              {{ newsItem.title }}, Source: {{ newsItem.source.name }}
+            </div>
           </router-link>
           <hr v-if="newsItem.title" />
         </div>
@@ -114,8 +133,8 @@ export default class Home extends Vue {
   router = new VueRouter({
     routes: [
       // Dynamic segments start with a colon
-      { path: "/details /:id", component: DetailsPage }
-    ]
+      { path: "/details /:id", component: DetailsPage },
+    ],
   });
   pictureString = "picture";
   noPictureString = "nopicture";
@@ -151,7 +170,7 @@ export default class Home extends Vue {
     let newsCategoryFetchObject = null;
     newsCategoryFetchObject = {
       fetchBase: "Default Country",
-      typeOfFetchBase: "fetchCountry"
+      typeOfFetchBase: "fetchCountry",
     };
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -161,7 +180,7 @@ export default class Home extends Vue {
         fetchBase: localStorage.getItem("fetchBase")!,
 
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        typeOfFetchBase: localStorage.getItem("typeOfFetchBase")!
+        typeOfFetchBase: localStorage.getItem("typeOfFetchBase")!,
       };
     }
 
@@ -449,7 +468,6 @@ export default class Home extends Vue {
         item = this.newsDataToDisplayWithNoPictures[j];
 
         if (item.homePageLinksHovered) {
-          alert("executed");
           item.homePageLinksHovered = false;
           //Set homePageLinksHovered in the picture array to false
           this.$set(this.newsDataToDisplayWithNoPictures, j, item);
