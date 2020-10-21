@@ -648,6 +648,10 @@ a {
     text-align: left;
   }
 
+  .home-newsitems-with-picture {
+    text-align: left;
+  }
+
   .home-show-selected-category {
     background-color: darkblue;
     color: white;
@@ -708,6 +712,10 @@ a {
   }
 
   .home-get-to-know {
+    text-align: left;
+  }
+
+  .home-newsitems-with-picture {
     text-align: left;
   }
 
