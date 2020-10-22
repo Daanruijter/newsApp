@@ -110,7 +110,6 @@ export function convertNewsItemPublishedTime(publishString: string): string {
 
 //Sitemap Creator
 export default function createSitemap(data: NewsItemType[], title?: string) {
-  alert("exectued");
   const dynamicData: NewsItemType[] = data;
   const doc = document.implementation.createDocument("", "", null);
 

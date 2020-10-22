@@ -57,7 +57,7 @@ import DetailsPage from "../views/DetailsPage.vue";
 import NewsItemType from "../interfacesforapp";
 import { bus } from "../main";
 import news from "../store/modules/news";
-// import createSitemap from "../methodsForGeneralUse";
+import createSitemap from "../methodsForGeneralUse";
 
 export interface FetchNews {
   fetchBase: string;
@@ -89,11 +89,8 @@ export default class NewsFooter extends Vue {
     //Change the newsData variable on changes in the random page component
     bus.$on("setNewsDataInNewsFooter", (data: NewsItemType[]) => {
       this.newsData = data;
-
-      // if (process.env.NODE_ENV === "development") {
-      //   //Generate the XML sitemap
-      //   createSitemap(data, "");
-      // }
+      //Generate the XML sitemap
+      createSitemap(data, "");
     });
 
     //Make sure that the name Page is removed from the strings that represent the sitemap buttons
@@ -122,9 +119,7 @@ export default class NewsFooter extends Vue {
     );
 
     this.newsData = newsDataFromLocalStorage;
-    // if (process.env.NODE_ENV === "development") {
-    //   createSitemap(newsDataFromLocalStorage, "");
-    // }
+    createSitemap(newsDataFromLocalStorage, "");
   }
 
   //If a user clicks an item below the header "details page" in the footer, make sure that the details page gets rerendered to display the details page of the item with the title where a user clicked on

@@ -164,8 +164,6 @@ export default class Home extends Vue {
 
   //Bus objects can listen to events in another component if you put them in the mounted hook of the component in which you want to listen to the event
   async mounted() {
-    alert("hi");
-
     //If there is data fetched already, make sure that on mounting, the same data is fetched, otherwise fetch the defaults
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
