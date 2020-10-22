@@ -380,19 +380,20 @@ router.post("/", (req, res) => {
 
 let counter = 0;
 //Update the xml sitemap
-router.post("/updateXMLSitemap", (req, res) => {
-  counter++;
-  let XMLData =
-    '<?xml version="1.0" encoding="UTF-8"?>' + req.body.urlSetToSend;
+// router.post("/updateXMLSitemap", (req, res) => {
+//   console.log("sd");
+//   counter++;
+//   let XMLData =
+//     '<?xml version="1.0" encoding="UTF-8"?>' + req.body.urlSetToSend;
 
-  // Write updated XML string to the sitemap
-  fs.writeFile("./dist/static/sitemap.xml", XMLData, (err) => {
-    if (err) {
-      console.log(err);
-      throw err;
-    }
-    res.send(err);
-  });
-});
+//   // Write updated XML string to the sitemap
+//   fs.writeFile("./dist/static/sitemap.xml", XMLData, (err) => {
+//     if (err) {
+//       console.log(err);
+//       throw err;
+//     }
+//     res.send(err);
+//   });
+// });
 
 module.exports = router;
