@@ -177,7 +177,7 @@ import NewsItemType from "../interfacesforapp";
 import { Vue, Component } from "vue-property-decorator";
 import news from "../store/modules/news";
 import { bus } from "../main";
-import createSitemap from "../methodsForGeneralUse";
+// import createSitemap from "../methodsForGeneralUse";
 
 @Component
 export default class DetailsPage extends Vue {
@@ -333,11 +333,11 @@ export default class DetailsPage extends Vue {
       this.threeRelevantExtraNewsItems = extraValuesForDetailComponent;
     }
 
-    if (process.env.NODE_ENV !== "production") {
-      //Create a sitemap with the title put on the details page url
-      createSitemap(this.newsData, titleToFilterItemOut);
-      return null;
-    }
+    // if (process.env.NODE_ENV !== "production") {
+    //   //Create a sitemap with the title put on the details page url
+    //   // createSitemap(this.newsData, titleToFilterItemOut);
+    // }
+    return null;
   }
 
   //Hide a picture of the first item on the page if it's broken/does not load
