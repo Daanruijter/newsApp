@@ -333,7 +333,7 @@ export default class DetailsPage extends Vue {
       this.threeRelevantExtraNewsItems = extraValuesForDetailComponent;
     }
 
-    if (process.env.NODE_ENV === "production") {
+    if (process.env.NODE_ENV !== "production") {
       //Create a sitemap with the title put on the details page url
       createSitemap(this.newsData, titleToFilterItemOut);
       return null;
