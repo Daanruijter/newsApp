@@ -7,13 +7,19 @@
       </div>
 
       <div v-for="route in routes" :key="route.name" class="newsfooter-routes">
-        <div @click="doStuffOnCLickInSitemap($event)" class="newsfooter-individual-routes">
+        <div
+          @click="doStuffOnCLickInSitemap($event)"
+          class="newsfooter-individual-routes"
+        >
           <!-- for the newsfooter details button -->
-          <router-link v-if="route.name !== 'Details'" :to="route.path">{{ route.name }}</router-link>
+          <router-link v-if="route.name !== 'Details'" :to="route.path">{{
+            route.name
+          }}</router-link>
           <router-link
             v-if="route.name === 'Details' && newsData[0] !== undefined"
             :to="{ name: 'DetailsPage', params: { title: newsData[0].title } }"
-          >{{ route.name }}</router-link>
+            >{{ route.name }}</router-link
+          >
         </div>
         <div class="newsfooter-detailspage-flexer">
           <!-- for the newsfooter dynamic links -->
@@ -30,7 +36,9 @@
                   @mouseover="mouseEnter(index)"
                   @mouseout="mouseLeave(index)"
                   :class="{ hovering: item.linksNewsFooterHovered }"
-                >{{ item.title }}</div>
+                >
+                  {{ item.title }}
+                </div>
               </router-link>
             </div>
           </div>
@@ -64,8 +72,8 @@ export default class NewsFooter extends Vue {
   router = new VueRouter({
     routes: [
       // dynamic segments start with a colon
-      { path: "/details /:id", component: DetailsPage }
-    ]
+      { path: "/details /:id", component: DetailsPage },
+    ],
   });
   indexOfHoveredLink: number | null = null;
 
@@ -81,8 +89,11 @@ export default class NewsFooter extends Vue {
     //Change the newsData variable on changes in the random page component
     bus.$on("setNewsDataInNewsFooter", (data: NewsItemType[]) => {
       this.newsData = data;
-      //Generate the XML sitemap
-      createSitemap(data, "");
+
+      if (process.env.NODE_ENV === "development") {
+        //Generate the XML sitemap
+        createSitemap(data, "");
+      }
     });
 
     //Make sure that the name Page is removed from the strings that represent the sitemap buttons
@@ -111,7 +122,9 @@ export default class NewsFooter extends Vue {
     );
 
     this.newsData = newsDataFromLocalStorage;
-    createSitemap(newsDataFromLocalStorage, "");
+    if (process.env.NODE_ENV === "development") {
+      createSitemap(newsDataFromLocalStorage, "");
+    }
   }
 
   //If a user clicks an item below the header "details page" in the footer, make sure that the details page gets rerendered to display the details page of the item with the title where a user clicked on
@@ -144,7 +157,7 @@ export default class NewsFooter extends Vue {
         fetchBase: localStorage.getItem("fetchBase")!,
 
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        typeOfFetchBase: localStorage.getItem("typeOfFetchBase")!
+        typeOfFetchBase: localStorage.getItem("typeOfFetchBase")!,
       };
 
       //Fetch the data based on user interaction, so fetch the defaults or for example a country a user selected
