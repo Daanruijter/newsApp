@@ -332,12 +332,12 @@ export default class DetailsPage extends Vue {
       this.valueForDetailComponent = valueForDetailComponentFiltered;
       this.threeRelevantExtraNewsItems = extraValuesForDetailComponent;
     }
-   
-   if (process.env.NODE_ENV === "development") {
-   //Create a sitemap with the title put on the details page url
-    createSitemap(this.newsData, titleToFilterItemOut);
-    return null;
-  }
+
+    if (process.env.NODE_ENV === "production") {
+      //Create a sitemap with the title put on the details page url
+      createSitemap(this.newsData, titleToFilterItemOut);
+      return null;
+    }
   }
 
   //Hide a picture of the first item on the page if it's broken/does not load
