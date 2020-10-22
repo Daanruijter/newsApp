@@ -353,6 +353,9 @@ class NewsModule extends VuexModule {
     }
 
     if (process.env.NODE_ENV === "production") {
+      //Save the fetch base in localStorage for when a user reloads the Detail Page
+      localStorage.setItem("fetchBase", fetchBaseObject.fetchBase);
+      localStorage.setItem("typeOfFetchBase", fetchBaseObject.typeOfFetchBase);
       //TEST // PRODUCTION MODE
       //*********************************
       //TEST // PRODUCTION MODE

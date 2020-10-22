@@ -253,6 +253,8 @@ export default class DetailsPage extends Vue {
     let titleToFilterItemOut = this.newsItemTitle;
     let valueForDetailComponentFiltered: NewsItemType[] = [];
 
+    console.log(this.newsItemTitle);
+
     //Title comes from a click on the details button in the newfooter. The "bus" passes it through
     //If that happens, titleToFilterItemOut must be equal to that title
     if (title) {
@@ -263,6 +265,9 @@ export default class DetailsPage extends Vue {
       //Get the clicked news item from the array
       valueForDetailComponentFiltered = newsData.filter(
         (item: NewsItemType) => {
+          console.log(titleToFilterItemOut.includes(item.title));
+          console.log(titleToFilterItemOut);
+          console.log(item.title);
           return titleToFilterItemOut.includes(item.title);
         }
       );
