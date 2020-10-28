@@ -126,6 +126,7 @@ export default function createSitemap(data: NewsItemType[], title?: string) {
   for (let i = 0; i < staticSites.length; i++) {
     url = doc.createElement("url");
     loc = doc.createElement("loc");
+    //VERANDEREN!!!
     loc.innerHTML = "http://localhost:8081/#" + staticSites[i];
     changefreq = doc.createElement("changefreq");
     changefreq.innerHTML = "monthly";
@@ -162,7 +163,10 @@ export default function createSitemap(data: NewsItemType[], title?: string) {
     urlset.appendChild(url);
   }
 
-  const urlSetToSend = urlset.outerHTML;
+  const XMLDataAndEnvironMentData = {
+    environmentData: process.env.NODE_ENV,
+    urlSetToSend: urlset.outerHTML,
+  };
 
   //Serialize xml and then download the file
   //Serialize the xml file to txt
@@ -191,19 +195,19 @@ export default function createSitemap(data: NewsItemType[], title?: string) {
   }
 
   if (process.env.NODE_ENV === "production") {
-    url = "https://worldnews-app.herokuapp.com/updateXMLSitemap";
+    url = "/updateXMLSitemap";
   }
 
   //Create a variable thats going to be send in the body
-  const XMLurlSet = { urlSetToSend: urlSetToSend };
+  const XMLurlSet = { XMLDataAndEnvironMentData };
 
-  //Make a call to the back end to send the XML data
+  // Make a call to the back end to send the XML data
   fetch(url, {
     method: "POST",
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json  ",
-      "Access-Control-Allow-Origin": "*",
+      // Accept: "application/json",
+      "Content-Type": "application/json",
+      // "Access-Control-Allow-Origin": "*",
     },
 
     body: JSON.stringify(XMLurlSet),

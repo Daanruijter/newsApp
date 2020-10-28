@@ -114,7 +114,7 @@ class NewsModule extends VuexModule {
   //Fetch the newsData based on what the user selects on the UI
   @Action
   async fetchNewsQuery(fetchBaseObject: FetchNews) {
-    if (process.env.NODE_ENV === "development") {
+    if (process.env.NODE_ENV === "production") {
       //Save the fetch base in localStorage for when a user reloads the Detail Page
       localStorage.setItem("fetchBase", fetchBaseObject.fetchBase);
       localStorage.setItem("typeOfFetchBase", fetchBaseObject.typeOfFetchBase);
@@ -320,7 +320,7 @@ class NewsModule extends VuexModule {
       //Variable that holds the url to be fetched and sent to the backend
       const bodyWithUrls = { fetchUrl };
 
-      const url = "http://localhost:5000/";
+      const url = "/api";
 
       //Make a call to the back-end to fetch the data
       await fetch(
@@ -352,7 +352,7 @@ class NewsModule extends VuexModule {
         });
     }
 
-    if (process.env.NODE_ENV === "production") {
+    if (process.env.NODE_ENV === "development") {
       //Save the fetch base in localStorage for when a user reloads the Detail Page
       localStorage.setItem("fetchBase", fetchBaseObject.fetchBase);
       localStorage.setItem("typeOfFetchBase", fetchBaseObject.typeOfFetchBase);
