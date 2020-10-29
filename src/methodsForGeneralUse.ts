@@ -168,6 +168,8 @@ export default function createSitemap(data: NewsItemType[], title?: string) {
     urlSetToSend: urlset.outerHTML,
   };
 
+  // CODE TO DOWNLOAD THE FILE (TURNED OFF)
+
   //Serialize xml and then download the file
   //Serialize the xml file to txt
   // const oSerializer = new XMLSerializer();
@@ -205,9 +207,7 @@ export default function createSitemap(data: NewsItemType[], title?: string) {
   fetch(url, {
     method: "POST",
     headers: {
-      // Accept: "application/json",
       "Content-Type": "application/json",
-      // "Access-Control-Allow-Origin": "*",
     },
 
     body: JSON.stringify(XMLurlSet),

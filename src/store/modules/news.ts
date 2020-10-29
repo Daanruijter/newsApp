@@ -356,9 +356,9 @@ class NewsModule extends VuexModule {
       //Save the fetch base in localStorage for when a user reloads the Detail Page
       localStorage.setItem("fetchBase", fetchBaseObject.fetchBase);
       localStorage.setItem("typeOfFetchBase", fetchBaseObject.typeOfFetchBase);
-      //TEST // PRODUCTION MODE
+      //Development MODE
       //*********************************
-      //TEST // PRODUCTION MODE
+      //Development MODE
 
       //In this mode I don't fetch the data by triggering the backend that fetches from the newsAPI,
       //but I just get the data from the document "offLineData.ts.""
@@ -574,9 +574,9 @@ class NewsModule extends VuexModule {
         data = offLineData.Trump;
       }
 
-      //TEST // PRODUCTION MODE
+      //Development MODE
       //*********************************
-      //TEST // PRODUCTION MODE
+      //Development MODE
 
       //Call the mutator
       this.context.commit("addQueriedNewsDataToState", data);
